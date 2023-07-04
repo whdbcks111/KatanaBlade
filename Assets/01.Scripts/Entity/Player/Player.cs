@@ -6,8 +6,9 @@ public class Player : Entity
 {
     public static Player Instance { get; private set; }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
     }
 
