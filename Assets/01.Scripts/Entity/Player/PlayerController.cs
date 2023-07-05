@@ -4,43 +4,63 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private bool _canParry;
-    // Start is called before the first frame update
-    void Start()
-    {
 
+    private Rigidbody2D _rigid;
+
+    private bool _isJump;
+    public float _Jump;
+    public float _MaxSpeed;
+
+    private void Start()
+    {
+        _rigid = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        _PlayerJump();
     }
 
-    //투사체의 후딜을 짧게
-    //근접 몬스터의 공격은 후딜을 길게, 넉백 존재
-    private void Parry()
+    private void FixedUpdate()
     {
-        //마우스 포인터 방향에 따라 부채꼴로 패링되게
-        //원 콜라이더 소환하여 닿는 오브젝트 판별
-        //RaycastHit2D hit = ;
-        //마우스 포인터와 플레이어 간의 방향 확인
-
-        //해당 각도의 보정, 닿았을 경우에 패링 판정 넣기
-        //foreach문으로 확인
-
-        ParryCool(.5f);
+        _PlayerMove();
+        
     }
 
-    private void ParryEffect()
+    // 플레이어 움직임 구현
+    private void _PlayerMove()
     {
+        float h = Input.GetAxisRaw("Horizontal");
 
+        _rigid.AddForce(Vector2.right * h, ForceMode2D.Impulse);
+
+        if (_rigid.velocity.x > _MaxSpeed)
+        {
+            _rigid.velocity = new Vector2(_MaxSpeed, _rigid.velocity.y);
+        }
+        
+        else if (-_rigid.velocity.x > _MaxSpeed)
+        {
+            _rigid.velocity = new Vector2(-_MaxSpeed, _rigid.velocity.y);
+        }
     }
 
-    IEnumerator ParryCool(float time)
+    // 플레이어 점프 구현
+    private void _PlayerJump()
     {
-        _canParry = false;
-        yield return new WaitForSeconds(time);
-        _canParry = true;
+        if (Input.GetButtonDown("Jump") && !_isJump)
+        {
+            _isJump = true;
+            _rigid.velocity = new Vector2(_rigid.velocity.x, _Jump);
+        }
+    }
+
+    // 플레이어가 바닥에서만 점프하도록 구현
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            _isJump = false;
+        }
     }
 }
