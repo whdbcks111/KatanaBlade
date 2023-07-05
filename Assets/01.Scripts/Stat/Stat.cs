@@ -23,6 +23,7 @@ public class Stat
         _defaultValues[StatType.JumpForce] = 9f;
         _defaultValues[StatType.ParryingAttackForce] = 10f;
         _defaultValues[StatType.MoveSpeed] = 5f;
+        _defaultValues[StatType.DashLength] = 4f;
 
         InitStats();
         UpdateStatValues();
@@ -80,5 +81,6 @@ public enum StatType
     MoveSpeed, // 이동 속도
     DashCooldown, // 대시 쿨타임
     ParryingStaminaRegen, // 스태미나 재생력
-    DashStaminaRegen // 대시 재생력
+    DashStaminaRegen, // 대시 재생력
+    DashLength // 대시 거리
 }
