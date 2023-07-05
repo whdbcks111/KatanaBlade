@@ -24,6 +24,8 @@ public class Stat
         _defaultValues[StatType.ParryingAttackForce] = 10f;
         _defaultValues[StatType.MoveSpeed] = 5f;
         _defaultValues[StatType.DashLength] = 4f;
+        _defaultValues[StatType.DashCost] = 30f;
+        _defaultValues[StatType.ParryingCost] = 30f;
 
         InitStats();
         UpdateStatValues();
@@ -77,9 +79,11 @@ public enum StatType
     MaxParryingStamina, // 패링 게이지 최대치
     ParryingTime, // 패링 속도
     ParryingAttackForce, // 패링 공격력 
+    ParryingCost, // 패링 비용
     JumpForce, // 점프력
     MoveSpeed, // 이동 속도
     DashCooldown, // 대시 쿨타임
+    DashCost , // 대시 비용
     ParryingStaminaRegen, // 스태미나 재생력
     DashStaminaRegen, // 대시 재생력
     DashLength // 대시 거리
