@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     public float _Jump;
     public float _MaxSpeed;
 
+
+    [SerializeField] private float _parryRadius;
     private void Start()
     {
         player = GetComponent<Player>();
@@ -63,13 +65,51 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerParry()
     {
+        //원 콜라이더 생성
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
+        //플레이어와 마우스 사이 각도구하기
+        float parryDirection = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+        //닿은게 몬스터, 투사체인지 확인
+        foreach (RaycastHit2D inst in hit)
+        {
+            if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
+            {
+                //적이 해당 방향/범위 안에 있는지 확인
+                float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+                //해당 각도에 오차범위 추가
+                //패링 성공
+                //몬스터가 공격중인지 판단해서 패링 성공인지 판단
+                if (Mathf.Abs(parryDirection - MonsterDirection) < 12)
+                {
+                    //패링 성공 이후 공격
+                    t.Damage(player.Stat.Get(StatType.ParryingAttackForce));
+                    //패링 후 효과
+                    if (t is MeleeMonster)
+                    {
+                        //근거리의 경우 뒤로 밀림
+                    }
+                    //원거리면 피드백X
 
-        player.Stat.Get(StatType.ParryingAttackForce);
+                }
+
+
+
+            }
+
+        }
+
+        player.DashStamina -= player.Stat.Get(StatType.parry);
+        StartCoroutine(ParryCool());
     }
 
     IEnumerator ParryCool()
     {
         yield return new WaitForSeconds(player.Stat.Get(StatType.ParryingTime));
+    }
+
+    private void StaminaGen()
+    {
+
     }
 
     private void PlayerDash()
