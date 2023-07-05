@@ -34,9 +34,6 @@ public class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         Init();
-
-        Damage(30);
-        AddEffect(new EffectRegeneration(1, 10));
     }
 
     protected virtual void Update()
