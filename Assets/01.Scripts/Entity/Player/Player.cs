@@ -16,4 +16,9 @@ public class Player : Entity
     {
         Instance = null;
     }
+
+    public void AddItem(Item item)
+    {
+        // 구현 필요
+    }
 }
