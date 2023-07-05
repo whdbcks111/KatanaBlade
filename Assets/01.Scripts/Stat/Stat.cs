@@ -24,6 +24,8 @@ public class Stat
         _defaultValues[StatType.ParryingAttackForce] = 10f;
         _defaultValues[StatType.MoveSpeed] = 5f;
         _defaultValues[StatType.DashLength] = 4f;
+        _defaultValues[StatType.DashCost] = 30f;
+        _defaultValues[StatType.ParryingCost] = 30f;
 
         InitStats();
         UpdateStatValues();
@@ -72,15 +74,17 @@ public class Stat
 
 public enum StatType
 {
-    MaxHP, // ÃÖ´ë HP
-    MaxDashStamina, // ´ë½Ã °ÔÀÌÁö ÃÖ´ëÄ¡
-    MaxParryingStamina, // ÆĞ¸µ °ÔÀÌÁö ÃÖ´ëÄ¡
-    ParryingTime, // ÆĞ¸µ ¼Óµµ
-    ParryingAttackForce, // ÆĞ¸µ °ø°İ·Â 
-    JumpForce, // Á¡ÇÁ·Â
-    MoveSpeed, // ÀÌµ¿ ¼Óµµ
-    DashCooldown, // ´ë½Ã ÄğÅ¸ÀÓ
-    ParryingStaminaRegen, // ½ºÅÂ¹Ì³ª Àç»ı·Â
-    DashStaminaRegen, // ´ë½Ã Àç»ı·Â
-    DashLength // ´ë½Ã °Å¸®
+    MaxHP, // ìµœëŒ€ HP
+    MaxDashStamina, // ëŒ€ì‹œ ê²Œì´ì§€ ìµœëŒ€ì¹˜
+    MaxParryingStamina, // íŒ¨ë§ ê²Œì´ì§€ ìµœëŒ€ì¹˜
+    ParryingTime, // íŒ¨ë§ ì†ë„
+    ParryingAttackForce, // íŒ¨ë§ ê³µê²©ë ¥ 
+    ParryingCost, // íŒ¨ë§ ë¹„ìš©
+    JumpForce, // ì í”„ë ¥
+    MoveSpeed, // ì´ë™ ì†ë„
+    DashCooldown, // ëŒ€ì‹œ ì¿¨íƒ€ì„
+    DashCost , // ëŒ€ì‹œ ë¹„ìš©
+    ParryingStaminaRegen, // ìŠ¤íƒœë¯¸ë‚˜ ì¬ìƒë ¥
+    DashStaminaRegen, // ëŒ€ì‹œ ì¬ìƒë ¥
+    DashLength // ëŒ€ì‹œ ê±°ë¦¬
 }
