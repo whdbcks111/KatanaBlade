@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigid;
 
     private bool _dashCan;
+    private bool _parryCan;
 
     private int _stare;
 
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         PlayerJump();
+        StaminaGen();
     }
 
     private void FixedUpdate()
@@ -65,57 +67,69 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerParry()
     {
-        //원 콜라이더 생성
-        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
-        //플레이어와 마우스 사이 각도구하기
-        float parryDirection = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
-        //닿은게 몬스터, 투사체인지 확인
-        foreach (RaycastHit2D inst in hit)
+        if (_parryCan && Input.GetMouseButtonDown(0))
         {
-            if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
+            //원 콜라이더 생성
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
+            //플레이어와 마우스 사이 각도구하기
+            float parryDirection = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+            //닿은게 몬스터, 투사체인지 확인
+            foreach (RaycastHit2D inst in hit)
             {
-                //적이 해당 방향/범위 안에 있는지 확인
-                float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
-                //해당 각도에 오차범위 추가
-                //패링 성공
-                //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                if (Mathf.Abs(parryDirection - MonsterDirection) < 12)
+                if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
                 {
-                    //패링 성공 이후 공격
-                    t.Damage(player.Stat.Get(StatType.ParryingAttackForce));
-                    //패링 후 효과
-                    if (t is MeleeMonster)
+                    //적이 해당 방향/범위 안에 있는지 확인
+                    float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+                    //해당 각도에 오차범위 추가
+                    //패링 성공
+                    //몬스터가 공격중인지 판단해서 패링 성공인지 판단
+                    if (Mathf.Abs(parryDirection - MonsterDirection) < 12)
                     {
-                        //근거리의 경우 뒤로 밀림
+                        //패링 성공 이후 공격
+                        t.Damage(player.Stat.Get(StatType.ParryingAttackForce));
+                        //패링 후 효과
+                        if (t is MeleeMonster)
+                        {
+                            //근거리의 경우 뒤로 밀림
+                        }
+                        //원거리면 피드백X
+
                     }
-                    //원거리면 피드백X
+
+
 
                 }
 
-
-
             }
 
+            player.DashStamina -= player.Stat.Get(StatType.ParryingCost);
+            StartCoroutine(ParryCool());
         }
-
-        player.DashStamina -= player.Stat.Get(StatType.parry);
-        StartCoroutine(ParryCool());
     }
 
     IEnumerator ParryCool()
     {
+        _parryCan = false;
         yield return new WaitForSeconds(player.Stat.Get(StatType.ParryingTime));
+        _parryCan = true;
     }
 
     private void StaminaGen()
     {
-
+        if (player.DashStamina < player.MaxDashStamina)
+            player.DashStamina += Time.deltaTime * 3;
+        else
+            player.DashStamina = player.MaxDashStamina;
+        if (player.ParryingStamina < player.MaxParryingStamina)
+            player.ParryingStamina += Time.deltaTime * 3;
+        else
+            player.ParryingStamina = player.MaxParryingStamina;
     }
 
     private void PlayerDash()
     {
         //가능한 상황인지 확인
-        if (_dashCan)
+        if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift))
         {
             //레이캐스트 쏘기
             Debug.DrawRay(transform.position, new Vector3(_stare * player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
@@ -127,13 +141,15 @@ public class PlayerController : MonoBehaviour
             //아니면 이동
             else
                 transform.Translate(new Vector2(_stare * player.Stat.Get(StatType.DashLength), 0));
-            _dashCan = false;
+
+            player.DashStamina -= player.Stat.Get(StatType.DashCost);
             StartCoroutine(DashCool());
         }
     }
 
     IEnumerator DashCool()
     {
+        _dashCan = false;
         yield return new WaitForSeconds(player.Stat.Get(StatType.DashCooldown));
         _dashCan = true;
     }
