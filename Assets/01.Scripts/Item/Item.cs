@@ -7,12 +7,17 @@ public abstract class Item
 {
     public ItemType Type { get; protected set; }
     public string Name { get; protected set; }
+    public string Description { get; protected set; }
+    public Sprite Icon { get; protected set; }
+
     public int Count = 1;
 
-    public Item(ItemType type, string name, int count)
+    protected Item(ItemType type, string name, string description, Sprite icon, int count)
     {
         Type = type;
         Name = name;
+        Description = description;
+        Icon = icon;
         Count = count;
     }
 
