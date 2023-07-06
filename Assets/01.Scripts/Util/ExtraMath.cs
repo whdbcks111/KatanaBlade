@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class ExtraMath : MonoBehaviour
+public static class ExtraMath
 {
-    public float DirectionToAngle(Vector3 dir)
+    public static float DirectionToAngle(Vector3 dir)
     {
         return Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
     }
 
-    public Vector2 AngleToDirection(float angle)
+    public static Vector2 AngleToDirection(float angle)
     {
         return new(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
     }

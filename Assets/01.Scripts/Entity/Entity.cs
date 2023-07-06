@@ -7,9 +7,12 @@ using UnityEngine.PlayerLoop;
 public class Entity : MonoBehaviour
 {
     public readonly Stat Stat = new();
-    public float HP { get; private set; }
-    public float DashStamina { get; private set; }
-    public float ParryingStamina { get; private set; }
+
+    private float _hp, _dashStamina, _parryingStamina;
+
+    public float HP { get { return _hp; } set { _hp = Mathf.Clamp(value, 0f, MaxHP); } }
+    public float DashStamina { get { return _dashStamina; } set { _dashStamina = Mathf.Clamp(value, 0f, MaxDashStamina); } }
+    public float ParryingStamina { get { return _parryingStamina; } set { _parryingStamina = Mathf.Clamp(value, 0f, MaxParryingStamina); } }
     public float MaxHP { get { return Stat.Get(StatType.MaxHP); } }
     public float MaxDashStamina { get { return Stat.Get(StatType.MaxDashStamina); } }
     public float MaxParryingStamina { get { return Stat.Get(StatType.MaxParryingStamina); } }
@@ -34,16 +37,11 @@ public class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         Init();
-
-        Damage(30);
-        AddEffect(new EffectRegeneration(1, 10));
     }
 
     protected virtual void Update()
     {
         UpdateEffects();
-
-        print(HP);
     }
 
     public void AddEffect(StatusEffect eff)
@@ -87,12 +85,10 @@ public class Entity : MonoBehaviour
     {
         // HP 닳는 코드 구현
         HP -= damage;
-        if(HP < 0) HP = 0;
     }
 
     public virtual void Heal(float amount)
     {
         HP += amount;
-        if (HP > MaxHP) HP = MaxHP;
     }
 }

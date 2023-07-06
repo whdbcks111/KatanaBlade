@@ -6,23 +6,27 @@ using UnityEngine;
 public class EssenceOfRegenerate : Item
 {
     private float _lastUsed = -1;
-    private float _cooldown = 5f;
+    private static readonly float Cooldown = 5f;
 
-    public EssenceOfRegenerate(int count) 
-        : base(ItemType.Essence, "ì¬ìƒì˜ ì •ìˆ˜", count)
+    public EssenceOfRegenerate() 
+        : base(ItemType.Essence, "Àç»ıÀÇ Á¤¼ö", 
+            string.Format(
+                "»ç¿ë ½Ã : HP¸¦ <color=green>10</color> È¸º¹ÇÕ´Ï´Ù. <color=gray>(Àç»ç¿ë ´ë½Ã±â°£ : {0:0.0}ÃÊ)</color>\n" +
+                "±âº» Áö¼Ó È¿°ú : 1ÃÊ´ç HP¸¦ <color=green>2</color> È¸º¹ÇÕ´Ï´Ù.", Cooldown), 
+            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
     {
     }
 
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < _cooldown) return;
+        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
         _lastUsed = Time.realtimeSinceStartup;
 
-        //Player.Instance.Hp += 10;
+        Player.Instance.Heal(10);
     }
 
     public override void PassiveUpdate()
     {
-        //Player.Instance.Hp += Time.deltaTime * 2;
+        Player.Instance.Heal(Time.deltaTime * 2);
     }
 }

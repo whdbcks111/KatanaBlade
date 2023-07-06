@@ -7,13 +7,15 @@ public abstract class Item
 {
     public ItemType Type { get; protected set; }
     public string Name { get; protected set; }
-    public int Count = 1;
+    public string Description { get; protected set; }
+    public Sprite Icon { get; protected set; }
 
-    public Item(ItemType type, string name, int count)
+    protected Item(ItemType type, string name, string description, Sprite icon)
     {
         Type = type;
         Name = name;
-        Count = count;
+        Description = description;
+        Icon = icon;
     }
 
     public abstract void OnActiveUse();

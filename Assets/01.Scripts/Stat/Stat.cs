@@ -6,24 +6,31 @@ using UnityEngine;
 public class Stat
 {
     private readonly Dictionary<StatType, float> 
-        _defaultValues = new(), 
+        _defaultValues = new()
+        {
+            [StatType.MaxHP] = 100f,
+            [StatType.MaxParryingStamina] = 100f,
+            [StatType.MaxDashStamina] = 100f,
+            [StatType.ParryingTime] = 0.2f,
+            [StatType.ParryingStaminaRegen] = 10f,
+            [StatType.DashCooldown] = 2f,
+            [StatType.DashStaminaRegen] = 10f,
+            [StatType.JumpForce] = 9f,
+            [StatType.ParryingAttackForce] = 10f,
+            [StatType.MoveSpeed] = 5f,
+            [StatType.DashLength] = 4f,
+            [StatType.DashCost] = 30f,
+            [StatType.ParryingCost] = 30f,
+            [StatType.LowParryingFeedback] = 1f,
+            [StatType.MiddleParryingFeedback] = 2f,
+            [StatType.HighParryingFeedback] = 3f
+        }, 
         _addValues = new(), 
         _multiplyValues = new(), 
         _currentValues = new();
 
     public Stat()
     {
-        _defaultValues[StatType.MaxHP] = 100f;
-        _defaultValues[StatType.MaxParryingStamina] = 100f;
-        _defaultValues[StatType.MaxDashStamina] = 100f;
-        _defaultValues[StatType.ParryingTime] = 0.2f;
-        _defaultValues[StatType.ParryingStaminaRegen] = 10f;
-        _defaultValues[StatType.DashCooldown] = 2f;
-        _defaultValues[StatType.DashStaminaRegen] = 10f;
-        _defaultValues[StatType.JumpForce] = 9f;
-        _defaultValues[StatType.ParryingAttackForce] = 10f;
-        _defaultValues[StatType.MoveSpeed] = 5f;
-
         InitStats();
         UpdateStatValues();
     }
@@ -76,9 +83,15 @@ public enum StatType
     MaxParryingStamina, // 패링 게이지 최대치
     ParryingTime, // 패링 속도
     ParryingAttackForce, // 패링 공격력 
+    ParryingCost, // 패링 비용
     JumpForce, // 점프력
     MoveSpeed, // 이동 속도
     DashCooldown, // 대시 쿨타임
+    DashCost , // 대시 비용
     ParryingStaminaRegen, // 스태미나 재생력
-    DashStaminaRegen // 대시 재생력
+    DashStaminaRegen, // 대시 재생력
+    DashLength, // 대시 거리
+    LowParryingFeedback, // 패링 피드백 (약)
+    MiddleParryingFeedback, // 패링 피드백 (중)
+    HighParryingFeedback, // 패링 피드백 (강)
 }

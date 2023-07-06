@@ -4,63 +4,190 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private float _knockbackPlaceHolder;
 
+
+
+
+
+    private Player player;
     private Rigidbody2D _rigid;
+
+    private bool _dashCan;
+    private bool _parryCan;
+
+    private int _stare;
 
     private bool _isJump;
     public float _Jump;
     public float _MaxSpeed;
 
+    private Collider2D _collider2D;
+
+
+    [SerializeField] private float _parryRadius;
     private void Start()
     {
+        player = GetComponent<Player>();
         _rigid = GetComponent<Rigidbody2D>();
+        _collider2D = GetComponent<Collider2D>();
+        StartCoroutine(ParryCool());
+        StartCoroutine(DashCool());
     }
 
     private void Update()
     {
-        _PlayerJump();
+        IsAttached();
+        PlayerJump();
+        StaminaGen();
+        PlayerParry();
+        PlayerDash();
     }
 
     private void FixedUpdate()
     {
-        _PlayerMove();
-        
+        PlayerMove();
+
     }
 
-    // í”Œë ˆì´ì–´ ì›€ì§ì„ êµ¬í˜„
-    private void _PlayerMove()
+    // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ±¸Çö
+    private void PlayerMove()
     {
         float h = Input.GetAxisRaw("Horizontal");
 
-        _rigid.AddForce(Vector2.right * h, ForceMode2D.Impulse);
+        _rigid.AddForce(Vector2.right * h * player.Stat.Get(StatType.MoveSpeed), ForceMode2D.Impulse);
 
-        if (_rigid.velocity.x > _MaxSpeed)
+        if (_rigid.velocity.x != 0)
+            _stare = _rigid.velocity.x > 0 ? 1 : -1;
+
+        if (Mathf.Abs(_rigid.velocity.x) > _MaxSpeed)
         {
-            _rigid.velocity = new Vector2(_MaxSpeed, _rigid.velocity.y);
-        }
-        
-        else if (-_rigid.velocity.x > _MaxSpeed)
-        {
-            _rigid.velocity = new Vector2(-_MaxSpeed, _rigid.velocity.y);
+            _rigid.velocity = new Vector2(_MaxSpeed * _stare, _rigid.velocity.y);
         }
     }
 
-    // í”Œë ˆì´ì–´ ì í”„ êµ¬í˜„
-    private void _PlayerJump()
+    // ÇÃ·¹ÀÌ¾î Á¡ÇÁ ±¸Çö
+    private void PlayerJump()
     {
-        if (Input.GetButtonDown("Jump") && !_isJump)
+        /*if (Input.GetButtonDown("Jump") && !_isJump)
         {
             _isJump = true;
-            _rigid.velocity = new Vector2(_rigid.velocity.x, _Jump);
+            _rigid.velocity = new Vector2(_rigid.velocity.x, player.Stat.Get(StatType.JumpForce));
+        }*/
+        if (Input.GetButtonDown("Jump"))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x, _collider2D.bounds.min.y), Vector2.down, 0.1f);
+            if (hit.collider is not null)
+            {
+                _rigid.velocity = new Vector2(_rigid.velocity.x, player.Stat.Get(StatType.JumpForce));
+            }
         }
     }
 
-    // í”Œë ˆì´ì–´ê°€ ë°”ë‹¥ì—ì„œë§Œ ì í”„í•˜ë„ë¡ êµ¬í˜„
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void PlayerParry()
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (_parryCan && Input.GetMouseButtonDown(0))
         {
-            _isJump = false;
+            //¿ø Äİ¶óÀÌ´õ »ı¼º
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
+            //ÇÃ·¹ÀÌ¾î¿Í ¸¶¿ì½º »çÀÌ °¢µµ±¸ÇÏ±â
+            float parryDirection = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+            //´êÀº°Ô ¸ó½ºÅÍ, Åõ»çÃ¼ÀÎÁö È®ÀÎ
+            foreach (RaycastHit2D inst in hit)
+            {
+
+                if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
+                {
+                    print(inst.collider.gameObject);
+                    //ÀûÀÌ ÇØ´ç ¹æÇâ/¹üÀ§ ¾È¿¡ ÀÖ´ÂÁö È®ÀÎ
+                    float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+                    //ÇØ´ç °¢µµ¿¡ ¿ÀÂ÷¹üÀ§ Ãß°¡: ¾à 50µµÀÇ ¿ÀÂ÷ ¹üÀ§ Á¸Àç
+                    //ÆĞ¸µ ¼º°ø
+                    //¸ó½ºÅÍ°¡ °ø°İÁßÀÎÁö ÆÇ´ÜÇØ¼­ ÆĞ¸µ ¼º°øÀÎÁö ÆÇ´Ü
+                    if (Mathf.Abs(parryDirection - MonsterDirection) < 25)
+                    {
+                        //ÆĞ¸µ ¼º°ø ÀÌÈÄ °ø°İ
+                        t.Damage(player.Stat.Get(StatType.ParryingAttackForce));
+                        //ÆĞ¸µ ÈÄ È¿°ú
+                        //º¸½º¸¸ ÇÃ·¹ÀÌ¾î°¡ µÚ·Î ¹Ğ¸®´Â°É·Î
+                        /*if (t is MeleeMonster)
+                        {
+                            //¿À¸¥ÂÊÀÏ °æ¿ì ~90µµ, 270~
+                            //¿ŞÂÊÀÏ °æ¿ì 90< ÀûÁ¤¹üÀ§ <270
+                            _rigid.velocity = new Vector2(_knockbackPlaceHolder * , 0);
+                        }*/
+
+                    }
+
+
+
+                }
+
+            }
+
+            player.DashStamina -= player.Stat.Get(StatType.ParryingCost);
+            StartCoroutine(ParryCool());
         }
+    }
+
+    IEnumerator ParryCool()
+    {
+        _parryCan = false;
+        yield return new WaitForSeconds(player.Stat.Get(StatType.ParryingTime));
+        _parryCan = true;
+    }
+
+    private void StaminaGen()
+    {
+        if (player.DashStamina < player.MaxDashStamina)
+            player.DashStamina += Time.deltaTime * 3;
+        else
+            player.DashStamina = player.MaxDashStamina;
+        if (player.ParryingStamina < player.MaxParryingStamina)
+            player.ParryingStamina += Time.deltaTime * 3;
+        else
+            player.ParryingStamina = player.MaxParryingStamina;
+    }
+
+    private void PlayerDash()
+    {
+        //°¡´ÉÇÑ »óÈ²ÀÎÁö È®ÀÎ
+        if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            //·¹ÀÌÄ³½ºÆ® ½î±â
+            Debug.DrawRay(transform.position, new Vector3(_stare * player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
+            //·¹ÀÌ¾î ¸¶½ºÅ©´Â ÃßÈÄ¿¡ À¯´ÏÆ¼ ¿£Áø¿¡¼­ Ãß°¡ÇÏ°í ÄÚµå¿¡µµ Ãß°¡
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), player.Stat.Get(StatType.DashLength), LayerMask.GetMask("DashStop"));
+            //·¹ÀÌÄ³½ºÆ® ´êÀ¸¸é
+            if (hit.collider != null)
+                transform.position = new Vector2(hit.transform.position.x + -_stare * .6f, transform.position.y);
+            //¾Æ´Ï¸é ÀÌµ¿
+            else
+                transform.Translate(new Vector2(_stare * player.Stat.Get(StatType.DashLength), 0));
+
+            player.DashStamina -= player.Stat.Get(StatType.DashCost);
+            StartCoroutine(DashCool());
+        }
+    }
+
+    IEnumerator DashCool()
+    {
+        //´ë½¬ Á÷ÈÄ Àá½Ã ¸ØÃß°Ô
+        _rigid.velocity = Vector2.zero;
+
+        _dashCan = false;
+        yield return new WaitForSeconds(player.Stat.Get(StatType.DashCooldown));
+        _dashCan = true;
+    }
+
+    private void IsAttached()
+    {
+        Vector3 floorSpot = transform.position + new Vector3(0, -1.1f, 0);
+        Debug.DrawRay(floorSpot, new Vector2(0, -.1f), Color.green, 0.1f);
+        RaycastHit2D hit = Physics2D.Raycast(floorSpot, Vector2.down, -0.2f);
+        if (hit.collider != null)
+            _isJump = false;
+        else
+            _isJump = true;
     }
 }

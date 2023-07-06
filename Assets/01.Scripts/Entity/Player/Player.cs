@@ -6,6 +6,8 @@ public class Player : Entity
 {
     public static Player Instance { get; private set; }
 
+    public readonly Inventory Inventory = new();
+
     protected override void Awake()
     {
         base.Awake();
