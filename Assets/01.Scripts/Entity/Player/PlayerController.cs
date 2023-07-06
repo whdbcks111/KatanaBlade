@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private float _knockbackPlaceHolder;
+
+
+
+
 
     private Player player;
     private Rigidbody2D _rigid;
@@ -23,12 +28,16 @@ public class PlayerController : MonoBehaviour
     {
         player = GetComponent<Player>();
         _rigid = GetComponent<Rigidbody2D>();
+        StartCoroutine(ParryCool());
+        StartCoroutine(DashCool());
     }
 
     private void Update()
     {
         PlayerJump();
         StaminaGen();
+        PlayerParry();
+        PlayerDash();
     }
 
     private void FixedUpdate()
@@ -44,14 +53,12 @@ public class PlayerController : MonoBehaviour
 
         _rigid.AddForce(Vector2.right * h * player.Stat.Get(StatType.MoveSpeed), ForceMode2D.Impulse);
 
-        if (_rigid.velocity.x > _MaxSpeed)
-        {
-            _rigid.velocity = new Vector2(_MaxSpeed, _rigid.velocity.y);
-        }
+        if (_rigid.velocity.x != 0)
+            _stare = _rigid.velocity.x > 0 ? 1 : -1;
 
-        else if (-_rigid.velocity.x > _MaxSpeed)
+        if (Mathf.Abs(_rigid.velocity.x) > _MaxSpeed)
         {
-            _rigid.velocity = new Vector2(-_MaxSpeed, _rigid.velocity.y);
+            _rigid.velocity = new Vector2(_MaxSpeed * _stare, _rigid.velocity.y);
         }
     }
 
@@ -61,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !_isJump)
         {
             _isJump = true;
-            _rigid.velocity = new Vector2(_rigid.velocity.x, _Jump);
+            _rigid.velocity = new Vector2(_rigid.velocity.x, player.Stat.Get(StatType.JumpForce));
         }
     }
 
@@ -76,23 +83,27 @@ public class PlayerController : MonoBehaviour
             //닿은게 몬스터, 투사체인지 확인
             foreach (RaycastHit2D inst in hit)
             {
+
                 if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
                 {
+                    print(inst.collider.gameObject);
                     //적이 해당 방향/범위 안에 있는지 확인
                     float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
-                    //해당 각도에 오차범위 추가
+                    //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
                     //패링 성공
                     //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                    if (Mathf.Abs(parryDirection - MonsterDirection) < 12)
+                    if (Mathf.Abs(parryDirection - MonsterDirection) < 25)
                     {
                         //패링 성공 이후 공격
                         t.Damage(player.Stat.Get(StatType.ParryingAttackForce));
                         //패링 후 효과
-                        if (t is MeleeMonster)
+                        //보스만 플레이어가 뒤로 밀리는걸로
+                        /*if (t is MeleeMonster)
                         {
-                            //근거리의 경우 뒤로 밀림
-                        }
-                        //원거리면 피드백X
+                            //오른쪽일 경우 ~90도, 270~
+                            //왼쪽일 경우 90< 적정범위 <270
+                            _rigid.velocity = new Vector2(_knockbackPlaceHolder * , 0);
+                        }*/
 
                     }
 
@@ -134,10 +145,10 @@ public class PlayerController : MonoBehaviour
             //레이캐스트 쏘기
             Debug.DrawRay(transform.position, new Vector3(_stare * player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
             //레이어 마스크는 추후에 유니티 엔진에서 추가하고 코드에도 추가
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), player.Stat.Get(StatType.DashLength));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), player.Stat.Get(StatType.DashLength), LayerMask.GetMask("DashStop"));
             //레이캐스트 닿으면
             if (hit.collider != null)
-                transform.position = new Vector2(hit.transform.position.x, transform.position.y);
+                transform.position = new Vector2(hit.transform.position.x + -_stare * .6f, transform.position.y);
             //아니면 이동
             else
                 transform.Translate(new Vector2(_stare * player.Stat.Get(StatType.DashLength), 0));
