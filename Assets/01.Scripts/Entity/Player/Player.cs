@@ -6,13 +6,19 @@ public class Player : Entity
 {
     public static Player Instance { get; private set; }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
     }
 
     private void OnDestroy()
     {
         Instance = null;
+    }
+
+    public void AddItem(Item item)
+    {
+        // 구현 필요
     }
 }

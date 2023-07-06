@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ public class MeleeMonster : Entity
   
     }
 
-    // ¸ó½ºÅÍ ¿òÁ÷ÀÓ ±¸Çö
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void MonsterMove()
     {
         transform.position += new Vector3(_nextMove, _rigid.velocity.y) * Time.fixedDeltaTime;
@@ -54,7 +55,7 @@ public class MeleeMonster : Entity
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
     }
 
-    // ¸ó½ºÅÍ°¡ ·£´ýÀ¸·Î ¿òÁ÷ÀÏ ¼ö ÀÖ´Â ¹üÀ§ ÁöÁ¤
+    // ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     private void Think()
     {
         _nextMove = Random.Range(-2, 3);
@@ -62,7 +63,7 @@ public class MeleeMonster : Entity
 
 
 
-    // ¹üÀ§ ³»¿¡ µé¾î¿À¸é °ø°Ý 
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
     private void OnTriggerStay2D(Collider2D other)
     {
         if(other.TryGetComponent(out Player p))
@@ -87,13 +88,3 @@ public class MeleeMonster : Entity
         _isAttacking = false;
     }
 }
-
-
-
-
-
-
-
-
-
-
