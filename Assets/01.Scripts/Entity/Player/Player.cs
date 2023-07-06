@@ -6,6 +6,8 @@ public class Player : Entity
 {
     public static Player Instance { get; private set; }
 
+    public readonly Inventory Inventory = new();
+
     protected override void Awake()
     {
         base.Awake();
@@ -15,10 +17,5 @@ public class Player : Entity
     private void OnDestroy()
     {
         Instance = null;
-    }
-
-    public void AddItem(Item item)
-    {
-        // 구현 필요
     }
 }
