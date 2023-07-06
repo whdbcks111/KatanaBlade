@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ±¸Çö
+    // í”Œë ˆì´ì–´ ì›€ì§ì„ êµ¬í˜„
     private void _PlayerMove()
     {
         float h = Input.GetAxisRaw("Horizontal");
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î Á¡ÇÁ ±¸Çö
+    // í”Œë ˆì´ì–´ ì í”„ êµ¬í˜„
     private void _PlayerJump()
     {
         if (Input.GetButtonDown("Jump") && !_isJump)
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ ¹Ù´Ú¿¡¼­¸¸ Á¡ÇÁÇÏµµ·Ï ±¸Çö
+    // í”Œë ˆì´ì–´ê°€ ë°”ë‹¥ì—ì„œë§Œ ì í”„í•˜ë„ë¡ êµ¬í˜„
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor"))

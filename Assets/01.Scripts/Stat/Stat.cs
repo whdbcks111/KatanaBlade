@@ -71,14 +71,14 @@ public class Stat
 
 public enum StatType
 {
-    MaxHP, // ÃÖ´ë HP
-    MaxDashStamina, // ´ë½Ã °ÔÀÌÁö ÃÖ´ëÄ¡
-    MaxParryingStamina, // ÆĞ¸µ °ÔÀÌÁö ÃÖ´ëÄ¡
-    ParryingTime, // ÆĞ¸µ ¼Óµµ
-    ParryingAttackForce, // ÆĞ¸µ °ø°İ·Â 
-    JumpForce, // Á¡ÇÁ·Â
-    MoveSpeed, // ÀÌµ¿ ¼Óµµ
-    DashCooldown, // ´ë½Ã ÄğÅ¸ÀÓ
-    ParryingStaminaRegen, // ½ºÅÂ¹Ì³ª Àç»ı·Â
-    DashStaminaRegen // ´ë½Ã Àç»ı·Â
+    MaxHP, // ìµœëŒ€ HP
+    MaxDashStamina, // ëŒ€ì‹œ ê²Œì´ì§€ ìµœëŒ€ì¹˜
+    MaxParryingStamina, // íŒ¨ë§ ê²Œì´ì§€ ìµœëŒ€ì¹˜
+    ParryingTime, // íŒ¨ë§ ì†ë„
+    ParryingAttackForce, // íŒ¨ë§ ê³µê²©ë ¥ 
+    JumpForce, // ì í”„ë ¥
+    MoveSpeed, // ì´ë™ ì†ë„
+    DashCooldown, // ëŒ€ì‹œ ì¿¨íƒ€ì„
+    ParryingStaminaRegen, // ìŠ¤íƒœë¯¸ë‚˜ ì¬ìƒë ¥
+    DashStaminaRegen // ëŒ€ì‹œ ì¬ìƒë ¥
 }

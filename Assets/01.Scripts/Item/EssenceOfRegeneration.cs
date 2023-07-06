@@ -9,7 +9,7 @@ public class EssenceOfRegenerate : Item
     private float _cooldown = 5f;
 
     public EssenceOfRegenerate(int count) 
-        : base(ItemType.Essence, "Àç»ıÀÇ Á¤¼ö", count)
+        : base(ItemType.Essence, "ì¬ìƒì˜ ì •ìˆ˜", count)
     {
     }
 

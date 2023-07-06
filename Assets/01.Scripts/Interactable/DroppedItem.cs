@@ -6,6 +6,6 @@ public class DroppedItem : Interactable
 {
     public override void OnInteract(Player player)
     {
-        // ¾ÆÀÌÅÛ È¹µæ ÄÚµå ±¸Çö
+        // ì•„ì´í…œ íšë“ ì½”ë“œ êµ¬í˜„
     }
 }

@@ -1,0 +1,29 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@{
+    var mediaList = Umbraco.TypedMedia(Model.MacroParameters["media"].ToString().Split(','));
+    int counter = 0;
+}
+
+<div id="gallery-banner" class="macro-gallery carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        @foreach (var media in mediaList)
+        {
+
+            <div class="item @(counter==0? "active":"")">
+                <img alt="" src="@media.GetCropUrl("100", "100")" />
+                <span class="caption">@media.GetPropertyValue("caption")</span>
+            </div>
+
+            counter++;
+        }
+    </div>
+    <div class="controls">
+        @if (mediaList.Count() > 1)
+        {
+            <a class="prev" href="#gallery-banner" data-slide="prev"></a>
+            <span class="counter"><span>1</span> of @mediaList.Count()</span>
+            <a class="next" href="#gallery-banner" data-slide="next"></a>
+        }
+    </div>
+
+</div>
