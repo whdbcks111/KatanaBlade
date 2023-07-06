@@ -26,6 +26,9 @@ public class Stat
         _defaultValues[StatType.DashLength] = 4f;
         _defaultValues[StatType.DashCost] = 30f;
         _defaultValues[StatType.ParryingCost] = 30f;
+        _defaultValues[StatType.LowParryingFeedback] = 1f;
+        _defaultValues[StatType.MiddleParryingFeedback] = 2f;
+        _defaultValues[StatType.HighParryingFeedback] = 3f;
 
         InitStats();
         UpdateStatValues();
@@ -86,5 +89,8 @@ public enum StatType
     DashCost , // 대시 비용
     ParryingStaminaRegen, // 스태미나 재생력
     DashStaminaRegen, // 대시 재생력
-    DashLength // 대시 거리
+    DashLength, // 대시 거리
+    LowParryingFeedback, // 패링 피드백 (약)
+    MiddleParryingFeedback, // 패링 피드백 (중)
+    HighParryingFeedback, // 패링 피드백 (강)
 }
