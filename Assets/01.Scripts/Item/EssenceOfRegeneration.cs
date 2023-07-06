@@ -9,7 +9,10 @@ public class EssenceOfRegenerate : Item
     private float _cooldown = 5f;
 
     public EssenceOfRegenerate(int count) 
-        : base(ItemType.Essence, "재생의 정수", count)
+        : base(ItemType.Essence, "재생의 정수", 
+            "사용 시 : HP를 10 회복합니다. (재사용 대시기간 : 5초)\n" +
+            "기본 지속 효과 : 1초당 HP를 2 회복합니다.", 
+            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"), count)
     {
     }
 
@@ -18,11 +21,11 @@ public class EssenceOfRegenerate : Item
         if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < _cooldown) return;
         _lastUsed = Time.realtimeSinceStartup;
 
-        //Player.Instance.Hp += 10;
+        Player.Instance.Heal(10);
     }
 
     public override void PassiveUpdate()
     {
-        //Player.Instance.Hp += Time.deltaTime * 2;
+        Player.Instance.Heal(Time.deltaTime * 2);
     }
 }
