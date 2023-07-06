@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public GameObject GameoverUI; // 게임 오버시 활성화 할 UI 게임 오브젝트
     public float LimitTime;
     public TextMeshProUGUI TimerText;
+    public GameObject InventoryUI;
+    public Canvas Canvas;
 
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
@@ -48,6 +50,24 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartTimer());
     }
 
+    public EquipPopup CreateEquipPopup()
+    {
+        var position = Input.mousePosition;
+        var popup = Instantiate(Resources.Load<EquipPopup>("UI/EquipPopup"), Canvas.transform);
+        popup.transform.position = position;
+
+        return popup;
+    }
+
+    public UnequipPopup CreateUnequipPopup()
+    {
+        var position = Input.mousePosition;
+        var popup = Instantiate(Resources.Load<UnequipPopup>("UI/UnequipPopup"), Canvas.transform);
+        popup.transform.position = position;
+
+        return popup;
+    }
+
     private IEnumerator StartTimer()
     {
         _timer = 0;
@@ -66,6 +86,12 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        // 인벤토리 키다운 토글
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            print("토글");
+            InventoryUI.SetActive(!InventoryUI.activeSelf);
+        }
         
     }
     // 플레이어 캐릭터가 사망시 게임 오버를 실행하는 메서드
@@ -74,6 +100,7 @@ public class GameManager : MonoBehaviour
         IsGameover = true;
         GameoverUI.SetActive(true);
     }
+
 
 
 

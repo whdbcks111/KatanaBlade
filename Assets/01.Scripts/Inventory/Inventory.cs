@@ -16,21 +16,24 @@ public class Inventory : MonoBehaviour
     {
         for(var i = 0; i < _contents.Length; i++)
         {
-            if (_contents[i] is null) continue;
-            if (_contents[i].GetType() == item.GetType())
-            {
-                _contents[i].Count += item.Count;
-                return true;
-            }
-            else if (_contents[i] is null)
+            if (_contents[i] is null)
             {
                 _contents[i] = item;
+                return true;
+            }
+            else if (_contents[i].GetType() == item.GetType())
+            {
+                _contents[i].Count += item.Count;
                 return true;
             }
         }
         return false;
     }
 
+    public Item GetItem(int idx)
+    {
+        return _contents[idx];
+    }
     public void RemoveItem(int index, int count)
     {
         if (_contents[index] is null) return;
@@ -60,8 +63,14 @@ public class Inventory : MonoBehaviour
 
     public void UnmountAccessory()
     {
-
         AddItem(MountedAccessory);
+        MountedAccessory = null;
+    }
+
+    public void UnmountEssence()
+    {
+        AddItem(MountedEssence);
+        MountedEssence = null;
     }
 
     public void MountItem(int index)

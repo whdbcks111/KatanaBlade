@@ -12,6 +12,8 @@ public class Player : Entity
     {
         base.Awake();
         Instance = this;
+
+        Inventory.AddItem(new EssenceOfRegenerate(3));
     }
 
     private void OnDestroy()
