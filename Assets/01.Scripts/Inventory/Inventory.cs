@@ -19,8 +19,7 @@ public class Inventory : MonoBehaviour
             if (_contents[i] is null) continue;
             if (_contents[i].GetType() == item.GetType())
             {
-                _contents[i].Count += item.Count;
-                return true;
+                return false;
             }
             else if (_contents[i] is null)
             {
@@ -31,23 +30,18 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void RemoveItem(int index, int count)
+    public void RemoveItem(int index)
     {
-        if (_contents[index] is null) return;
-
-        if ((_contents[index].Count -= count) <= 0)
-        {
-            _contents[index] = null;
-        }
+        _contents[index] = null;
     }
 
-    public void RemoveItem<T>(int count) where T : Item
+    public void RemoveItem<T>() where T : Item
     {
         for (var i = 0; i < _contents.Length; i++)
         {
             if (_contents[i] is T)
             {
-                RemoveItem(i, count);
+                RemoveItem(i);
                 return;
             }
         }
