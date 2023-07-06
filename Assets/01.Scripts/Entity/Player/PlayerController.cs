@@ -22,18 +22,22 @@ public class PlayerController : MonoBehaviour
     public float _Jump;
     public float _MaxSpeed;
 
+    private Collider2D _collider2D;
+
 
     [SerializeField] private float _parryRadius;
     private void Start()
     {
         player = GetComponent<Player>();
         _rigid = GetComponent<Rigidbody2D>();
+        _collider2D = GetComponent<Collider2D>();
         StartCoroutine(ParryCool());
         StartCoroutine(DashCool());
     }
 
     private void Update()
     {
+        IsAttached();
         PlayerJump();
         StaminaGen();
         PlayerParry();
@@ -65,10 +69,18 @@ public class PlayerController : MonoBehaviour
     // 플레이어 점프 구현
     private void PlayerJump()
     {
-        if (Input.GetButtonDown("Jump") && !_isJump)
+        /*if (Input.GetButtonDown("Jump") && !_isJump)
         {
             _isJump = true;
             _rigid.velocity = new Vector2(_rigid.velocity.x, player.Stat.Get(StatType.JumpForce));
+        }*/
+        if (Input.GetButtonDown("Jump"))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x, _collider2D.bounds.min.y), Vector2.down, 0.1f);
+            if (hit.collider is not null)
+            {
+                _rigid.velocity = new Vector2(_rigid.velocity.x, player.Stat.Get(StatType.JumpForce));
+            }
         }
     }
 
@@ -160,17 +172,22 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DashCool()
     {
+        //대쉬 직후 잠시 멈추게
+        _rigid.velocity = Vector2.zero;
+
         _dashCan = false;
         yield return new WaitForSeconds(player.Stat.Get(StatType.DashCooldown));
         _dashCan = true;
     }
 
-    // 플레이어가 바닥에서만 점프하도록 구현
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void IsAttached()
     {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
+        Vector3 floorSpot = transform.position + new Vector3(0, -1.1f, 0);
+        Debug.DrawRay(floorSpot, new Vector2(0, -.1f), Color.green, 0.1f);
+        RaycastHit2D hit = Physics2D.Raycast(floorSpot, Vector2.down, -0.2f);
+        if (hit.collider != null)
             _isJump = false;
-        }
+        else
+            _isJump = true;
     }
 }
