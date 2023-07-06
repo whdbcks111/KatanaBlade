@@ -42,8 +42,6 @@ public class Entity : MonoBehaviour
     protected virtual void Update()
     {
         UpdateEffects();
-
-        print(HP);
     }
 
     public void AddEffect(StatusEffect eff)
