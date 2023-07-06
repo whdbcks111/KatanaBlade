@@ -10,15 +10,12 @@ public abstract class Item
     public string Description { get; protected set; }
     public Sprite Icon { get; protected set; }
 
-    public int Count = 1;
-
-    protected Item(ItemType type, string name, string description, Sprite icon, int count)
+    protected Item(ItemType type, string name, string description, Sprite icon)
     {
         Type = type;
         Name = name;
         Description = description;
         Icon = icon;
-        Count = count;
     }
 
     public abstract void OnActiveUse();
