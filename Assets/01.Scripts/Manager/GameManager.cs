@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("씬에 두개 이상의 게임 매니저가 존재합니다!");
             Destroy(gameObject);
         }
+
+        Screen.SetResolution(1920, 1080, true);
     }
 
     //시간 증가시키는 메서드 
