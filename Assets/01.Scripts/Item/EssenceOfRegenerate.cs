@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class EssenceOfRegenerate : Item
 {
-    private float _lastUsed = -1;
-    private float _cooldown = 5f;
-
-    public EssenceOfRegenerate(int count) 
-        : base(ItemType.Essence, "재생의 정수", count)
+    public EssenceOfRegenerate()
+        : base(ItemType.Essence, "재생의 정수")
     {
+    }
+
+    public override void OnAcceptItem()
+    {
+        Debug.Log("재생의 정수 획득");
     }
 
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < _cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
-
+        Debug.Log("재생의 정수 사용");
         //Player.Instance.Hp += 10;
     }
 
