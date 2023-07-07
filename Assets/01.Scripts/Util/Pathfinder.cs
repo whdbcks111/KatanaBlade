@@ -9,8 +9,8 @@ using static UnityEngine.GraphicsBuffer;
 public static class Pathfinder
 {
     public static readonly Vector3Int[] Directions = { 
-        new(0, 1, 10), new(0, -1, 10), new(1, 0, 10), new(-1, 0, 10),
-        new(1, 1, 14), new(-1, 1, 14), new(1, -1, 14), new(-1, -1, 14)
+        new(0, 1, 10), new(0, -1, 10), new(1, 0, 10), new(-1, 0, 10)/*,
+        new(1, 1, 14), new(-1, 1, 14), new(1, -1, 14), new(-1, -1, 14)*/
     };
 
     public static int GetH(Vector2Int cur, Vector2Int target)
@@ -39,7 +39,7 @@ public static class Pathfinder
         for (int i = 0; i < 2; i++)
         {
             paths.TryPop(out Path p);
-            next = p.Pos;
+            next = p.Pos + Vector2.one / 2f;
         }
 
         if ((next - target).sqrMagnitude < 1) next = target;
