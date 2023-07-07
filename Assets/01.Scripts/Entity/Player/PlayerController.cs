@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private Animator _animator;
     private Player _player;
     private Rigidbody2D _rigid;
     private int _platformLayer;
@@ -17,10 +18,13 @@ public class PlayerController : MonoBehaviour
 
     private Collider2D _collider2D;
 
+    public bool IsOnGround { get; private set; }
+
 
     [SerializeField] private float _parryRadius;
     private void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         _player = GetComponent<Player>();
         _rigid = GetComponent<Rigidbody2D>();
         _collider2D = GetComponent<Collider2D>();
@@ -36,6 +40,8 @@ public class PlayerController : MonoBehaviour
         PlayerParry();
         PlayerDash();
         PlayerMove();
+
+        FallingAnim();
     }
 
     // 플레이어 움직임 구현
@@ -43,17 +49,30 @@ public class PlayerController : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
 
+
         _player.MovingVelocity = h * _player.Stat.Get(StatType.MoveSpeed);
 
         if (Mathf.Abs(h) > Mathf.Epsilon)
+        {
             _stare = h > 0 ? 1 : -1;
+            _animator.SetBool("Running", true);
+        }
+        else
+            _animator.SetBool("Running", false);
+
+        print(GetComponentInChildren<SpriteRenderer>());
+        if (_stare < 0)
+            GetComponentInChildren<SpriteRenderer>().flipX = true;
+        else
+            GetComponentInChildren<SpriteRenderer>().flipX = false;
     }
- 
+
     // 플레이어 점프 구현
     private void PlayerJump()
     {
         if (Input.GetButton("Jump") && _canJump)
         {
+            _animator.SetBool("Jump", true);
             _canJump = false;
             _rigid.velocity = new Vector2(_rigid.velocity.x, _player.Stat.Get(StatType.JumpForce));
         }
@@ -61,26 +80,38 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        bool isOnGround = false;
-        for(int i = 0; i < collision.contactCount; i++)
+        for (int i = 0; i < collision.contactCount; i++)
         {
-            if(_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y)
+            if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y)
             {
-                isOnGround = true;
+                IsOnGround = true;
                 break;
             }
         }
-        if ((collision.gameObject.layer & _platformLayer) != 0 && isOnGround)
+        if ((collision.gameObject.layer & _platformLayer) != 0 && IsOnGround)
         {
             _canJump = true;
+            _animator.SetBool("Falling", false);
+            _animator.SetBool("Jump", false);
         }
 
+    }
+    private void FallingAnim()
+    {
+        if (_rigid.velocity.y < -1.0f)
+        {
+            _animator.SetBool("Falling", true);
+            _animator.SetBool("Jump", false);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if ((collision.gameObject.layer & _platformLayer) != 0)
+        {
+            IsOnGround = false;
             _canJump = false;
+        }
     }
 
     private void PlayerParry()
@@ -105,9 +136,21 @@ public class PlayerController : MonoBehaviour
                     //몬스터가 공격중인지 판단해서 패링 성공인지 판단
                     if (Mathf.Abs(parryDirection - MonsterDirection) < 25)
                     {
+                        //몬스터가 공격중인지 판단해서 패링 성공인지 판단
+                        if (t.TryGetComponent(out MeleeMonster m)/*&&m._isattac*/)
+                        {
+                            //패링 성공 이후 공격
+                            t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                            //패링 후 효과
+
+                        }
+
+
                         //패링 성공 이후 공격
-                        t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
-                        //패링 후 효과
+                        //t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+
+
+
                         //보스만 플레이어가 뒤로 밀리는걸로
                         /*if (t is MeleeMonster)
                         {
