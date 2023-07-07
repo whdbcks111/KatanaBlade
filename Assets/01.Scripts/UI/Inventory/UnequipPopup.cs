@@ -11,7 +11,7 @@ public class UnequipPopup : MonoBehaviour
 
     public void Clear()
     {
-        Destroy(gameObject);
+        GameManager.instance.ClosePopup();
     }
 
     public void UnEquip()

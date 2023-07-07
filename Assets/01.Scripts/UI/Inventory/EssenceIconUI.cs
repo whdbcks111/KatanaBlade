@@ -3,37 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AccessoryIconUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
+public class EssenceIconUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
     private bool showInfo;
     private Coroutine showInfoCor;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.button == PointerEventData.InputButton.Right)
+        if(eventData.button == PointerEventData.InputButton.Right &&
+            Player.Instance.Inventory.MountedEssence is not null)
         {
             var popup = GameManager.instance.CreateUnequipPopup();
             popup.UnEquipAction = () =>
             {
-                Player.Instance.Inventory.UnmountAccessory();
+                Player.Instance.Inventory.UnmountEssence();
                 popup.Clear();
             };
         }
     }
-
     private void Update()
     {
         print(showInfo);
         if (showInfo)
         {
-            var item = Player.Instance.Inventory.MountedAccessory;
-            GameManager.instance.ShowItemPopup(this, item.Icon, item.Name, item.Description);
+            var item = Player.Instance.Inventory.MountedEssence;
+            if (item is not null)
+                GameManager.instance.ShowItemPopup(this, item.Icon, item.Name, item.Description);
         }
         else
         {
             GameManager.instance.HideItemPopup(this);
         }
     }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (showInfoCor == null)
@@ -44,15 +46,15 @@ public class AccessoryIconUI : MonoBehaviour, IPointerClickHandler, IPointerExit
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (showInfoCor is not null) StopCoroutine(showInfoCor);
-        showInfoCor = null;
-        showInfo = false;
+            if(showInfoCor is not null) StopCoroutine(showInfoCor);
+            showInfoCor = null;
+            showInfo = false;
     }
 
     private IEnumerator Timer(float time)
     {
-        showInfo = false;
-        yield return new WaitForSeconds(time);
-        showInfo = true;
+            showInfo = false;
+            yield return new WaitForSeconds(time);
+            showInfo = true;
     }
 }

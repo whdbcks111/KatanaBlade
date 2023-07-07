@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
 
     private MonoBehaviour _currentShowingUI;
+    private GameObject _openedPopup;
 
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
@@ -48,15 +49,26 @@ public class GameManager : MonoBehaviour
         }
 
         Screen.SetResolution(1920, 1080, true);
+        //SceneManager.sceneLoaded += OnSceneLoadedEvent;
     }
 
-   
+    private void OnSceneLoadedEvent(Scene scene, LoadSceneMode mode)
+    {
+        //if(scene.name == "메인 씬 Timer")
+        //{
+        //    ///
+        //}
+    }
+
+
 
     //시간 증가시키는 메서드 
     void Start()
     {
-        TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-        StartCoroutine(StartTimer());
+        //TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
+        //StartCoroutine(StartTimer());
+
+        ItemPopup.SetActive(false);
     }
 
     public void ShowItemPopup(MonoBehaviour ui, Sprite icon, string name, string desc)
@@ -75,18 +87,28 @@ public class GameManager : MonoBehaviour
 
     public EquipPopup CreateEquipPopup()
     {
+        if (_openedPopup != null) Destroy(_openedPopup);
         var position = Input.mousePosition;
         var popup = Instantiate(Resources.Load<EquipPopup>("UI/EquipPopup"), Canvas.transform);
         popup.transform.position = position;
+        _openedPopup = popup.gameObject;
 
         return popup;
     }
 
+    public void ClosePopup()
+    {
+        Destroy(_openedPopup);
+        _openedPopup = null;
+    }
+
     public UnequipPopup CreateUnequipPopup()
     {
+        if (_openedPopup != null) Destroy(_openedPopup);
         var position = Input.mousePosition;
         var popup = Instantiate(Resources.Load<UnequipPopup>("UI/UnequipPopup"), Canvas.transform);
         popup.transform.position = position;
+        _openedPopup = popup.gameObject;
 
         return popup;
     }

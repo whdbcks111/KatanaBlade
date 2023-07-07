@@ -12,7 +12,7 @@ public class EquipPopup : MonoBehaviour
 
     public void Clear()
     {
-        Destroy(gameObject);
+        GameManager.instance.ClosePopup();
     }
 
     public void Equip()

@@ -14,7 +14,8 @@ public class ItemIconUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandl
         if(eventData.button == PointerEventData.InputButton.Right)
         {
             var popup = GameManager.instance.CreateEquipPopup();
-            if(Player.Instance.Inventory.MountedEssence == null)
+            var item = Player.Instance.Inventory.GetItem(ItemIndex);
+            if (item is not null)
             {
                 popup.EquipAction = () =>
                 {
@@ -31,7 +32,8 @@ public class ItemIconUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandl
         if (showInfo)
         {
             var item = Player.Instance.Inventory.GetItem(ItemIndex);
-            GameManager.instance.ShowItemPopup(this, item.Icon, item.Name, item.Description);
+            if(item is not null)
+                GameManager.instance.ShowItemPopup(this, item.Icon, item.Name, item.Description);
         }
         else
         {

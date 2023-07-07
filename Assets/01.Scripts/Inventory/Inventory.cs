@@ -10,7 +10,7 @@ public class Inventory
 
     public bool AddItem(Item item)
     {
-        for(var i = 0; i < _contents.Length; i++)
+        for (var i = 0; i < _contents.Length; i++)
         {
             if (_contents[i] is null)
             {
@@ -19,8 +19,7 @@ public class Inventory
             }
             else if (_contents[i].GetType() == item.GetType())
             {
-                _contents[i].Count += item.Count;
-                return true;
+                return false;
             }
         }
         return false;
@@ -33,18 +32,6 @@ public class Inventory
     public void RemoveItem(int index, int count)
     {
         _contents[index] = null;
-    }
-
-    public void RemoveItem<T>() where T : Item
-    {
-        for (var i = 0; i < _contents.Length; i++)
-        {
-            if (_contents[i] is T)
-            {
-                RemoveItem(i);
-                return;
-            }
-        }
     }
 
     public void SwapSlot(int index1, int index2)
@@ -72,9 +59,11 @@ public class Inventory
         switch(item.Type)
         {
             case ItemType.Accessory:
+                if (MountedAccessory is not null) AddItem(MountedAccessory);
                 MountedAccessory = item;
                 break;
             case ItemType.Essence:
+                if (MountedEssence is not null) AddItem(MountedEssence);
                 MountedEssence = item;
                 break;
         }
