@@ -6,6 +6,6 @@ public class ShopNPC : Interactable
 {
     public override void OnInteract(Player player)
     {
-        // »óÁ¡ ÁÖÀÎ »óÈ£ÀÛ¿ë ±¸Çö
+        // ìƒì  ì£¼ì¸ ìƒí˜¸ì‘ìš© êµ¬í˜„
     }
 }

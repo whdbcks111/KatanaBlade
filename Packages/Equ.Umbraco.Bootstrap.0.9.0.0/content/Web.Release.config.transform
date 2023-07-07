@@ -1,0 +1,16 @@
+<!-- For more information on using Web.config transformation visit http://go.microsoft.com/fwlink/?LinkId=125889 -->
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<appSettings>
+		<add key="umbracoDebugMode" value="false" xdt:Transform="SetAttributes" xdt:Locator="Match(key)"/>
+	</appSettings>
+	<connectionStrings>
+		<add name="umbracoDbDSN" connectionString="" providerName="System.Data.SqlClient" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+	</connectionStrings>
+	<system.web>
+		<customErrors mode="RemoteOnly" xdt:Transform="Replace"/>
+		<compilation xdt:Transform="RemoveAttributes(debug)"/>
+		<caching>
+			<outputCache xdt:Transform="Remove" />
+		</caching>    
+	</system.web>
+</configuration>

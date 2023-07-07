@@ -1,0 +1,20 @@
+@model Umbraco.Forms.Mvc.Models.FieldViewModel        
+@using System.Globalization;
+@{
+    string val = string.Empty;
+    if (Model.ValueAsObject != null && Model.ValueAsObject != "")
+    {
+        DateTime d;
+        d = DateTime.ParseExact(Model.ValueAsObject.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        val = d.ToString("dd/MM/yyyy");
+    }
+
+    string extraClass = "";
+    if (Model.Caption.ToLower().Trim().Replace(" ","").ToString().IndexOf("dateofbirth") >= 0)
+    {
+        extraClass = "dobfield";
+    }
+}
+<input type="text" name="@Model.Name" id="@Model.Id" class="datepickerfield @extraClass" value="@val"
+@{if (Model.Mandatory) {<text> data-val="true" data-val-required="@Model.RequiredErrorMessage"</text>}}
+/>

@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
             _rigid.velocity = new Vector2(_MaxSpeed * _stare, _rigid.velocity.y);
         }
     }
-
+ 
     // 플레이어 점프 구현
     private void PlayerJump()
     {
