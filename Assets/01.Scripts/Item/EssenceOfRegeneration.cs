@@ -11,9 +11,9 @@ public class EssenceOfRegenerate : Item
     public EssenceOfRegenerate() 
         : base(ItemType.Essence, "????? ????", 
             string.Format(
-                "??? ?? : HP?? <color=green>10</color> ???????. <color=gray>(???? ???? : {0:0.0}??)</color>\n" +
-                "?? ???? ??? : 1??? HP?? <color=green>2</color> ???????.", Cooldown), 
-            Resources.Load<Sprite>("Item/Icon/Essence/Essence_4"), count)
+                "사용 시 : HP를 <color=green>10</color> 회복합니다. <color=#CCCCCC>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+                "기본 지속 효과 : 1초당 HP를 <color=green>2</color> 회복합니다.", Cooldown), 
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_4"))
     {
     }
 

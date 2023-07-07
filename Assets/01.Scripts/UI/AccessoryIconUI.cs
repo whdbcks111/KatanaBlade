@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AccessoryIconUI : MonoBehaviour, IPointerClickHandler
+public class AccessoryIconUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
+    private bool showInfo;
+    private Coroutine showInfoCor;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -17,5 +19,40 @@ public class AccessoryIconUI : MonoBehaviour, IPointerClickHandler
                 popup.Clear();
             };
         }
+    }
+
+    private void Update()
+    {
+        print(showInfo);
+        if (showInfo)
+        {
+            var item = Player.Instance.Inventory.MountedAccessory;
+            GameManager.instance.ShowItemPopup(this, item.Icon, item.Name, item.Description);
+        }
+        else
+        {
+            GameManager.instance.HideItemPopup(this);
+        }
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (showInfoCor == null)
+        {
+            showInfoCor = StartCoroutine(Timer(1f));
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (showInfoCor is not null) StopCoroutine(showInfoCor);
+        showInfoCor = null;
+        showInfo = false;
+    }
+
+    private IEnumerator Timer(float time)
+    {
+        showInfo = false;
+        yield return new WaitForSeconds(time);
+        showInfo = true;
     }
 }

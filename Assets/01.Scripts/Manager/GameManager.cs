@@ -19,6 +19,13 @@ public class GameManager : MonoBehaviour
     public GameObject InventoryUI;
     public Canvas Canvas;
 
+    [Header("ItemPopup")]
+    public GameObject ItemPopup;
+    public Image ItemPopupIcon;
+    public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
+
+    private MonoBehaviour _currentShowingUI;
+
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
 
@@ -43,11 +50,27 @@ public class GameManager : MonoBehaviour
         Screen.SetResolution(1920, 1080, true);
     }
 
+   
+
     //시간 증가시키는 메서드 
     void Start()
     {
         TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
         StartCoroutine(StartTimer());
+    }
+
+    public void ShowItemPopup(MonoBehaviour ui, Sprite icon, string name, string desc)
+    {
+        ItemPopup.SetActive(true);
+        ItemPopupIcon.sprite = icon;
+        ItemPopupDesc.SetText(desc);
+        ItemPopupName.SetText(name);
+        _currentShowingUI = ui;
+    }
+    public void HideItemPopup(MonoBehaviour itemIconUI)
+    {
+        if (_currentShowingUI == itemIconUI)
+            ItemPopup.SetActive(false);
     }
 
     public EquipPopup CreateEquipPopup()
