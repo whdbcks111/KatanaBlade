@@ -77,13 +77,13 @@ public class Entity : MonoBehaviour
 
     public virtual void Attack(Entity other)
     {
-        var damage = 1; // ¿¹½Ã °ª, ½ÇÁ¦·Î´Â °è»ê
+        var damage = 1; // ì˜ˆì‹œ ê°’, ì‹¤ì œë¡œëŠ” ê³„ì‚°
         other.Damage(damage);
     }
 
     public virtual void Damage(float damage)
     {
-        // HP ´â´Â ÄÚµå ±¸Çö
+        // HP ë‹³ëŠ” ì½”ë“œ êµ¬í˜„
         HP -= damage;
     }
 

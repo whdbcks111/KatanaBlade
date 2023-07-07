@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<appSettings>
+		<add key="umbracoReservedPaths" value="~/umbraco,~/install/,~/bundles/"  xdt:Transform="SetAttributes" xdt:Locator="Match(key)" />
+	</appSettings>
+		<bundleTransformer>
+			<core>
+				<js xdt:Transform="Replace" defaultMinifier="CrockfordJsMinifier">
+				</js>
+			</core>
+		</bundleTransformer>
+</configuration>

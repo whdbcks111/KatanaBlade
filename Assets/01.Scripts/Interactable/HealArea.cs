@@ -6,6 +6,6 @@ public class HealArea : Interactable
 {
     public override void OnInteract(Player player)
     {
-        // ÇÃ·¹ÀÌ¾î È¸º¹½ÃÄÑÁÖ´Â (ÀÏÈ¸¿ë) ÄÚµå ÀÛ¼º.
+        // í”Œë ˆì´ì–´ íšŒë³µì‹œì¼œì£¼ëŠ” (ì¼íšŒìš©) ì½”ë“œ ì‘ì„±.
     }
 }

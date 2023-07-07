@@ -1,0 +1,28 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<dynamic>
+@using Umbraco.Web.Templates
+@{
+    var count = 0;
+    var id = Guid.NewGuid().ToString();
+}
+
+    <div class="panel-group" id="@id" role="tablist" aria-multiselectable="true">
+        @foreach (dynamic pane in Model.value)
+    {
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="@id-heading-@count">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#@id" href="#@id-collapse-@count" aria-expanded="false" aria-controls="@id-collapse-@count">
+                            @Html.Raw(TemplateUtilities.ParseInternalLinks(pane.title.ToString()))
+                        </a>
+                    </h4>
+                </div>
+                <div id="@id-collapse-@count" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@id-heading-@count">
+                    <div class="panel-body">
+                        @Html.Raw(HorizonPower.Application.Extensions.UmbracoExtension.RenderMacroContent(Umbraco, TemplateUtilities.ParseInternalLinks(pane.content.ToString())))
+                    </div>
+                </div>
+            </div>
+
+            count++;
+        }
+    </div>

@@ -1,0 +1,45 @@
+﻿.accordion
+{
+    padding: 20px;
+    border: 5px solid black;
+}
+
+.accordion-pane:first-child
+{
+    border-top: 0px;
+}
+
+.accordion-pane
+{
+    border-top: 5px dotted black;
+    position: relative;
+}
+
+.accordion-pane.hover
+{
+    padding-left: 20px;
+}
+
+.accordion-pane .title
+{
+    border-bottom: 1px dotted black;
+    padding: 15px;
+}
+
+.accordion-pane .content
+{
+    padding: 15px;
+}
+
+.accordion-controls
+{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    display: none;
+}
+
+.accordion-pane.hover .accordion-controls
+{
+    display: block;
+}
