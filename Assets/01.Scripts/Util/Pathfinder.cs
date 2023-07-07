@@ -1,92 +1,101 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
+using static UnityEngine.GraphicsBuffer;
 
-public class Pathfinder : MonoBehaviour
+public static class Pathfinder
 {
-   Agrid grid;
+    public static readonly Vector3Int[] Directions = { 
+        new(0, 1, 10), new(0, -1, 10), new(1, 0, 10), new(-1, 0, 10),
+        new(1, 1, 14), new(-1, 1, 14), new(1, -1, 14), new(-1, -1, 14)
+    };
 
-   public Transform startobject;
-   public Transform targetobject;
+    public static int GetH(Vector2Int cur, Vector2Int target)
+    {
+        return (Math.Abs(cur.x - target.x) + Math.Abs(cur.y - target.y)) * 10;
+    }
 
-   private void Awake()
-   {
-      grid = GetComponent<Agrid>();
-   }
-
-   private void Update()
-   {
-      FindPath(startobject.position, targetobject.position);
-   }
-
-   private void FindPath(Vector2 startPos, Vector2 targetPos)
-   {
-      var startNode = grid.GetNodeFromWorldPoint(startPos);
-      var targetNode = grid.GetNodeFromWorldPoint(targetPos);
-
-      var openList = new List<Anode>();
-      var closedList = new HashSet<Anode>();
-      openList.Add(startNode);
-
-      while (openList.Count>0)
-      {
-         var currentNode = openList[0];
-         for (var i = 1; i < openList.Count; i++)
-         {
-            if (openList[i].FCost < currentNode.FCost || openList[i].FCost == currentNode.FCost && openList[i].HCost < currentNode.HCost)
+    public static Path GetMinCostPath(IEnumerable<Path> paths)
+    {
+        Path p = null;
+        foreach(var path in paths)
+        {
+            if(p is null || p.G + p.H > path.G + path.H)
             {
-               currentNode = openList[i];
+                p = path;
             }
-         }
+        }
+        return p;
+    }
 
-         openList.Remove(currentNode);
-         closedList.Add(currentNode);
+    public static Vector2 GetNextPath(Tilemap tilemap, Vector2 cur, Vector2 target)
+    {
+        Vector2 next = cur;
+        Stack<Path> paths = FindPath(tilemap, (Vector2Int)tilemap.WorldToCell(cur), (Vector2Int)tilemap.WorldToCell(target));
 
-         if (currentNode == targetNode)
-         {
-            RetracePath(startNode, targetNode);
-            return;
-         }
+        for (int i = 0; i < 2; i++)
+        {
+            paths.TryPop(out Path p);
+            next = p.Pos;
+        }
 
-         foreach (Anode n in grid.GetNeighbours(currentNode))
-         {
-            if (!n.IsWall || closedList.Contains(n))
-               continue;
-            var newCurrentToNeighboursCost = currentNode.GCost + GetDistanceCost(currentNode, n);
-            if (newCurrentToNeighboursCost >= n.GCost && openList.Contains(n)) continue;
-            n.GCost = newCurrentToNeighboursCost;
-            n.HCost = GetDistanceCost(n, targetNode);
-            n.ParentNode = currentNode;
-               
-            if(!openList.Contains(n))
-               openList.Add(n);
-         }
-      }
-   }
+        if ((next - target).sqrMagnitude < 1) next = target;
 
-   private void RetracePath(Anode startNode, Anode endNode)
-   {
-      var path = new List<Anode>();
-      var currentNode = endNode;
+        return next;
+    }
 
-      while (currentNode!= startNode)
-      {
-         path.Add(currentNode);
-         currentNode = currentNode.ParentNode;
-      }
-      path.Reverse();
-      grid.Path = path;
-   }
+    public static Stack<Path> FindPath(Tilemap tilemap, Vector2Int start, Vector2Int target)
+    {
+        Stack<Path> paths = new();
+        List<Path> openedList = new()
+        {
+            new() { Parent = null, Pos = start, G = 0, H = GetH(start, target) }
+        }, closedList = new();
 
-   int GetDistanceCost(Anode nodeA, Anode nodeB)
-   {
-      var distX = Mathf.Abs(nodeA.Gridx - nodeB.Gridx);
-      var distY = Mathf.Abs(nodeA.GridY - nodeB.GridY);
+        while (openedList.Count > 0)
+        {
+            Path minCostPath = GetMinCostPath(openedList);
 
-      if (distX > distY)
-         return 14 * distY + 10 * (distX - distY);
-      return 14 * distX + 10 * (distY - distX);
-   }
+            if(minCostPath.Pos == target)
+            {
+                while(minCostPath is not null)
+                {
+                    paths.Push(minCostPath);
+                    minCostPath = minCostPath.Parent;
+                }
+                return paths;
+            }
+
+            openedList.Remove(minCostPath);
+            closedList.Add(minCostPath);
+
+            foreach(var dir in Directions)
+            {
+                var nextPos = minCostPath.Pos + (Vector2Int)dir;
+                if (tilemap.GetTile((Vector3Int)nextPos) == null &&
+                    closedList.Find(p => p.Pos == nextPos) == null &&
+                    openedList.Find(p => p.Pos == nextPos) == null)
+                {
+                    openedList.Add(new() { 
+                        Parent = minCostPath, 
+                        Pos = nextPos, 
+                        G = minCostPath.G + dir.z, 
+                        H = GetH(nextPos, target) 
+                    });
+                }
+            }
+        }
+
+        return paths;
+    }
+}
+
+public class Path
+{
+    public Path Parent;
+    public Vector2Int Pos;
+    public int G, H;
 }
