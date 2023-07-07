@@ -1,0 +1,30 @@
+﻿@using Umbraco.Web.Macros
+@inherits PartialViewMacroPage
+@{
+    var parentNode = Umbraco.TypedContentAtRoot().FirstOrDefault();
+}
+
+<ul class="sitemap">
+    @TraverseContent(parentNode)
+</ul>
+
+@helper TraverseContent(IPublishedContent child)
+{
+    var subChildren = child.Children().Where(x => (bool)x.GetPropertyValue("umbracoNaviHide") == false);
+
+    if (subChildren.Count() > 0)
+    {
+        foreach (var subChild in subChildren)
+        {
+            <li>
+                <a href="@subChild.Url">@subChild.Name</a>
+                @if (subChild.Children.Any(x=>(bool)x.GetPropertyValue("umbracoNaviHide") == false))
+                { 
+                    <ul>
+                        @TraverseContent(subChild)
+                    </ul>
+                }
+            </li>
+        }
+    }
+}

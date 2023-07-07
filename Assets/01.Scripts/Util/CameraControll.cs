@@ -19,16 +19,16 @@ public class CameraControll : MonoBehaviour
 
     public void Shake(float time, float force)
     {
-        // Ä«¸Ş¶ó ½¦ÀÌÅ© ·ÎÁ÷ ±¸Çö _shakeOffset º¯¼ö¿¡ ½¦ÀÌÅ© ÀÌµ¿°ª ³Ö±â
+        // ì¹´ë©”ë¼ ì‰ì´í¬ ë¡œì§ êµ¬í˜„ _shakeOffset ë³€ìˆ˜ì— ì‰ì´í¬ ì´ë™ê°’ ë„£ê¸°
     }
 
     public void Follow()
     {
-        // _followTarget µû¶ó°¡´Â ÄÚµå ±¸Çö, transform.positionÀ» ¼öÁ¤ÇÏÁö ¸»°í _targetPositionÀ» ¼öÁ¤ÇÒ °Í
+        // _followTarget ë”°ë¼ê°€ëŠ” ì½”ë“œ êµ¬í˜„, transform.positionì„ ìˆ˜ì •í•˜ì§€ ë§ê³  _targetPositionì„ ìˆ˜ì •í•  ê²ƒ
     }
 
     public void RestrictMove()
     {
-        // ÀÌµ¿ Á¦ÇÑ ÄÚµå
+        // ì´ë™ ì œí•œ ì½”ë“œ
     }
 }

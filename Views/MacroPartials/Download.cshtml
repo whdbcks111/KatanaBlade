@@ -1,0 +1,19 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@{
+    var headline = Model.MacroParameters["headline"].ToString();
+    var description = Model.MacroParameters["description"].ToString();
+    var media = Umbraco.TypedMedia(Model.MacroParameters["file"].ToString());
+}
+<div class="macro-download">
+    <h4>Featured download:</h4>
+    @if (headline != "null")
+    {
+        <h5>@headline</h5>
+    }
+
+    @if (description != "null")
+    {
+        <p>@description</p>
+    }
+    <a href="@media.Url" download>Download</a>
+</div>
