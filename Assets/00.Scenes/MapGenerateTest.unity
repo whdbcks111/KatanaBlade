@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 411507279}
   - component: {fileID: 411507281}
   - component: {fileID: 411507280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MainTilemap
   m_TagString: Floor
   m_Icon: {fileID: 0}
