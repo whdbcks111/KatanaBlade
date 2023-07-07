@@ -13,6 +13,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
 
+    private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
+
     private readonly Dictionary<Vector2Int, StageShape> _map = new();
 
     private void Awake()
@@ -24,6 +26,13 @@ public class MapGenerator : MonoBehaviour
             Destroy(gameObject);
         }
 
+        foreach(var shape in _shapes)
+        {
+            if (shape.IsTopOpened) _topOpened.Add(shape);
+            if (shape.IsBottomOpened) _bottomOpened.Add(shape);
+            if (shape.IsLeftOpened) _leftOpened.Add(shape);
+            if (shape.IsRightOpened) _rightOpened.Add(shape);
+        }
         Generate();
     }
 
@@ -64,7 +73,15 @@ public class MapGenerator : MonoBehaviour
                 var direction = allowDirections[idx];
                 allowDirections.RemoveAt(idx);
 
-                CreateMapTiles(curPos + direction, _shapes[UnityEngine.Random.Range(0, _shapes.Length)]);
+                List<StageShape> targetShapes = null;
+                if (direction.x > 0) targetShapes = _leftOpened;
+                else if (direction.x < 0) targetShapes = _rightOpened;
+                else if (direction.y > 0) targetShapes = _bottomOpened;
+                else if (direction.y < 0) targetShapes = _topOpened;
+
+                if (targetShapes is null || targetShapes.Count == 0) continue;
+
+                CreateMapTiles(curPos + direction, targetShapes[UnityEngine.Random.Range(0, targetShapes.Count)]);
                 queue.Enqueue(curPos + direction);
             }
         }

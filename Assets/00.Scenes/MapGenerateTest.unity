@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 411507279}
   - component: {fileID: 411507281}
   - component: {fileID: 411507280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MainTilemap
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -648,8 +648,8 @@ MonoBehaviour:
   _targetTilemap: {fileID: 411507278}
   _spawnShape:
     ShapeMap: {fileID: 2984514008660343311, guid: adb42c795409c074fb75234f7992437e, type: 3}
-    IsTopOpened: 1
-    IsBottomOpened: 1
+    IsTopOpened: 0
+    IsBottomOpened: 0
     IsLeftOpened: 1
     IsRightOpened: 1
     Type: 2
@@ -661,9 +661,15 @@ MonoBehaviour:
     IsRightOpened: 1
     Type: 0
   - ShapeMap: {fileID: 2984514008660343311, guid: e2a5f7d805407954e9145a1b3ddc13c9, type: 3}
-    IsTopOpened: 0
+    IsTopOpened: 1
     IsBottomOpened: 1
     IsLeftOpened: 1
+    IsRightOpened: 1
+    Type: 0
+  - ShapeMap: {fileID: 2984514008660343311, guid: 525719a2ffdb484449d0349097ecb6cf, type: 3}
+    IsTopOpened: 0
+    IsBottomOpened: 1
+    IsLeftOpened: 0
     IsRightOpened: 0
     Type: 0
 --- !u!4 &1104541921

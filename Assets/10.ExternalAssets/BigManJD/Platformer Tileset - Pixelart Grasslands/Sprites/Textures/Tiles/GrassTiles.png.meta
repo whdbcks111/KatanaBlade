@@ -3,7 +3,7 @@ guid: 66453c654294d2045aa5eb98e5ea9f7d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -63,6 +63,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -2352,7 +2353,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      GrassTiles_90: 1237538160
+      GrassTiles_44: 1609931947
       GrassTiles_5: 1901992341
       GrassTiles_31: 2000216578
       GrassTiles_77: 1561847698
@@ -2454,10 +2455,10 @@ TextureImporter:
       GrassTiles_25: -775885595
       GrassTiles_2: -1067850370
       GrassTiles_15: 1031892476
-      GrassTiles_104: 1349537207
-      GrassTiles_44: 1609931947
-      GrassTiles_19: 663246161
       GrassTiles_73: 1034837967
+      GrassTiles_90: 1237538160
+      GrassTiles_19: 663246161
+      GrassTiles_104: 1349537207
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
