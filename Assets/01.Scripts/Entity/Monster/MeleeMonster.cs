@@ -8,10 +8,9 @@ using Random = UnityEngine.Random;
 public class MeleeMonster : Entity
 {
     Rigidbody2D _rigid;
-    Animator _anim;
 
     private bool _isAttacking;
-    private int _nextMove;
+    protected int _nextMove;
     private float _changeTimer = 0f;
 
     public bool IsParrying { get { return _isAttacking; } }
@@ -19,7 +18,6 @@ public class MeleeMonster : Entity
     private void Start()
     {
         _rigid = GetComponent<Rigidbody2D>();
-        _anim = GetComponentInChildren<Animator>();
         Think();
 
         Invoke("Think", 5);
@@ -28,15 +26,17 @@ public class MeleeMonster : Entity
     private void FixedUpdate()
     {
         if (!_isAttacking)
+        {
+            Chacing();
             MonsterMove();
-  
+        }
+
     }
 
-    // ���� ������ ����
-    private void MonsterMove()
+
+    protected virtual void MonsterMove()
     {
         transform.position += new Vector3(_nextMove, _rigid.velocity.y) * Time.fixedDeltaTime;
-        _anim.SetFloat("WalkSpeed", Mathf.Abs(_nextMove));
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
         transform.localScale = originScale;
@@ -55,7 +55,18 @@ public class MeleeMonster : Entity
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
     }
 
-    // ���Ͱ� ������� ������ �� �ִ� ��� ���
+    private void Chacing()
+    {
+        var dir = (Player.Instance.transform.position - transform.position);
+
+        var distance = dir.magnitude;
+
+        if (distance <= 10.0f)
+        {
+            _nextMove = dir.x > 0 ? 1 : -1;
+        }
+    }
+
     private void Think()
     {
         _nextMove = Random.Range(-2, 3);
@@ -63,28 +74,31 @@ public class MeleeMonster : Entity
 
 
 
-    // ��� ���� ����� ��� 
     private void OnTriggerStay2D(Collider2D other)
     {
         if(other.TryGetComponent(out Player p))
         {
-            Attack(p);
+            StartAttack(p);
         }
     }
 
-    public override void Attack(Entity other)
+    public virtual void StartAttack(Player other)
     {
         if (_isAttacking) return;
         _isAttacking = true;
-        _anim.SetTrigger("Attack");
-        StartCoroutine(CountAttackDelay());
-        base.Attack(other);
+        StartCoroutine(CountAttackDelay(other));
     }
-    IEnumerator CountAttackDelay()
+
+    IEnumerator CountAttackDelay(Player other)
     {
         yield return new WaitForSeconds(0.4f);
 
+        Attack(other);
 
+        yield return new WaitForSeconds(0.6f);
+        
         _isAttacking = false;
+
+
     }
 }

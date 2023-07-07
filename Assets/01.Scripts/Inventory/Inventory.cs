@@ -36,21 +36,16 @@ public class Inventory : MonoBehaviour
     }
     public void RemoveItem(int index, int count)
     {
-        if (_contents[index] is null) return;
-
-        if ((_contents[index].Count -= count) <= 0)
-        {
-            _contents[index] = null;
-        }
+        _contents[index] = null;
     }
 
-    public void RemoveItem<T>(int count) where T : Item
+    public void RemoveItem<T>() where T : Item
     {
         for (var i = 0; i < _contents.Length; i++)
         {
             if (_contents[i] is T)
             {
-                RemoveItem(i, count);
+                RemoveItem(i);
                 return;
             }
         }

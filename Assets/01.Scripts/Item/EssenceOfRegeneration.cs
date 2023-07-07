@@ -8,11 +8,11 @@ public class EssenceOfRegenerate : Item
     private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
-    public EssenceOfRegenerate(int count = 1) 
-        : base(ItemType.Essence, "재생의 정수", 
+    public EssenceOfRegenerate() 
+        : base(ItemType.Essence, "????? ????", 
             string.Format(
-                "사용 시 : HP를 <color=green>10</color> 회복합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
-                "기본 지속 효과 : 1초당 HP를 <color=green>2</color> 회복합니다.", Cooldown), 
+                "??? ?? : HP?? <color=green>10</color> ???????. <color=gray>(???? ???? : {0:0.0}??)</color>\n" +
+                "?? ???? ??? : 1??? HP?? <color=green>2</color> ???????.", Cooldown), 
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_4"), count)
     {
     }
