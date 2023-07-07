@@ -11,6 +11,7 @@ public class SkullMonster : MeleeMonster
 
     protected override void Awake()
     {
+        base.Awake();
         _anim = GetComponentInChildren<Animator>();
     }
 
