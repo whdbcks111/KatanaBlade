@@ -6,35 +6,34 @@ using UnityEngine.Serialization;
 
 public class Pathfinder : MonoBehaviour
 {
-   Agrid _grid;
+   Agrid grid;
 
-   public Transform startObject;
-   public Transform targetObject;
-   private Anode _endNode;
+   public Transform startobject;
+   public Transform targetobject;
 
    private void Awake()
    {
-      _grid = GetComponent<Agrid>();
+      grid = GetComponent<Agrid>();
    }
 
    private void Update()
    {
-      FindPath(startObject.position, targetObject.position);
+      FindPath(startobject.position, targetobject.position);
    }
 
-   void FindPath(Vector3 startPos, Vector3 targetPos)
+   private void FindPath(Vector2 startPos, Vector2 targetPos)
    {
-      Anode startNode = _grid.GetNodeFromWorldPoint(startPos);
-      Anode targetNode = _grid.GetNodeFromWorldPoint(targetPos);
+      var startNode = grid.GetNodeFromWorldPoint(startPos);
+      var targetNode = grid.GetNodeFromWorldPoint(targetPos);
 
-      List<Anode> openList = new List<Anode>();
-      HashSet<Anode> closedList = new HashSet<Anode>();
+      var openList = new List<Anode>();
+      var closedList = new HashSet<Anode>();
       openList.Add(startNode);
 
       while (openList.Count>0)
       {
-         Anode currentNode = openList[0];
-         for (int i = 1; i < openList.Count; i++)
+         var currentNode = openList[0];
+         for (var i = 1; i < openList.Count; i++)
          {
             if (openList[i].FCost < currentNode.FCost || openList[i].FCost == currentNode.FCost && openList[i].HCost < currentNode.HCost)
             {
@@ -47,32 +46,30 @@ public class Pathfinder : MonoBehaviour
 
          if (currentNode == targetNode)
          {
-            Retracepath(startNode, targetNode);
+            RetracePath(startNode, targetNode);
             return;
          }
 
-         foreach (Anode n in _grid.GetNeighbours(currentNode))
+         foreach (Anode n in grid.GetNeighbours(currentNode))
          {
-            if (!n.IswalkAbls || closedList.Contains(n))
+            if (!n.IsWall || closedList.Contains(n))
                continue;
-            int newCurrentToNeighboursCost = currentNode.GCost + GetdistanceCost(currentNode, n);
-            if (newCurrentToNeighboursCost < n.GCost || !openList.Contains(n))
-            {
-               n.GCost = newCurrentToNeighboursCost;
-               n.HCost = GetdistanceCost(n, targetNode);
-               n.ParentNode = currentNode;
+            var newCurrentToNeighboursCost = currentNode.GCost + GetDistanceCost(currentNode, n);
+            if (newCurrentToNeighboursCost >= n.GCost && openList.Contains(n)) continue;
+            n.GCost = newCurrentToNeighboursCost;
+            n.HCost = GetDistanceCost(n, targetNode);
+            n.ParentNode = currentNode;
                
-               if(!openList.Contains(n))
-                  openList.Add(n);
-            }
+            if(!openList.Contains(n))
+               openList.Add(n);
          }
       }
    }
 
-   void Retracepath(Anode startNode, Anode endNobe)
+   private void RetracePath(Anode startNode, Anode endNode)
    {
-      List<Anode> path = new List<Anode>();
-      Anode currentNode = _endNode;
+      var path = new List<Anode>();
+      var currentNode = endNode;
 
       while (currentNode!= startNode)
       {
@@ -80,13 +77,13 @@ public class Pathfinder : MonoBehaviour
          currentNode = currentNode.ParentNode;
       }
       path.Reverse();
-      _grid.Path = path;
+      grid.Path = path;
    }
 
-   int GetdistanceCost(Anode nodeA, Anode nodeB)
+   int GetDistanceCost(Anode nodeA, Anode nodeB)
    {
-      int distX = Mathf.Abs(nodeA.Gridx - nodeB.Gridx);
-      int distY = Mathf.Abs(nodeA.GridY - nodeB.GridY);
+      var distX = Mathf.Abs(nodeA.Gridx - nodeB.Gridx);
+      var distY = Mathf.Abs(nodeA.GridY - nodeB.GridY);
 
       if (distX > distY)
          return 14 * distY + 10 * (distX - distY);

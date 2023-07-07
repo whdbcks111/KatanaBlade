@@ -8,34 +8,35 @@ public class Agrid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-     Anode[,] _grid;
+    Anode[,] grid;
 
-    private float _nodeDiameter;
-    private int _gridSizeX;
-    private int _gridSizeY;
+    private float nodeDiameter;
+    private int gridSizeX;
+    private int gridSizeY;
 
 
     private void Start()
     {
-        _nodeDiameter = nodeRadius * 2;
-        _gridSizeX = Mathf.RoundToInt(gridWorldSize.x / _nodeDiameter);
-        _gridSizeX = Mathf.RoundToInt(gridWorldSize.y / _nodeDiameter);
+        nodeDiameter = nodeRadius * 2;
+        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
     }
 
-    void CreateGrid()
+    private void CreateGrid()
     {
-        _grid = new Anode[_gridSizeX, _gridSizeY];
-        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 -
-                                  Vector3.forward * gridWorldSize.y / 2;
-        for (int x = 0; x < _gridSizeX; x++)
+        grid = new Anode[gridSizeX, gridSizeY];
+        Vector3 worldBottomLeft = transform.position - (Vector3)Vector2.right * gridWorldSize.x / 2 -
+                                  (Vector3)Vector2.up * gridWorldSize.y / 2;
+        Vector3 worldPoint;
+        for (int x = 0; x < gridSizeX; x++)
         {
-            for (int y = 0; y < _gridSizeY; y++)
+            for (int y = 0; y < gridSizeY; y++)
             {
-                var worldPoint = worldBottomLeft + Vector3.right * (x * _nodeDiameter + nodeRadius) + Vector3.forward *
-                    (y * _nodeDiameter + nodeRadius);
+                worldPoint = worldBottomLeft + (Vector3)Vector2.right * (x * nodeDiameter + nodeRadius) + (Vector3)Vector2.up *
+                    (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                _grid[x, y] = new Anode(walkable, worldPoint,x , y);
+                grid[x, y] = new Anode(walkable, worldPoint, x, y);
             }
         }
     }
@@ -51,9 +52,9 @@ public class Agrid : MonoBehaviour
                 int checkX = node.Gridx + x;
                 int checkY = node.Gridx + y;
 
-                if (checkX >= 0 && checkX < _gridSizeX && checkY >= 0 && checkY < _gridSizeY)
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    neighbours.Add(_grid[checkX, checkY]);
+                    neighbours.Add(grid[checkX, checkY]);
                 }
             }
         }
@@ -68,24 +69,25 @@ public class Agrid : MonoBehaviour
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((_gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((_gridSizeY - 1) * percentY);
-        return _grid[x, y];
+        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        return grid[x, y];
     }
 
     public List<Anode> Path;
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y));
-        if (_grid != null)
+        if (grid != null)
         {
-            foreach (Anode n in _grid)
+            foreach (Anode n in grid)
             {
-                Gizmos.color = (n.IswalkAbls) ? Color.white : Color.red;
+                Gizmos.color = (n.IsWall) ? Color.white : Color.red;
                 if (Path != null)
                     if (Path.Contains(n))
                         Gizmos.color = Color.black;
-                Gizmos.DrawCube(n.WorldPos, Vector3.one * (_nodeDiameter - .5f));
+                Gizmos.DrawCube(n.WorldPos, Vector3.one * (nodeDiameter - .5f));
             }
         }
     }

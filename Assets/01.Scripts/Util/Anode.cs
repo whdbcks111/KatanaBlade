@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class Anode
 {
-    public bool IswalkAbls;
-    public Vector3 WorldPos;
-    public int Gridx;
-    public int GridY;
+    public readonly bool IsWall;
+    public Vector2 WorldPos;
+    public readonly int Gridx;
+    public readonly int GridY;
 
     public int GCost;
     public int HCost;
     public Anode ParentNode;
     
-    public Anode(bool nWalkable, Vector3 nWorldPos, int nGridX, int nGridY)
+    public Anode(bool nWalkable, Vector2 nWorldPos, int nGridX, int nGridY)
     {
-        IswalkAbls = nWalkable;
+        IsWall = nWalkable;
         WorldPos = nWorldPos;
         Gridx = nGridX;
         GridY = nGridY;
 
     }
 
-    public int FCost
-    {
-        get { return GCost + HCost;  }
-    }
+    public int FCost => GCost + HCost;
 }
