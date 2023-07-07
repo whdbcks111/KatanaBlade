@@ -3,7 +3,7 @@ guid: 3a6f603276eca1e4dab29831a1cfd471
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -63,6 +63,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -1106,10 +1107,10 @@ TextureImporter:
       DirtBackgroundTiles_42: -1790002615
       DirtBackgroundTiles_1: -1672826114
       DirtBackgroundTiles_13: 1914050249
-      DirtBackgroundTiles_23: 294760288
-      DirtBackgroundTiles_40: 1800110404
       DirtBackgroundTiles_34: 566289707
+      DirtBackgroundTiles_40: 1800110404
       DirtBackgroundTiles_22: 844177418
+      DirtBackgroundTiles_23: 294760288
       DirtBackgroundTiles_27: -2024636361
       DirtBackgroundTiles_8: -1099932193
       DirtBackgroundTiles_6: -164320419
