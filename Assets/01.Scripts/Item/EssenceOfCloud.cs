@@ -7,7 +7,7 @@ public class EssenceOfCloud : Item
 
     private static readonly float PassiveTick = 2;
     private static readonly float PassiveForce = 3f;
-    public float PassiveRadius;
+    private static readonly float PassiveRadius = 5f;
 
     private static readonly float ActiveForce = 3f;
     private float _lastUsed = -1;

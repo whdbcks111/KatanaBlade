@@ -2,22 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EssenceOfVoid : Item
+public class EssenceOfDarkness : Item
 {
     private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
+    private static readonly float SlowMag = 0.4f;
     private static readonly float MaintainTime = 5;
     private static readonly float Radius = 3;
     private static readonly float CastTime = 0.2f;
 
-    public EssenceOfVoid()
-    : base(ItemType.Essence, "공허의 정수",
-        string.Format(
-            "사용 시 : 주변 투사체를 <color=darkviolet>파괴</color>하는 영역을 생성합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n", Cooldown),
-        Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
-    {
+    private List<GameObject> _skillList = new List<GameObject>();
+    private List<float> _speedList = new List<float>();
 
+    public EssenceOfDarkness()
+        : base(ItemType.Essence, "암흑의 정수",
+            string.Format(
+                "사용 시 : 주변을 느려지게 하는 영역을 전개합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+                "기본 지속 효과 : 1초당 HP를 <color=green>2</color> 회복합니다.", Cooldown),
+            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+    {
     }
 
     [ContextMenu("액티브 사용")]
@@ -31,9 +35,9 @@ public class EssenceOfVoid : Item
 
     public override void PassiveUpdate()
     {
-        //Player.Instance.Heal(Time.deltaTime * 2);
     }
 
+    
     private IEnumerator SkillCor(float maintainTime, float radius, float castTime)
     {
         Sprite sprite = Resources.Load<Sprite>("Item/Icon/Area");
@@ -44,7 +48,7 @@ public class EssenceOfVoid : Item
 
         //시전 코드
         float dT = 0;
-        while(dT < castTime)
+        while (dT < castTime)
         {
             effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
             yield return null;
@@ -52,7 +56,10 @@ public class EssenceOfVoid : Item
         }
         //
 
-        //영역 내 투사체 삭제
+        _skillList.Clear();
+        _speedList.Clear();
+
+        //영역 내 투사체 느려짐
         effect.transform.localScale = Vector2.one * radius;
         dT = 0;
 
@@ -61,9 +68,16 @@ public class EssenceOfVoid : Item
             Collider2D[] bullets = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
             foreach (var b in bullets)
             {
-                Debug.LogError(b.name.Contains("Bullet"));
                 if (b.name.Contains("Bullet"))
-                    Object.Destroy(b.gameObject);
+                {
+                    if(!_skillList.Contains(b.gameObject))
+                    {
+                        Debug.LogError(b.GetComponent<Bullet>().Speed *= SlowMag);
+                        _skillList.Add(b.gameObject);
+                        _speedList.Add(b.GetComponent<Bullet>().Speed);
+                        b.GetComponent<Bullet>().Speed *= SlowMag;
+                    }
+                }
             }
             yield return null;
             dT += Time.deltaTime;
@@ -80,9 +94,17 @@ public class EssenceOfVoid : Item
             dT -= Time.deltaTime;
         }
 
+        //원상태로 복구
+        for (int i = 0; i < _speedList.Count; i++)
+        {
+            if (_skillList[i] != null)
+            {
+                Debug.LogError(_speedList[i] / SlowMag);
+                _skillList[i].GetComponent<Bullet>().Speed = _speedList[i] / SlowMag;
+            }
+        }
+
         Object.Destroy(effect);
         //
     }
-
-    
 }
