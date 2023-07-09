@@ -49,12 +49,14 @@ public class RangeMonster : Monster
     {
         if(moveTo.transform.position.x > transform.position.x)
         {
-            _rb2d.velocity = new Vector2(Speed, _rb2d.velocity.y);
+            transform.Translate(Vector2.right * Speed * Time.deltaTime);
+            //_rb2d.velocity = new Vector2(Speed, _rb2d.velocity.y);
             _flipX = false;
         }
         else
         {
-            _rb2d.velocity = new Vector2(-1 * Speed, _rb2d.velocity.y);
+            transform.Translate(Vector2.left * Speed * Time.deltaTime);
+            //_rb2d.velocity = new Vector2(-1 * Speed, _rb2d.velocity.y);
             _flipX = true;
         }
         transform.localScale = _flipX ? new Vector3(-1, 1, 1) : Vector3.one;
@@ -68,7 +70,7 @@ public class RangeMonster : Monster
 
     public override void Attack(Entity other)
     {
-        _rb2d.velocity = new Vector2(0, _rb2d.velocity.y);
+        //_rb2d.velocity = new Vector2(0, _rb2d.velocity.y);
         if (Vector2.Distance(transform.position, other.transform.position) > AttDist)
         {
             if (_attackCor != null)
