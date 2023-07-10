@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class EssenceOfFlame : Item
 {
+    public GameObject bullet;
+
     public float ActiveRadius = 15;
     private static readonly float ActiveDamage = 5f;
 
@@ -39,15 +41,14 @@ public class EssenceOfFlame : Item
             int minDist = 0;
             for (int i = 0; i < enemies.Length; i++) 
             {
-                if (enemies[i].GetComponent<Entity>() is Monster && Vector2.Distance(Player.Instance.transform.position, enemies[i].transform.position) < minDist)
+                if (enemies[i].GetComponent<Entity>() is Monster && Vector2.Distance(Player.Instance.transform.position, enemies[i].transform.position) < Vector2.Distance(Player.Instance.transform.position, enemies[minDist].transform.position))
                 {
                     minDist = i;
                 }
             }
-            GameObject gO = new GameObject();
-            gO.transform.position = Player.Instance.transform.position;
+            bullet.transform.position = Player.Instance.transform.position;
             Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-            StartCoroutine(ChaseTarget(map, gO.transform, enemies[minDist].transform.position, 1f));
+            StartCoroutine(ChaseTarget(map, bullet.transform, enemies[minDist].transform.position));
             //적에게 투사체 발사 코드, 맞은 적에게 대미지 입히는 코드
         }
     }
@@ -57,7 +58,7 @@ public class EssenceOfFlame : Item
         _dT += Time.deltaTime;
         if(_dT > PassiveTick)
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, PassiveRadius);
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, PassiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in enemies)
             {
                 if (enemy.GetComponent<Entity>() is Monster)
@@ -68,47 +69,21 @@ public class EssenceOfFlame : Item
             _dT = 0;
         }
     }
-    
-    private IEnumerator ChaseTarget(Tilemap tilemap, Transform obj, Vector2 target, float totalTime)
+
+    private IEnumerator ChaseTarget(Tilemap tilemap, Transform obj, Vector2 target)
     {
-        while ((Vector2)obj.transform.position != target)
+        while (Vector2.Distance((Vector2)obj.transform.position, target) > .1f)
         {
-            var position = obj.transform.position;
-            var nextPos = Pathfinder.GetNextPath(tilemap, position, target);
-            position = Vector2.MoveTowards(position, nextPos, 5 * Time.deltaTime);
-            obj.transform.position = position;
-            Debug.Log(position);
-            //dT += Time.deltaTime;
+            Pathfinder.Follow(tilemap, obj, target, 6);
             yield return null;
         }
-        //int cnt = path.Count;
-        //Debug.Log(cnt);
-        //float dT = 0;
-        //while(path.Count > 0)
-        //{
-        //    Path dir = path.Pop();
-        //    Vector2 originPos = obj.transform.position;
-        //    while (true)
-        //    {
-        //        if((Vector2)obj.transform.position == originPos + dir.Pos)
-        //        {
-        //            break;
-        //        }
-
-        //        obj.transform.position = Vector2.Lerp(originPos, originPos + dir.Pos, dT / (totalTime / cnt));
-        //        dT += Time.deltaTime;
-        //        yield return null;
-        //    }
-        //}
-
+    }
 
     public override void OnMount()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnUnmount()
     {
-        throw new System.NotImplementedException();
     }
 }

@@ -47,4 +47,12 @@ public class EssenceOfEarth : Item
             _dT = 0;
         }
     }
+
+    public override void OnMount()
+    {
+    }
+
+    public override void OnUnmount()
+    {
+    }
 }

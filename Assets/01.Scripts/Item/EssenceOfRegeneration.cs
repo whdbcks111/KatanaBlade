@@ -33,12 +33,10 @@ public class EssenceOfRegeneration : Item
 
     public override void OnMount()
     {
-        throw new NotImplementedException();
     }
 
     public override void OnUnmount()
     {
-        throw new NotImplementedException();
     }
 }
 
