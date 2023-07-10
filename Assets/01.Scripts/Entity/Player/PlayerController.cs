@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
 
     [SerializeField] private float _parryRadius;
-
+    [SerializeField] private GameObject _alter;
 
     public bool IsConscious { get; set; }
     private void Start()
@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerParry()
     {
-        if (_parryCan && Input.GetMouseButtonDown(0))
+        if (_parryCan && Input.GetMouseButtonDown(0) && _player.DashStamina >= _player.Stat.Get(StatType.ParryingCost))
         {
             //원 콜라이더 생성
             RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
@@ -190,11 +190,11 @@ public class PlayerController : MonoBehaviour
     private void StaminaGen()
     {
         if (_player.DashStamina < _player.MaxDashStamina)
-            _player.DashStamina += Time.deltaTime * 3;
+            _player.DashStamina += Time.deltaTime * _player.Stat.Get(StatType.DashStaminaRegen);
         else
             _player.DashStamina = _player.MaxDashStamina;
         if (_player.ParryingStamina < _player.MaxParryingStamina)
-            _player.ParryingStamina += Time.deltaTime * 3;
+            _player.ParryingStamina += Time.deltaTime * _player.Stat.Get(StatType.ParryingStaminaRegen);
         else
             _player.ParryingStamina = _player.MaxParryingStamina;
     }
@@ -202,21 +202,40 @@ public class PlayerController : MonoBehaviour
     private void PlayerDash()
     {
         //가능한 상황인지 확인
-        if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift))
+        if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
             //레이캐스트 쏘기
             Debug.DrawRay(transform.position, new Vector3(_stare * _player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
-            //레이어 마스크는 추후에 유니티 엔진에서 추가하고 코드에도 추가
             RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("DashStop"));
             //레이캐스트 닿으면
             if (hit.collider != null)
-                transform.position = new Vector2(hit.transform.position.x + -_stare * .6f, transform.position.y);
+            {
+                //원래 위치에 잔상 남기기
+                GenerateAlter(transform.position, new Vector2(hit.transform.position.x + -_stare * GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y));
+                transform.position = new Vector2(hit.transform.position.x + -_stare * GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
+            }
             //아니면 이동
             else
+            {
+                //원래 위치에 잔상 남기기
+                GenerateAlter(transform.position, new Vector2(transform.position.x + _stare * _player.Stat.Get(StatType.DashLength), transform.position.y));
                 transform.Translate(new Vector2(_stare * _player.Stat.Get(StatType.DashLength), 0));
+            }
 
             _player.DashStamina -= _player.Stat.Get(StatType.DashCost);
             StartCoroutine(DashCool());
+        }
+    }
+    public void GenerateAlter(Vector3 startPos, Vector3 endPos)
+    {
+        float startX = Mathf.Min(startPos.x, endPos.x);
+        float endX = Mathf.Max(startPos.x, endPos.x);
+        for (float x = startX; x < endX; x += 0.5f)
+        {
+            GameObject copy = Instantiate(_alter, new Vector3(x, startPos.y - 0.977f), _alter.transform.rotation);
+            copy.GetComponent<SpriteRenderer>().flipX = GetComponentInChildren<SpriteRenderer>().flipX;
+            copy.GetComponent<SpriteRenderer>().sprite = GetComponentInChildren<SpriteRenderer>().sprite;
+            Destroy(copy, 1.0f);
         }
     }
 
