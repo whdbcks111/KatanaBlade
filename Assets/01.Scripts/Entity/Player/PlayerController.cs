@@ -207,41 +207,51 @@ public class PlayerController : MonoBehaviour
         //가능한 상황인지 확인
         if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            //레이캐스트 쏘기
-            Debug.DrawRay(transform.position, new Vector3(_stare * _player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
-            //레이캐스트 닿으면
-            if (hit.collider != null)
-            {
-                //원래 위치에 잔상 남기기
-                GenerateAlter(transform.position, new Vector2(hit.transform.position.x + -_stare * GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y));
-                transform.position = new Vector2(hit.transform.position.x + -_stare * GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
-            }
-            //아니면 이동
-            else
-            {
-                //원래 위치에 잔상 남기기
-                GenerateAlter(transform.position, new Vector2(transform.position.x + _stare * _player.Stat.Get(StatType.DashLength), transform.position.y));
-                transform.Translate(new Vector2(_stare * _player.Stat.Get(StatType.DashLength), 0));
-            }
+            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare, 
+                _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
+            float targetX;
+
+            if(hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
+            else targetX = transform.position.x + _player.Stat.Get(StatType.DashLength) * _stare;
+
+            GenerateAlter(transform.position.x, targetX);
+            transform.position = new(targetX, transform.position.y);
 
             _player.DashStamina -= _player.Stat.Get(StatType.DashCost);
             StartCoroutine(DashCool());
         }
     }
-    public void GenerateAlter(Vector3 startPos, Vector3 endPos)
+    public void GenerateAlter(float startPos, float endPos)
     {
-        float startX = Mathf.Min(startPos.x, endPos.x);
-        float endX = Mathf.Max(startPos.x, endPos.x);
         SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
-        for (float x = startX; x < endX; x += 1.2f)
+        float startX = Mathf.Min(startPos, endPos);
+        float endX = Mathf.Max(startPos, endPos);
+        var span = 1.2f;
+        int count = Mathf.FloorToInt((endX - startX) / span);
+        for (int i = 0; i < count; i++)
         {
-            GameObject copy = Instantiate(_alter, new Vector3(x, childRenderer.transform.position.y), _alter.transform.rotation);
-            copy.GetComponent<SpriteRenderer>().flipX = childRenderer.flipX;
-            copy.GetComponent<SpriteRenderer>().sprite = childRenderer.sprite;
+            GameObject copy = Instantiate(_alter, new Vector3(startX + i * span, childRenderer.transform.position.y), _alter.transform.rotation);
+            var renderer = copy.GetComponent<SpriteRenderer>();
+            renderer.flipX = childRenderer.flipX;
+            renderer.sprite = childRenderer.sprite;
+            var col = renderer.color;
+            col.a = Mathf.Clamp01((float)i / count + 0.3f);
+            renderer.color = col;
             copy.transform.localScale = transform.localScale;
-            Destroy(copy, 1.0f);
+            StartCoroutine(AlphaDestroy(renderer));
         }
+    }
+
+    IEnumerator AlphaDestroy(SpriteRenderer renderer)
+    {
+        while(renderer.color.a > 0)
+        {
+            var c = renderer.color;
+            c.a -= Time.deltaTime;
+            renderer.color = c;
+            yield return null;
+        }
+        Destroy(renderer.gameObject);
     }
 
     IEnumerator DashCool()

@@ -23,9 +23,29 @@ public class CameraControll : MonoBehaviour
         transform.position = _targetPosition + _shakeOffset;
     }
 
+    private void Update()
+    {
+
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Shake(0.5f, 0.5f);
+        }
+    }
+
     public void Shake(float time, float force)
     {
-        // 카메라 쉐이크 로직 구현 _shakeOffset 변수에 쉐이크 이동값 넣기
+        StartCoroutine(ShakeRoutine(time, force));
+    }
+
+    private IEnumerator ShakeRoutine(float time, float force)
+    {
+        for(float i = 0; i < time; i += Time.deltaTime)
+        {
+            yield return null;
+            _shakeOffset = new(Random.Range(-force, force), Random.Range(-force, force));
+        }
+        _shakeOffset = Vector3.zero;
     }
 
     public void Follow()
