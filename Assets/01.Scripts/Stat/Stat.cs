@@ -17,7 +17,7 @@ public class Stat
             [StatType.DashStaminaRegen] = 10f,
             [StatType.JumpForce] = 19f,
             [StatType.ParryingAttackForce] = 10f,
-            [StatType.MoveSpeed] = 5f,
+            [StatType.MoveSpeed] = 14f,
             [StatType.DashLength] = 4f,
             [StatType.DashCost] = 30f,
             [StatType.ParryingCost] = 30f,

@@ -5,38 +5,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MeleeMonster : Entity
+public class MeleeMonster : Monster
 {
-    Rigidbody2D _rigid;
 
     private bool _isAttacking;
     protected int _nextMove;
     private float _changeTimer = 0f;
 
-    public bool IsParrying { get { return _isAttacking; } }
+    public bool CanParrying { get { return _isAttacking; } }
 
     private void Start()
     {
-        _rigid = GetComponent<Rigidbody2D>();
         Think();
 
         Invoke("Think", 5);
     }
 
-    private void FixedUpdate()
+    protected override void Update()
     {
-        if (!_isAttacking)
-        {
-            Chacing();
-            MonsterMove();
-        }
+        base.Update();
+
+        Stat.Multiply(StatType.MoveSpeed, 0.5f);
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        Chacing();
+        MonsterMove();
 
     }
 
-
     protected virtual void MonsterMove()
     {
-        transform.position += new Vector3(_nextMove, _rigid.velocity.y) * Time.fixedDeltaTime;
+        MovingVelocity = _isAttacking ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
+
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
         transform.localScale = originScale;
@@ -69,7 +72,7 @@ public class MeleeMonster : Entity
 
     private void Think()
     {
-        _nextMove = Random.Range(-2, 3);
+        _nextMove = Random.Range(-1, 2);
     }
 
 

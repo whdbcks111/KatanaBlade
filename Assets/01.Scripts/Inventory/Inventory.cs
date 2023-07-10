@@ -10,37 +10,28 @@ public class Inventory
 
     public bool AddItem(Item item)
     {
-        for(var i = 0; i < _contents.Length; i++)
+        for (var i = 0; i < _contents.Length; i++)
         {
-            if (_contents[i] is null) continue;
-            if (_contents[i].GetType() == item.GetType())
-            {
-                return false;
-            }
-            else if (_contents[i] is null)
+            if (_contents[i] is null)
             {
                 _contents[i] = item;
                 return true;
+            }
+            else if (_contents[i].GetType() == item.GetType())
+            {
+                return false;
             }
         }
         return false;
     }
 
-    public void RemoveItem(int index)
+    public Item GetItem(int idx)
+    {
+        return _contents[idx];
+    }
+    public void RemoveItem(int index, int count)
     {
         _contents[index] = null;
-    }
-
-    public void RemoveItem<T>() where T : Item
-    {
-        for (var i = 0; i < _contents.Length; i++)
-        {
-            if (_contents[i] is T)
-            {
-                RemoveItem(i);
-                return;
-            }
-        }
     }
 
     public void SwapSlot(int index1, int index2)
@@ -50,8 +41,14 @@ public class Inventory
 
     public void UnmountAccessory()
     {
-
         AddItem(MountedAccessory);
+        MountedAccessory = null;
+    }
+
+    public void UnmountEssence()
+    {
+        AddItem(MountedEssence);
+        MountedEssence = null;
     }
 
     public void MountItem(int index)
@@ -62,9 +59,11 @@ public class Inventory
         switch(item.Type)
         {
             case ItemType.Accessory:
+                if (MountedAccessory is not null) AddItem(MountedAccessory);
                 MountedAccessory = item;
                 break;
             case ItemType.Essence:
+                if (MountedEssence is not null) AddItem(MountedEssence);
                 MountedEssence = item;
                 break;
         }
