@@ -20,12 +20,10 @@ public class AccessoryTest : Item
 
     public override void OnMount()
     {
-        throw new NotImplementedException();
     }
 
     public override void OnUnmount()
     {
-        throw new NotImplementedException();
     }
 
     public override void PassiveUpdate()

@@ -166,11 +166,9 @@ public class EssenceOfLightning : Item
 
     public override void OnMount()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnUnmount()
     {
-        throw new System.NotImplementedException();
     }
 }
