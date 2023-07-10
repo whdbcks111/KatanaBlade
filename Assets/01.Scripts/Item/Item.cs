@@ -18,6 +18,8 @@ public abstract class Item
         Icon = icon;
     }
 
+    public abstract void OnMount();
+    public abstract void OnUnmount();
     public abstract void OnActiveUse();
     public abstract void PassiveUpdate();
 }
