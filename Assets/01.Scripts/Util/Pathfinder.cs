@@ -36,13 +36,12 @@ public static class Pathfinder
         Vector2 next = cur;
         Stack<Path> paths = FindPath(tilemap, (Vector2Int)tilemap.WorldToCell(cur), (Vector2Int)tilemap.WorldToCell(target));
 
-        for (int i = 0; i < 2; i++)
+        while((next - cur).sqrMagnitude < 0.01 && paths.TryPop(out var p))
         {
-            if(paths.TryPop(out Path p))
-                next = p.Pos + Vector2.one / 2f;
+            next = p.Pos + Vector2.one / 2f;
         }
 
-        if ((next - target).sqrMagnitude < 1) next = target;
+        if ((next - target).sqrMagnitude < 1 || (next - cur).sqrMagnitude < 0.01) next = target;
 
         return next;
     }
