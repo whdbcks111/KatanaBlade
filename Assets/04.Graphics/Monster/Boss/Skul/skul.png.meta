@@ -1,0 +1,1446 @@
+fileFormatVersion: 2
+guid: 65bb6f2acd6e2124ca9a440194bfd63d
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: boyWalk_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 943
+        width: 39
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33097f1b837945b4188b1a1705646a63
+      internalID: -1423590998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_2
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 943
+        width: 38
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffac564945f288f4599618b6a4a6f731
+      internalID: 782249564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_3
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 945
+        width: 36
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 648025b510e91ba40a48a2ddbba1b473
+      internalID: 1056268860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_4
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 943
+        width: 35
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a59cb267053c1e740aa296a1b60e4118
+      internalID: -1945664935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_5
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 939
+        width: 37
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab8ffac060375b14f8ae8f7322f270ed
+      internalID: 2085012173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_6
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 939
+        width: 35
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 751672e00152bd048b94f082993aadb8
+      internalID: 1612402882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_7
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 940
+        width: 34
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6ff5022e3a4c4e40a67730d954ada54
+      internalID: -1136768714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalk_8
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 941
+        width: 33
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e82e69c66b344e41aaaa0ad5bf1a369
+      internalID: -1933089574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_1
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 940
+        width: 40
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 684010a1b90228742a05bddba22a5eac
+      internalID: -145283459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_2
+      rect:
+        serializedVersion: 2
+        x: 445
+        y: 940
+        width: 37
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a952096f9ef41b4d92f46b9d4329c26
+      internalID: -1956493311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_3
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 939
+        width: 35
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66f4170a17b1bbd498d641c2d5f67760
+      internalID: -1098025649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_4
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 940
+        width: 33
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d9c9f49087443d4fbdbfc62fa7a46cd
+      internalID: -1742434411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_5
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 939
+        width: 38
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0b99a1829b843e46b793546cf620daf
+      internalID: -1242213678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_6
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 939
+        width: 37
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfa3f0913ee1846439fa536d3372e7a9
+      internalID: -555463168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyWalkBack_7
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 939
+        width: 38
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a5ecd68623025b40b2acb38d20b6095
+      internalID: 92223390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_3
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 761
+        width: 137
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c260c38b241a81946882e4eedccf9ecd
+      internalID: -673228371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 759
+        width: 151
+        height: 151
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54b047b136747744cbf6de8699f0c8ab
+      internalID: -1743015913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_2
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 755
+        width: 138
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f8aed17e775d9446bc36376d7f1ac07
+      internalID: -181647642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_4
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 770
+        width: 190
+        height: 142
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54c2b212e385f01478f4a7eca107369b
+      internalID: -1344610370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_5
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 766
+        width: 187
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6df6b3aaedf38d41a636496558b3969
+      internalID: -180292427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrolling_1
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 811
+        width: 36
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3010f8b96b20cb43820c939b259a66c
+      internalID: 750450108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrolling_2
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 810
+        width: 36
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9133c9bf87fd557409d02424a4797523
+      internalID: -1174820545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrolling_3
+      rect:
+        serializedVersion: 2
+        x: 1044
+        y: 812
+        width: 45
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e64c6e60eb29724aa1f1f6c7e883b62
+      internalID: 1095865280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_6
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 576
+        width: 173
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd28445fd9fa2124fab688ef0bad4648
+      internalID: -938341375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_7
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 572
+        width: 178
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e94769f399dabff4d96bfa6e8fd18e99
+      internalID: -1539470258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_8
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 572
+        width: 179
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84aad24e9dbecf043bd447aa3f826afe
+      internalID: 798917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_9
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 568
+        width: 136
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c6ee1c636483bf49a71ee948dcebbff
+      internalID: 1406551535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulSpin_10
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 569
+        width: 133
+        height: 165
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26981a30dd626474483606f18bf5e22b
+      internalID: 1663007691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrolling_4
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 708
+        width: 44
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f4d4bda08ae45e45b031a3793efb5ed
+      internalID: 1498912398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrolling_5
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 707
+        width: 44
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ec054be4a49a2449809eb71c509f0bb
+      internalID: 1428123508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrollingBack_1
+      rect:
+        serializedVersion: 2
+        x: 1059
+        y: 707
+        width: 33
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1bcaab80f187944f8ded98e58060dc0
+      internalID: 1392232441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrollingBack_2
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 603
+        width: 34
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84c8ab7fef171e948953c2e6e5db91de
+      internalID: -291508144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrollingBack_3
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 600
+        width: 42
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12c0c335285c24745939b3ca8f4373f2
+      internalID: 157852550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyScrollingBack_4
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 599
+        width: 40
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de1145d8f62350c4b9fefd15efad07a7
+      internalID: -2002064945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_94
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 211
+        width: 217
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb9eb0c43f73c5c4ca5d171162cd810b
+      internalID: -1591013290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_120
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 20
+        width: 189
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07cf2a69e010d2b48a50138f9280a8c4
+      internalID: 1805884575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulStand
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 1402
+        width: 101
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0f0c036bb8e06e4ba4fe05825dcff1b
+      internalID: -207157871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulStandScream
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 1404
+        width: 110
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9362369ac6e226d4e98a43c3b0e45382
+      internalID: -867389212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulKnife_1
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 1427
+        width: 32
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e97b1963b598a734f921226cb45bd022
+      internalID: 1020123429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulKnife_2
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 1436
+        width: 82
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eefa8ab908e52444ae6b003a0f6eeab
+      internalID: -150460318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulKnife_3
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 1340
+        width: 68
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77c992721f4540c41a8ba6fcd5503400
+      internalID: -1375555158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulKnife_4
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 1340
+        width: 68
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 004e149353ea6e741ab03c38f09f6eb1
+      internalID: -1716610209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_21
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 380
+        width: 236
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9688c132632deff4a97f17b3394e6713
+      internalID: -1372441878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_22
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 224
+        width: 236
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781448e946236844d83a6f8301b54a29
+      internalID: 1724603702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_23
+      rect:
+        serializedVersion: 2
+        x: 836
+        y: 224
+        width: 236
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8eea0f5ab20d2145910fd7945de8fd6
+      internalID: 584700193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_24
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 5
+        width: 151
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5694efa8257788449a8eb3ff9a17263
+      internalID: 956617770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_25
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 9
+        width: 164
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c4597c3055f15f4b80d1d0232bc1f96
+      internalID: -665596439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_26
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 12
+        width: 159
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 367afbbdce0d9ff4387db9fa9fa3681c
+      internalID: 1412966277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skulHurt
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 384
+        width: 120
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13fd87cbd0fca1f45b608663ec28156c
+      internalID: 993934166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boyHurt
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 304
+        width: 37
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdb6afcf44fca0d48ad61ef599992f46
+      internalID: -1941141370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_29
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 418
+        width: 217
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e19d2b485df3f64595c733cc08afd2a
+      internalID: -248288612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DeathScrollItem
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 376
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1ef7226acea3ea4a9647ff16f82403e
+      internalID: 589773754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_31
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 1317
+        width: 34
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 718fc877164d1894d8e21b7f304a6b77
+      internalID: 1195010142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skul_32
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 1316
+        width: 35
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3346c905ddc57cc4ba8c0958c45bf84a
+      internalID: 1625985054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      skul_167: 1043520393
+      skul_31: 1195010142
+      skul_103: -1018971731
+      skul_134: -1334449426
+      skul_188: -1721202815
+      skul_125: 29437574
+      skul_35: 719929243
+      boyScrolling_4: 1498912398
+      skul_23: 584700193
+      skul_80: 2023133667
+      skul_81: 1363361136
+      skul_95: 545763883
+      skul_78: 201417361
+      skul_113: 401497453
+      skul_96: -2120534961
+      skul_64: 1697350795
+      skul_179: -138030220
+      boyScrollingBack_1: 1392232441
+      skul_86: 2120711874
+      skulSpin_5: -180292427
+      boyWalk_6: 1612402882
+      skul_65: 1679637793
+      skul_87: -1803896095
+      skul_170: -1917585737
+      boyWalkBack_2: -1956493311
+      skulKnife_4: -1716610209
+      skul_34: 559391346
+      skul_146: 1527696320
+      skul_133: -933492392
+      skul_72: 1613501504
+      skul_36: 60989841
+      skul_166: 285833203
+      skul_150: -704025298
+      skul_90: -1187337044
+      skulSpin_4: -1344610370
+      skul_160: 1516594908
+      skul_143: -791454764
+      skul_140: -1682266951
+      skul_152: -339997406
+      skul_159: -627402641
+      boyWalk_2: 782249564
+      skul_67: -24372882
+      boyWalk_4: -1945664935
+      skul_157: 1819851809
+      boyScrolling_5: 1428123508
+      skul_131: 1992101942
+      skul_73: -1295394123
+      skul_79: -934037962
+      skul_128: -1930970877
+      skul_147: 597254126
+      skul_139: 1657890797
+      skul_69: 868066301
+      skul_162: 87209619
+      skul_110: 544397556
+      skul_43: 1466444618
+      skul_117: -2115895555
+      skul_144: -1898212118
+      boyWalk_7: -1136768714
+      skul_82: -594111629
+      skul_136: -1851469897
+      DeathScrollItem: 589773754
+      skul_180: 1731389573
+      boyScrolling_2: -1174820545
+      skul_154: 926822465
+      skul_126: -1558626919
+      skul_186: -303973585
+      skul_32: 1625985054
+      skul_171: -1276035680
+      skul_174: 1320530881
+      skul_184: 62033910
+      boyScrollingBack_2: -291508144
+      skul_124: -463093208
+      skulHurt: 993934166
+      skul_163: 137055655
+      skul_66: -1846058884
+      skul_100: -1525544558
+      boyScrollingBack_3: 157852550
+      skul_104: -84409791
+      skul_105: 2074479933
+      skul_63: -1982215771
+      skul_68: 559693581
+      skul_99: -1864175588
+      skul_183: -1208080888
+      boyWalkBack_6: -555463168
+      skul_129: 1410672536
+      skul_173: -1613987947
+      skul_70: -1305009410
+      skul_85: -911612507
+      boyWalkBack_4: -1742434411
+      skul_145: -478063374
+      skul_89: -1184332735
+      skulSpin_6: -938341375
+      skul_97: 1694014136
+      skul_121: 1771686210
+      skul_118: -861739326
+      skul_172: -51866356
+      skulSpin_9: 1406551535
+      skul_155: -578753941
+      skul_112: 854408922
+      boyWalk_3: 1056268860
+      skul_108: 1997231972
+      skul_161: -1402341365
+      skulSpin_3: -673228371
+      skul_107: 1332883324
+      skul_93: -29749149
+      skul_42: 1827693619
+      skulSpin_1: -1743015913
+      skul_39: 57203723
+      skul_156: 1466613653
+      skul_175: -240893484
+      skul_83: -1748012174
+      skul_98: -621911983
+      skul_111: -369715464
+      skul_153: 137956127
+      skul_120: 1805884575
+      skul_115: -557940166
+      skulStand: -207157871
+      boyWalkBack_5: -1242213678
+      skul_164: -1483092028
+      boyScrolling_1: 750450108
+      skul_62: -1440119735
+      skul_114: -1573589631
+      skul_84: 1754593868
+      skul_141: -1368441881
+      skul_106: 1821977261
+      skul_76: 311704779
+      skul_127: 2115812059
+      boyScrolling_3: 1095865280
+      skul_77: -1179073610
+      boyHurt: -1941141370
+      skul_169: 732699630
+      skul_109: -211573459
+      skul_132: 804282596
+      skul_148: 2027594989
+      skul_26: 1412966277
+      skul_40: -1594402171
+      skul_91: 952201958
+      skul_102: 1766214030
+      skulSpin_2: -181647642
+      skul_74: -1821811474
+      skul_178: -1916372221
+      skulSpin_8: 798917
+      boyWalk_5: 2085012173
+      skul_138: 431141909
+      boyWalk_8: -1933089574
+      skul_149: -558456319
+      skul_71: -1796669137
+      boyWalkBack_7: 92223390
+      skulSpin_7: -1539470258
+      skulKnife_3: -1375555158
+      skul_75: -1479515768
+      skul_88: -871785055
+      skul_151: -1658293380
+      skul_182: -1227558775
+      skul_119: 1362834304
+      skulKnife_2: -150460318
+      skul_94: -1591013290
+      skul_21: -1372441878
+      skul_165: -1892517598
+      skul_29: -248288612
+      boyWalkBack_3: -1098025649
+      skul_135: 1755555715
+      skul_123: -1990645184
+      skul_176: 1198964923
+      skulKnife_1: 1020123429
+      skul_142: -1834075728
+      skul_33: 294586393
+      skul_130: -1733413458
+      skul_177: -776414573
+      skul_187: 718975714
+      skul_116: 2009368892
+      skul_185: 342387590
+      skul_38: 1533268950
+      skul_101: -736500483
+      skul_137: 1061883464
+      skul_168: 72888625
+      skul_92: 1033364425
+      skul_25: -665596439
+      skul_122: -164292810
+      skul_22: 1724603702
+      skul_41: 557489204
+      boyWalkBack_1: -145283459
+      skul_181: -1810692411
+      skul_24: 956617770
+      skul_158: 527921853
+      boyWalk_1: -1423590998
+      boyScrollingBack_4: -2002064945
+      skulStandScream: -867389212
+      skulSpin_10: 1663007691
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
