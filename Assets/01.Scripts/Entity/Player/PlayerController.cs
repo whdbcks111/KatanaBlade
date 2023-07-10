@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
         //가능한 상황인지 확인
         if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare,
+            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size * .9f, 0, Vector2.right * _stare,
                 _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
             float targetX;
 
