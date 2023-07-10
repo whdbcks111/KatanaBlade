@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EssenceOfRegenerate : Item
+public class EssenceOfRegeneration : Item
 {
     private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
-    public EssenceOfRegenerate()
+    public EssenceOfRegeneration()
         : base(ItemType.Essence, "재생의 정수",
             string.Format(
                 "사용 시 : HP를 <color=green>10</color> 회복합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
