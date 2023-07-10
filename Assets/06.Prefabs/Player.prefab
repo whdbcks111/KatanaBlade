@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parryRadius: 3
+  _alter: {fileID: 674786857275731064, guid: 1b849c3b84ff39c44a1e32cfdb9e6765, type: 3}
 --- !u!1 &6807012240159033656
 GameObject:
   m_ObjectHideFlags: 0

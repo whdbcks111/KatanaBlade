@@ -16,7 +16,7 @@ public class Player : Entity
         base.Awake();
         Instance = this;
 
-        Inventory.AddItem(new EssenceOfRegenerate());
+        Inventory.AddItem(new EssenceOfRegeneration());
         Inventory.AddItem(new AccessoryTest());
 
         _controller = GetComponent<PlayerController>();
