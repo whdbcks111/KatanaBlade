@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        IsOnGround = false;
         for (int i = 0; i < collision.contactCount; i++)
         {
             if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y)
