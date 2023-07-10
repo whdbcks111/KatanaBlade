@@ -163,4 +163,14 @@ public class EssenceOfLightning : Item
             _line.SetPosition(i, Vector2.zero);
         }
     }
+
+    public override void OnMount()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnUnmount()
+    {
+        throw new System.NotImplementedException();
+    }
 }

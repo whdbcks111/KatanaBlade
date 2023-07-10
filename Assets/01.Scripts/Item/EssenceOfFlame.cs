@@ -16,22 +16,22 @@ public class EssenceOfFlame : Item
     private float _dT;
 
     public EssenceOfFlame()
-        : base(ItemType.Essence, "È­¿°ÀÇ Á¤¼ö",
+        : base(ItemType.Essence, "í™”ì—¼ì˜ ì •ìˆ˜",
             string.Format(
-                "»ç¿ë ½Ã : ÁÖº¯ Àû¿¡°Ô Åõ»çÃ¼¸¦ ³¯·Á <color=red>{0}</color>¸¸Å­ ÇÇÇØ¸¦ ÀÔÈ÷°í <color=red>{1}</color>¸¸Å­ Áö¼ÓÇÇÇØ¸¦ ÀÔÈü´Ï´Ù.\n" +
-                " <color=gray>(Àç»ç¿ë ´ë½Ã±â°£ : {2:0.0}ÃÊ)</color>\n" +
-                "±âº» Áö¼Ó È¿°ú : ÁÖº¯ Àû¿¡°Ô <color=red>{3}</color> ¸¸Å­ Áö¼ÓÇÇÇØ¸¦ ÀÔÈü´Ï´Ù.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
+                "ì‚¬ìš© ì‹œ : ì£¼ë³€ ì ì—ê²Œ íˆ¬ì‚¬ì²´ë¥¼ ë‚ ë ¤ <color=red>{0}</color>ë§Œí¼ í”¼í•´ë¥¼ ì…íˆê³  <color=red>{1}</color>ë§Œí¼ ì§€ì†í”¼í•´ë¥¼ ì…í™ë‹ˆë‹¤.\n" +
+                " <color=gray>(ì¬ì‚¬ìš© ëŒ€ì‹œê¸°ê°„ : {2:0.0}ì´ˆ)</color>\n" +
+                "ê¸°ë³¸ ì§€ì† íš¨ê³¼ : ì£¼ë³€ ì ì—ê²Œ <color=red>{3}</color> ë§Œí¼ ì§€ì†í”¼í•´ë¥¼ ì…í™ë‹ˆë‹¤.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
             Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
     {
     }
 
-    [ContextMenu("¾×Æ¼ºê »ç¿ë")]
+    [ContextMenu("ì•¡í‹°ë¸Œ ì‚¬ìš©")]
     public override void OnActiveUse()
     {
         if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
         _lastUsed = Time.realtimeSinceStartup;
 
-        //Àû ·¹ÀÌ¾î Ãß°¡ÇØ¾ßÇÔ
+        //ì  ë ˆì´ì–´ ì¶”ê°€í•´ì•¼í•¨
         Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
         
         if(enemies.Length > 0)
@@ -48,7 +48,7 @@ public class EssenceOfFlame : Item
             gO.transform.position = Player.Instance.transform.position;
             Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
             StartCoroutine(ChaseTarget(map, gO.transform, enemies[minDist].transform.position, 1f));
-            //Àû¿¡°Ô Åõ»çÃ¼ ¹ß»ç ÄÚµå, ¸ÂÀº Àû¿¡°Ô ´ë¹ÌÁö ÀÔÈ÷´Â ÄÚµå
+            //ì ì—ê²Œ íˆ¬ì‚¬ì²´ ë°œì‚¬ ì½”ë“œ, ë§ì€ ì ì—ê²Œ ëŒ€ë¯¸ì§€ ì…íˆëŠ” ì½”ë“œ
         }
     }
 
@@ -100,5 +100,15 @@ public class EssenceOfFlame : Item
         //        yield return null;
         //    }
         //}
+
+
+    public override void OnMount()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnUnmount()
+    {
+        throw new System.NotImplementedException();
     }
 }

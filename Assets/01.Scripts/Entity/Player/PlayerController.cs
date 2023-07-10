@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
 
     [SerializeField] private float _parryRadius;
-
+    [SerializeField] private GameObject _alter;
 
     public bool IsConscious { get; set; }
     private void Start()
@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        IsOnGround = false;
         for (int i = 0; i < collision.contactCount; i++)
         {
             if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y)
@@ -123,8 +124,10 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerParry()
     {
-        if (_parryCan && Input.GetMouseButtonDown(0))
+        if (_parryCan && Input.GetMouseButtonDown(0) && _player.DashStamina >= _player.Stat.Get(StatType.ParryingCost))
         {
+
+            _animator.SetTrigger("Parry");
             //원 콜라이더 생성
             RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
             //플레이어와 마우스 사이 각도구하기
@@ -174,6 +177,7 @@ public class PlayerController : MonoBehaviour
 
             }
 
+            StartCoroutine(Stun(.6f));
             _player.DashStamina -= _player.Stat.Get(StatType.ParryingCost);
             StartCoroutine(ParryCool());
         }
@@ -189,11 +193,11 @@ public class PlayerController : MonoBehaviour
     private void StaminaGen()
     {
         if (_player.DashStamina < _player.MaxDashStamina)
-            _player.DashStamina += Time.deltaTime * 3;
+            _player.DashStamina += Time.deltaTime * _player.Stat.Get(StatType.DashStaminaRegen);
         else
             _player.DashStamina = _player.MaxDashStamina;
         if (_player.ParryingStamina < _player.MaxParryingStamina)
-            _player.ParryingStamina += Time.deltaTime * 3;
+            _player.ParryingStamina += Time.deltaTime * _player.Stat.Get(StatType.ParryingStaminaRegen);
         else
             _player.ParryingStamina = _player.MaxParryingStamina;
     }
@@ -201,22 +205,53 @@ public class PlayerController : MonoBehaviour
     private void PlayerDash()
     {
         //가능한 상황인지 확인
-        if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift))
+        if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            //레이캐스트 쏘기
-            Debug.DrawRay(transform.position, new Vector3(_stare * _player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
-            //레이어 마스크는 추후에 유니티 엔진에서 추가하고 코드에도 추가
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("DashStop"));
-            //레이캐스트 닿으면
-            if (hit.collider != null)
-                transform.position = new Vector2(hit.transform.position.x + -_stare * .6f, transform.position.y);
-            //아니면 이동
-            else
-                transform.Translate(new Vector2(_stare * _player.Stat.Get(StatType.DashLength), 0));
+            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare, 
+                _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
+            float targetX;
+
+            if(hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
+            else targetX = transform.position.x + _player.Stat.Get(StatType.DashLength) * _stare;
+
+            GenerateAlter(transform.position.x, targetX);
+            transform.position = new(targetX, transform.position.y);
 
             _player.DashStamina -= _player.Stat.Get(StatType.DashCost);
             StartCoroutine(DashCool());
         }
+    }
+    public void GenerateAlter(float startPos, float endPos)
+    {
+        SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
+        float startX = Mathf.Min(startPos, endPos);
+        float endX = Mathf.Max(startPos, endPos);
+        var span = 1.2f;
+        int count = Mathf.FloorToInt((endX - startX) / span);
+        for (int i = 0; i < count; i++)
+        {
+            GameObject copy = Instantiate(_alter, new Vector3(startX + i * span, childRenderer.transform.position.y), _alter.transform.rotation);
+            var renderer = copy.GetComponent<SpriteRenderer>();
+            renderer.flipX = childRenderer.flipX;
+            renderer.sprite = childRenderer.sprite;
+            var col = renderer.color;
+            col.a = Mathf.Clamp01((float)i / count + 0.3f);
+            renderer.color = col;
+            copy.transform.localScale = transform.localScale;
+            StartCoroutine(AlphaDestroy(renderer));
+        }
+    }
+
+    IEnumerator AlphaDestroy(SpriteRenderer renderer)
+    {
+        while(renderer.color.a > 0)
+        {
+            var c = renderer.color;
+            c.a -= Time.deltaTime;
+            renderer.color = c;
+            yield return null;
+        }
+        Destroy(renderer.gameObject);
     }
 
     IEnumerator DashCool()
@@ -229,5 +264,11 @@ public class PlayerController : MonoBehaviour
         _dashCan = true;
     }
 
-
+    IEnumerator Stun(float stunSec)
+    {
+        print("stun");
+        IsConscious = false;
+        yield return new WaitForSeconds(stunSec);
+        IsConscious = true;
+    }
 }
