@@ -13,6 +13,7 @@ public class AccessoryIconUI : MonoBehaviour, IPointerClickHandler, IPointerExit
         if(eventData.button == PointerEventData.InputButton.Right &&
             Player.Instance.Inventory.MountedAccessory is not null)
         {
+            print("RightClicka acc");
             var popup = GameManager.instance.CreateUnequipPopup();
             popup.UnEquipAction = () =>
             {
