@@ -33,13 +33,13 @@ public class SkullMonster : MeleeMonster
     public override void Attack(Entity other)
     {
         other.Damage(10);
-        
     }
 
     public override void Damage(float damage)
     {
         base.Damage(damage);
         _anim.SetTrigger("Hit");
+
     }
 
 }

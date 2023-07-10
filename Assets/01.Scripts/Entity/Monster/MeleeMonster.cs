@@ -19,7 +19,6 @@ public class MeleeMonster : Monster
 
     private void Start()
     {
-        
         Think();
 
         Invoke("Think", 5);
@@ -35,18 +34,18 @@ public class MeleeMonster : Monster
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+        Chacing();
         if (!_inRange)
         {
             Chacing();
         }
         MonsterMove();
+
     }
 
-    // 몬스터 움직임 코드
     protected virtual void MonsterMove()
     {
         MovingVelocity = _isAttacking ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
-        print("Base : " + MovingVelocity);
 
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
@@ -66,7 +65,7 @@ public class MeleeMonster : Monster
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
     }
 
-    // 몬스터가 플레이어 쫒도록 하는 코드
+    
     private void Chacing()
     {
         var dir = (Player.Instance.transform.position - transform.position);
@@ -78,36 +77,35 @@ public class MeleeMonster : Monster
             _nextMove = dir.x > 0 ? 1 : -1;
         }
     }
-
+    
     private void Think()
     {
         _nextMove = Random.Range(-1, 2);
     }
 
-    // 몬스터가 melee에 닿으면 공격하는 코드
     private void OnTriggerStay2D(Collider2D other)
     {
 
-        if (other.TryGetComponent(out Player p))
-        {
-            _inRange = true;
-            StartAttack(p);
-        }
+            if (other.TryGetComponent(out Player p))
+            {
+                _inRange = true;
+                StartAttack(p);
+            }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        
+
         if (other.TryGetComponent(out Player p))
         {
             _inRange = false;
         }
 
     }
-                                                
+
     public virtual void StartAttack(Player other)
     {
-        
+
         if (_isAttacking) return;
         _isAttacking = true;
 
@@ -115,20 +113,20 @@ public class MeleeMonster : Monster
             sco = StartCoroutine(CountAttackDelay(other));
     }
 
-    // 몬스터의 공격 딜레이 코드
     IEnumerator CountAttackDelay(Player other)
     {
-      //  print("attackStart");
+        //  print("attackStart");
         yield return new WaitForSeconds(0.4f);
 
-        if(_inRange) Attack(other);
+        Attack(other);
+        if (_inRange) 
         print(other.HP);
-      //  print("Attacked");
-        yield return new WaitForSeconds(0.6f);  
+        //  print("Attacked");
+        yield return new WaitForSeconds(0.6f);
 
         _isAttacking = false;
-        sco = null;
-     //   print("attackEnd");
 
+        sco = null;
+        //   print("attackEnd");
     }
 }
