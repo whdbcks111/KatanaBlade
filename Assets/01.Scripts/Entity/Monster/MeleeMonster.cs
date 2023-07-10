@@ -7,12 +7,15 @@ using Random = UnityEngine.Random;
 
 public class MeleeMonster : Monster
 {
+    protected Coroutine sco = null;
 
-    private bool _isAttacking;
+    [SerializeField] protected bool _isAttacking;
     protected int _nextMove;
     private float _changeTimer = 0f;
 
     public bool CanParrying { get { return _isAttacking; } }
+
+    private bool _inRange;
 
     private void Start()
     {
@@ -32,6 +35,10 @@ public class MeleeMonster : Monster
     {
         base.FixedUpdate();
         Chacing();
+        if (!_inRange)
+        {
+            Chacing();
+        }
         MonsterMove();
 
     }
@@ -58,6 +65,7 @@ public class MeleeMonster : Monster
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
     }
 
+    
     private void Chacing()
     {
         var dir = (Player.Instance.transform.position - transform.position);
@@ -69,39 +77,56 @@ public class MeleeMonster : Monster
             _nextMove = dir.x > 0 ? 1 : -1;
         }
     }
-
+    
     private void Think()
     {
         _nextMove = Random.Range(-1, 2);
     }
 
-
-
     private void OnTriggerStay2D(Collider2D other)
     {
-        if(other.TryGetComponent(out Player p))
+
+            if (other.TryGetComponent(out Player p))
+            {
+                _inRange = true;
+                StartAttack(p);
+            }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+
+        if (other.TryGetComponent(out Player p))
         {
-            StartAttack(p);
+            _inRange = false;
         }
+
     }
 
     public virtual void StartAttack(Player other)
     {
+
         if (_isAttacking) return;
         _isAttacking = true;
-        StartCoroutine(CountAttackDelay(other));
+
+        if (sco is null)
+            sco = StartCoroutine(CountAttackDelay(other));
     }
 
     IEnumerator CountAttackDelay(Player other)
     {
+        //  print("attackStart");
         yield return new WaitForSeconds(0.4f);
 
         Attack(other);
-
+        if (_inRange) 
+        print(other.HP);
+        //  print("Attacked");
         yield return new WaitForSeconds(0.6f);
-        
+
         _isAttacking = false;
 
-
+        sco = null;
+        //   print("attackEnd");
     }
 }
