@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,10 +13,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tilemap _targetTilemap;
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
+    [SerializeField] TileBase _wallTile, _platformTile;
 
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
 
     private readonly Dictionary<Vector2Int, StageShape> _map = new();
+
+    private readonly HashSet<Vector2Int> _usedPositions = new();
 
     private void Awake()
     {
@@ -36,13 +40,9 @@ public class MapGenerator : MonoBehaviour
         Generate();
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) Generate();
-    }
-
     public void Generate()
     {
+        _usedPositions.Clear();
         _targetTilemap.ClearAllTiles();
         _map.Clear();
 
@@ -66,8 +66,7 @@ public class MapGenerator : MonoBehaviour
             if (curShape.IsRightOpened && !_map.ContainsKey(curPos + Vector2Int.right)) 
                 allowDirections.Add(Vector2Int.right);
 
-            int maxTransition = 1 + UnityEngine.Random.Range(0, allowDirections.Count);
-            for (int i = 0; i < maxTransition && allowDirections.Count > 0; i++)
+            for (int i = 0; allowDirections.Count > 0; i++)
             {
                 var idx = UnityEngine.Random.Range(0, allowDirections.Count);
                 var direction = allowDirections[idx];
@@ -83,6 +82,17 @@ public class MapGenerator : MonoBehaviour
 
                 CreateMapTiles(curPos + direction, targetShapes[UnityEngine.Random.Range(0, targetShapes.Count)]);
                 queue.Enqueue(curPos + direction);
+            } 
+        }
+
+        foreach(var pos in _map.Keys)
+        {
+            for(int i = -1; i <= 1; i++)
+            {
+                for(int j = -1; j <= 1; j++)
+                {
+                    if (i != 0 || j != 0) CreateWalls(pos + new Vector2Int(i, j));
+                }
             }
         }
     }
@@ -90,6 +100,7 @@ public class MapGenerator : MonoBehaviour
     public void CreateMapTiles(Vector2Int pos, StageShape shape)
     {
         _map[pos] = shape;
+        _usedPositions.Add(pos);
 
         Vector3Int mapCenterPos = (Vector3Int)pos * MapSize;
 
@@ -97,10 +108,27 @@ public class MapGenerator : MonoBehaviour
         {
             for (int j = -MapSize / 2; j < MapSize / 2; ++j)
             {
-                _targetTilemap.SetTile(mapCenterPos + Vector3Int.right * i + Vector3Int.up * j,
-                    shape.ShapeMap.GetTile(Vector3Int.right * i + Vector3Int.up * j));
+                var offset = Vector3Int.right * i + Vector3Int.up * j;
+                _targetTilemap.SetTile(mapCenterPos + offset, shape.ShapeMap.HasTile(offset) ? _platformTile : null);
+
             }
         } 
+    }
+
+    public void CreateWalls(Vector2Int pos)
+    {
+        if (_usedPositions.Contains(pos)) return;
+        _usedPositions.Add(pos);
+        Vector3Int mapCenterPos = (Vector3Int)pos * MapSize;
+
+        for (int i = -MapSize / 2; i < MapSize / 2; ++i)
+        {
+            for (int j = -MapSize / 2; j < MapSize / 2; ++j)
+            {
+                var p = mapCenterPos + Vector3Int.right * i + Vector3Int.up * j;
+                _targetTilemap.SetTile(p, _wallTile);
+            }
+        }
     }
 }
 

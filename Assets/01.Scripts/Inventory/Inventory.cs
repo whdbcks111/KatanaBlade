@@ -1,4 +1,6 @@
 
+using static UnityEditor.Progress;
+
 public class Inventory
 {
     public static readonly int InventorySpace = 20;
@@ -41,12 +43,14 @@ public class Inventory
 
     public void UnmountAccessory()
     {
+        MountedAccessory.OnUnmount();
         AddItem(MountedAccessory);
         MountedAccessory = null;
     }
 
     public void UnmountEssence()
     {
+        MountedEssence.OnUnmount();
         AddItem(MountedEssence);
         MountedEssence = null;
     }
@@ -67,6 +71,8 @@ public class Inventory
                 MountedEssence = item;
                 break;
         }
+
+        item.OnMount();
 
         _contents[index] = null;
     }
