@@ -31,8 +31,6 @@ public class BackgroundFit : MonoBehaviour
         var spriteRatio = boundsSize.x / boundsSize.y;
         var screenRatio = (rightTop.x - leftBottom.x) / (rightTop.y - leftBottom.y);
 
-        print(spriteRatio);
-
         _spriteRenderer.gameObject.transform.position = ((rightTop + leftBottom) / 2f) * Vector2.one;
 
         if (screenRatio > spriteRatio)
