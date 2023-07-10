@@ -12,6 +12,9 @@ public class Player : Entity
     {
         base.Awake();
         Instance = this;
+
+        Inventory.AddItem(new EssenceOfRegenerate());
+        Inventory.AddItem(new AccessoryTest());
     }
 
     private void OnDestroy()

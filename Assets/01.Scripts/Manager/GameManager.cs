@@ -16,6 +16,16 @@ public class GameManager : MonoBehaviour
     public GameObject GameoverUI; // 게임 오버시 활성화 할 UI 게임 오브젝트
     public float LimitTime;
     public TextMeshProUGUI TimerText;
+    public GameObject InventoryUI;
+    public Canvas Canvas;
+
+    [Header("ItemPopup")]
+    public GameObject ItemPopup;
+    public Image ItemPopupIcon;
+    public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
+
+    private MonoBehaviour _currentShowingUI;
+    private GameObject _openedPopup;
 
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
@@ -39,13 +49,68 @@ public class GameManager : MonoBehaviour
         }
 
         Screen.SetResolution(1920, 1080, true);
+        //SceneManager.sceneLoaded += OnSceneLoadedEvent;
     }
+
+    private void OnSceneLoadedEvent(Scene scene, LoadSceneMode mode)
+    {
+        //if(scene.name == "메인 씬 Timer")
+        //{
+        //    ///
+        //}
+    }
+
+
 
     //시간 증가시키는 메서드 
     void Start()
     {
-        TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-        StartCoroutine(StartTimer());
+        //TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
+        //StartCoroutine(StartTimer());
+
+        ItemPopup.SetActive(false);
+    }
+
+    public void ShowItemPopup(MonoBehaviour ui, Sprite icon, string name, string desc)
+    {
+        ItemPopup.SetActive(true);
+        ItemPopupIcon.sprite = icon;
+        ItemPopupDesc.SetText(desc);
+        ItemPopupName.SetText(name);
+        _currentShowingUI = ui;
+    }
+    public void HideItemPopup(MonoBehaviour itemIconUI)
+    {
+        if (_currentShowingUI == itemIconUI)
+            ItemPopup.SetActive(false);
+    }
+
+    public EquipPopup CreateEquipPopup()
+    {
+        if (_openedPopup != null) Destroy(_openedPopup);
+        var position = Input.mousePosition;
+        var popup = Instantiate(Resources.Load<EquipPopup>("UI/EquipPopup"), Canvas.transform);
+        popup.transform.position = position;
+        _openedPopup = popup.gameObject;
+
+        return popup;
+    }
+
+    public void ClosePopup()
+    {
+        Destroy(_openedPopup);
+        _openedPopup = null;
+    }
+
+    public UnequipPopup CreateUnequipPopup()
+    {
+        if (_openedPopup != null) Destroy(_openedPopup);
+        var position = Input.mousePosition;
+        var popup = Instantiate(Resources.Load<UnequipPopup>("UI/UnequipPopup"), Canvas.transform);
+        popup.transform.position = position;
+        _openedPopup = popup.gameObject;
+
+        return popup;
     }
 
     private IEnumerator StartTimer()
@@ -66,6 +131,12 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        // 인벤토리 키다운 토글
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            print("토글");
+            InventoryUI.SetActive(!InventoryUI.activeSelf);
+        }
         
     }
     // 플레이어 캐릭터가 사망시 게임 오버를 실행하는 메서드
@@ -74,6 +145,7 @@ public class GameManager : MonoBehaviour
         IsGameover = true;
         GameoverUI.SetActive(true);
     }
+
 
 
 
