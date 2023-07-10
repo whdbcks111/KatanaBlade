@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
             }
 
             StartCoroutine(Stun(.6f));
-            _player.DashStamina -= _player.Stat.Get(StatType.ParryingCost);
+            _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
             StartCoroutine(ParryCool());
         }
     }
@@ -207,11 +207,11 @@ public class PlayerController : MonoBehaviour
         //가능한 상황인지 확인
         if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare, 
+            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare,
                 _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
             float targetX;
 
-            if(hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
+            if (hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
             else targetX = transform.position.x + _player.Stat.Get(StatType.DashLength) * _stare;
 
             GenerateAlter(transform.position.x, targetX);
@@ -224,13 +224,13 @@ public class PlayerController : MonoBehaviour
     public void GenerateAlter(float startPos, float endPos)
     {
         SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
-        float startX = Mathf.Min(startPos, endPos);
-        float endX = Mathf.Max(startPos, endPos);
         var span = 1.2f;
-        int count = Mathf.FloorToInt((endX - startX) / span);
+        int count = Mathf.FloorToInt(Mathf.Abs(endPos - startPos) / span);
+        List<SpriteRenderer> renders = new List<SpriteRenderer>();
         for (int i = 0; i < count; i++)
         {
-            GameObject copy = Instantiate(_alter, new Vector3(startX + i * span, childRenderer.transform.position.y), _alter.transform.rotation);
+
+            GameObject copy = Instantiate(_alter, new Vector3(startPos + _stare * i * span, childRenderer.transform.position.y), _alter.transform.rotation);
             var renderer = copy.GetComponent<SpriteRenderer>();
             renderer.flipX = childRenderer.flipX;
             renderer.sprite = childRenderer.sprite;
@@ -238,13 +238,14 @@ public class PlayerController : MonoBehaviour
             col.a = Mathf.Clamp01((float)i / count + 0.3f);
             renderer.color = col;
             copy.transform.localScale = transform.localScale;
+            renders.Add(renderer);
             StartCoroutine(AlphaDestroy(renderer));
         }
     }
 
     IEnumerator AlphaDestroy(SpriteRenderer renderer)
     {
-        while(renderer.color.a > 0)
+        while (renderer.color.a > 0)
         {
             var c = renderer.color;
             c.a -= Time.deltaTime;
