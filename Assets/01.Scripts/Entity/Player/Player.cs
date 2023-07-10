@@ -41,11 +41,5 @@ public class Player : Entity
             _animator.SetBool("Dead", true);
         }
     }
-    IEnumerator Stun(float stunSec)
-    {
-        _controller.IsConscious = false;
-        yield return new WaitForSeconds(stunSec);
-        _controller.IsConscious = true;
-    }
 
 }
