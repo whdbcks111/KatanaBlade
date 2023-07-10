@@ -1,0 +1,32 @@
+@using Umbraco.Forms.Mvc.Models
+@model Umbraco.Forms.Mvc.Models.FieldViewModel
+@{
+    var formModel = (Umbraco.Forms.Mvc.Models.FormViewModel)ViewData["Form"];
+}
+
+@foreach (var formPage in formModel.Pages)
+{
+    var html = FieldHtml(formPage);
+    if( !String.IsNullOrEmpty(html.ToString()) )
+    { 
+        <div>
+            @html
+        </div>
+    }
+}
+
+@helper FieldHtml(PageViewModel formPage) { 
+    foreach (var fs in formPage.Fieldsets)
+    {
+        foreach (var c in fs.Containers)
+        {
+            foreach (var f in c.Fields)
+            {
+                if (!String.IsNullOrEmpty(f.Value))
+                {
+                    <div><strong>@f.Caption:</strong> @f.Value</div>
+                }
+            }
+        }
+    }
+}
