@@ -16,5 +16,13 @@ public class FlyingProjectile : MonoBehaviour
         position = Vector2.MoveTowards(position, nextPos, Time.deltaTime * 6);
         transform.position = position;
     }
-    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.TryGetComponent(out Entity entity)) return;
+        
+        entity.Damage(10f);
+        Destroy(this.gameObject, 0f);
+            
+        ParticleManager.Instance.SpawnParticle(transform.position, "Smoke");
+    }
 }

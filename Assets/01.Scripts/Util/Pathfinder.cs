@@ -38,8 +38,8 @@ public static class Pathfinder
 
         for (int i = 0; i < 2; i++)
         {
-            paths.TryPop(out Path p);
-            next = p.Pos + Vector2.one / 2f;
+            if(paths.TryPop(out Path p))
+                next = p.Pos + Vector2.one / 2f;
         }
 
         if ((next - target).sqrMagnitude < 1) next = target;
