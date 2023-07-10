@@ -49,4 +49,14 @@ public class EssenceOfCloud : Item
             _dT = 0;
         }
     }
+
+    public override void OnMount()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnUnmount()
+    {
+        throw new System.NotImplementedException();
+    }
 }
