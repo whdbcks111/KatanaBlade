@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public abstract class Item
+public abstract class Item : MonoBehaviour
 {
     public ItemType Type { get; protected set; }
     public string Name { get; protected set; }
@@ -18,6 +18,8 @@ public abstract class Item
         Icon = icon;
     }
 
+    public abstract void OnMount();
+    public abstract void OnUnmount();
     public abstract void OnActiveUse();
     public abstract void PassiveUpdate();
 }

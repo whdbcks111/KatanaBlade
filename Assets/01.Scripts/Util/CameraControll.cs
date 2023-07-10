@@ -7,9 +7,15 @@ public class CameraControll : MonoBehaviour
     [SerializeField] private Transform _followTarget;
     public bool IsMoveRestricted = false;
 
+    private Vector3 _vel;
     private Vector3 _targetPosition, _shakeOffset;
 
-    private void Update()
+    private void Awake()
+    {
+        _targetPosition = transform.position;
+    }
+
+    private void FixedUpdate()
     {
         if (IsMoveRestricted) RestrictMove();
         else Follow();
@@ -25,6 +31,8 @@ public class CameraControll : MonoBehaviour
     public void Follow()
     {
         // _followTarget 따라가는 코드 구현, transform.position을 수정하지 말고 _targetPosition을 수정할 것
+        _targetPosition = Vector3.SmoothDamp((Vector2)_targetPosition, _followTarget.position, 
+            ref _vel, 0.2f) + Vector3.forward * transform.position.z;
     }
 
     public void RestrictMove()

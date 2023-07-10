@@ -19,7 +19,7 @@ public class EssenceOfDarkness : Item
         : base(ItemType.Essence, "암흑의 정수",
             string.Format(
                 "사용 시 : 주변을 느려지게 하는 영역을 전개합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
-                "기본 지속 효과 : 1초당 HP를 <color=green>2</color> 회복합니다.", Cooldown),
+                "기본 지속 효과 : -", Cooldown),
             Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
     {
     }
@@ -106,5 +106,15 @@ public class EssenceOfDarkness : Item
 
         Object.Destroy(effect);
         //
+    }
+
+    public override void OnMount()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnUnmount()
+    {
+        throw new System.NotImplementedException();
     }
 }
