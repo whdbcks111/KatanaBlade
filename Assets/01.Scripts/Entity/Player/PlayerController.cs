@@ -22,8 +22,12 @@ public class PlayerController : MonoBehaviour
 
 
     [SerializeField] private float _parryRadius;
+
+
+    public bool IsConscious { get; set; }
     private void Start()
     {
+        IsConscious = true;
         _animator = GetComponentInChildren<Animator>();
         _player = GetComponent<Player>();
         _rigid = GetComponent<Rigidbody2D>();
@@ -35,13 +39,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        PlayerJump();
-        StaminaGen();
-        PlayerParry();
-        PlayerDash();
-        PlayerMove();
+        if (IsConscious)
+        {
+            PlayerJump();
+            StaminaGen();
+            PlayerParry();
+            PlayerDash();
+            PlayerMove();
 
-        FallingAnim();
+            FallingAnim();
+        }
     }
 
     // 플레이어 움직임 구현
@@ -137,7 +144,7 @@ public class PlayerController : MonoBehaviour
                     if (Mathf.Abs(parryDirection - MonsterDirection) < 25)
                     {
                         //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                        if (t.TryGetComponent(out MeleeMonster m)/*&&m._isattac*/)
+                        if (t.TryGetComponent(out MeleeMonster m) && m.CanParrying)
                         {
                             //패링 성공 이후 공격
                             t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
@@ -221,4 +228,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(_player.Stat.Get(StatType.DashCooldown));
         _dashCan = true;
     }
+
+
 }
