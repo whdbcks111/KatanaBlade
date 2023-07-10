@@ -8,13 +8,11 @@ public class Player : Entity
 
     public readonly Inventory Inventory = new();
 
-    private Animator _animator;
-    private PlayerController _controller;
-
     protected override void Awake()
     {
         base.Awake();
         Instance = this;
+
 
         Inventory.AddItem(new EssenceOfRegeneration());
         Inventory.AddItem(new AccessoryTest());
@@ -47,5 +45,4 @@ public class Player : Entity
         yield return new WaitForSeconds(stunSec);
         _controller.IsConscious = true;
     }
-
 }
