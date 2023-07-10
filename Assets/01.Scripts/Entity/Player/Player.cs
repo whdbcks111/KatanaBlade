@@ -8,13 +8,13 @@ public class Player : Entity
 
     public readonly Inventory Inventory = new();
 
-    private Animator _animator;
     private PlayerController _controller;
-
+    private Animator _animator;
     protected override void Awake()
     {
         base.Awake();
         Instance = this;
+
 
         Inventory.AddItem(new EssenceOfRegeneration());
         Inventory.AddItem(new AccessoryTest());
@@ -41,5 +41,4 @@ public class Player : Entity
             _animator.SetBool("Dead", true);
         }
     }
-
 }
