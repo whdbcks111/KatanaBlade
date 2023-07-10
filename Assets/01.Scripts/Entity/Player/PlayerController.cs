@@ -126,6 +126,8 @@ public class PlayerController : MonoBehaviour
     {
         if (_parryCan && Input.GetMouseButtonDown(0) && _player.DashStamina >= _player.Stat.Get(StatType.ParryingCost))
         {
+
+            _animator.SetTrigger("Parry");
             //원 콜라이더 생성
             RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
             //플레이어와 마우스 사이 각도구하기
@@ -206,7 +208,7 @@ public class PlayerController : MonoBehaviour
         {
             //레이캐스트 쏘기
             Debug.DrawRay(transform.position, new Vector3(_stare * _player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("DashStop"));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
             //레이캐스트 닿으면
             if (hit.collider != null)
             {
