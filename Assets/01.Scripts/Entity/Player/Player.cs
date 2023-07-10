@@ -33,6 +33,7 @@ public class Player : Entity
 
         if (!_controller.IsConscious)
             _animator.SetTrigger("Hit");
+        
         if (HP <= 0)
         {
             StopAllCoroutines();
