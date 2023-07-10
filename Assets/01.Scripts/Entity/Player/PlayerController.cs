@@ -233,11 +233,13 @@ public class PlayerController : MonoBehaviour
     {
         float startX = Mathf.Min(startPos.x, endPos.x);
         float endX = Mathf.Max(startPos.x, endPos.x);
-        for (float x = startX; x < endX; x += 0.5f)
+        SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
+        for (float x = startX; x < endX; x += 1.2f)
         {
-            GameObject copy = Instantiate(_alter, new Vector3(x, startPos.y - 0.977f), _alter.transform.rotation);
-            copy.GetComponent<SpriteRenderer>().flipX = GetComponentInChildren<SpriteRenderer>().flipX;
-            copy.GetComponent<SpriteRenderer>().sprite = GetComponentInChildren<SpriteRenderer>().sprite;
+            GameObject copy = Instantiate(_alter, new Vector3(x, childRenderer.transform.position.y), _alter.transform.rotation);
+            copy.GetComponent<SpriteRenderer>().flipX = childRenderer.flipX;
+            copy.GetComponent<SpriteRenderer>().sprite = childRenderer.sprite;
+            copy.transform.localScale = transform.localScale;
             Destroy(copy, 1.0f);
         }
     }
