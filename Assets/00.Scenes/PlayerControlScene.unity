@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 1327101033}
   - component: {fileID: 1327101032}
   - component: {fileID: 1327101031}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Triangle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1365,7 +1365,7 @@ PrefabInstance:
     - target: {fileID: 6807012240091874656, guid: 4436442126226bc478378c142f33bb19, type: 3}
       propertyPath: _alter
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 674786857275731064, guid: 1b849c3b84ff39c44a1e32cfdb9e6765, type: 3}
     - target: {fileID: 6807012240091874659, guid: 4436442126226bc478378c142f33bb19, type: 3}
       propertyPath: m_RootOrder
       value: 2

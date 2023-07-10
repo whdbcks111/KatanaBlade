@@ -31,7 +31,7 @@ public class Player : Entity
     {
         HP -= damageAmount;
 
-        if (!_controller.IsConscious)
+        if (_controller.IsConscious)
             _animator.SetTrigger("Hit");
         
         if (HP <= 0)
