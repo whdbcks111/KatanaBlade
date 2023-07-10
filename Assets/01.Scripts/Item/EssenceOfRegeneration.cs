@@ -3,17 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EssenceOfRegenerate : Item
+public class EssenceOfRegeneration : Item
 {
     private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
-    public EssenceOfRegenerate() 
-        : base(ItemType.Essence, "????? ????", 
+    public EssenceOfRegeneration()
+        : base(ItemType.Essence, "ì¬ìƒì˜ ì •ìˆ˜",
             string.Format(
-                "»ç¿ë ½Ã : HP¸¦ <color=green>10</color> È¸º¹ÇÕ´Ï´Ù. <color=#CCCCCC>(Àç»ç¿ë ´ë½Ã±â°£ : {0:0.0}ÃÊ)</color>\n" +
-                "±âº» Áö¼Ó È¿°ú : 1ÃÊ´ç HP¸¦ <color=green>2</color> È¸º¹ÇÕ´Ï´Ù.", Cooldown), 
-            Resources.Load<Sprite>("Item/Icon/Essence/Essence_4"))
+                "ì‚¬ìš© ì‹œ : HPë¥¼ <color=green>10</color> íšŒë³µí•©ë‹ˆë‹¤. <color=gray>(ì¬ì‚¬ìš© ëŒ€ì‹œê¸°ê°„ : {0:0.0}ì´ˆ)</color>\n" +
+                "ê¸°ë³¸ ì§€ì† íš¨ê³¼ : 1ì´ˆë‹¹ HPë¥¼ <color=green>2</color> íšŒë³µí•©ë‹ˆë‹¤.", Cooldown),
+            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+
     {
     }
 
@@ -30,3 +31,4 @@ public class EssenceOfRegenerate : Item
         Player.Instance.Heal(Time.deltaTime * 2);
     }
 }
+
