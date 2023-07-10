@@ -177,6 +177,7 @@ public class PlayerController : MonoBehaviour
 
             }
 
+            StartCoroutine(Stun(.6f));
             _player.DashStamina -= _player.Stat.Get(StatType.ParryingCost);
             StartCoroutine(ParryCool());
         }
@@ -251,5 +252,11 @@ public class PlayerController : MonoBehaviour
         _dashCan = true;
     }
 
-
+    IEnumerator Stun(float stunSec)
+    {
+        print("stun");
+        IsConscious = false;
+        yield return new WaitForSeconds(stunSec);
+        IsConscious = true;
+    }
 }
