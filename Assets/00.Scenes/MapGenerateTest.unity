@@ -224,8 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cca9808d37e3d8429a0e500f7f87ba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Jump: 45
-  _MaxSpeed: 10
   _parryRadius: 0
 --- !u!114 &32961961
 MonoBehaviour:
@@ -239,6 +237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46e20b1bd23eed447935c1837271ce1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MovingVelocity: 0
+  KnockbackVelocity: 0
 --- !u!70 &32961962
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
