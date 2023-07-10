@@ -12,10 +12,37 @@ public class Player : Entity
     {
         base.Awake();
         Instance = this;
+
+
+        Inventory.AddItem(new EssenceOfRegeneration());
+        Inventory.AddItem(new AccessoryTest());
+
+        _controller = GetComponent<PlayerController>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void OnDestroy()
     {
         Instance = null;
+    }
+    public override void Damage(float damageAmount)
+    {
+        HP -= damageAmount;
+
+        if (_controller.IsConscious)
+            _animator.SetTrigger("Hit");
+        
+        if (HP <= 0)
+        {
+            StopAllCoroutines();
+            _controller.IsConscious = false;
+            _animator.SetBool("Dead", true);
+        }
+    }
+    IEnumerator Stun(float stunSec)
+    {
+        _controller.IsConscious = false;
+        yield return new WaitForSeconds(stunSec);
+        _controller.IsConscious = true;
     }
 }
