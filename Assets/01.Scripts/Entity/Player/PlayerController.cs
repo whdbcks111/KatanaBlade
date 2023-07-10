@@ -207,8 +207,8 @@ public class PlayerController : MonoBehaviour
         //가능한 상황인지 확인
         if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            var pos = new Vector2(transform.position.x, _collider2D.bounds.min.y + 0.1f);
-            var hit = Physics2D.Raycast(pos, Vector2.right * _stare, _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
+            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare, 
+                _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
             float targetX;
 
             if(hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
@@ -223,17 +223,35 @@ public class PlayerController : MonoBehaviour
     }
     public void GenerateAlter(float startPos, float endPos)
     {
+        SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
         float startX = Mathf.Min(startPos, endPos);
         float endX = Mathf.Max(startPos, endPos);
-        SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
-        for (float x = startX; x < endX; x += 1.2f)
+        var span = 1.2f;
+        int count = Mathf.FloorToInt((endX - startX) / span);
+        for (int i = 0; i < count; i++)
         {
-            GameObject copy = Instantiate(_alter, new Vector3(x, childRenderer.transform.position.y), _alter.transform.rotation);
-            copy.GetComponent<SpriteRenderer>().flipX = childRenderer.flipX;
-            copy.GetComponent<SpriteRenderer>().sprite = childRenderer.sprite;
+            GameObject copy = Instantiate(_alter, new Vector3(startX + i * span, childRenderer.transform.position.y), _alter.transform.rotation);
+            var renderer = copy.GetComponent<SpriteRenderer>();
+            renderer.flipX = childRenderer.flipX;
+            renderer.sprite = childRenderer.sprite;
+            var col = renderer.color;
+            col.a = Mathf.Clamp01((float)i / count + 0.3f);
+            renderer.color = col;
             copy.transform.localScale = transform.localScale;
-            Destroy(copy, 1.0f);
+            StartCoroutine(AlphaDestroy(renderer));
         }
+    }
+
+    IEnumerator AlphaDestroy(SpriteRenderer renderer)
+    {
+        while(renderer.color.a > 0)
+        {
+            var c = renderer.color;
+            c.a -= Time.deltaTime;
+            renderer.color = c;
+            yield return null;
+        }
+        Destroy(renderer.gameObject);
     }
 
     IEnumerator DashCool()
