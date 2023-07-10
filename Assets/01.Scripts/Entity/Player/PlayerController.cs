@@ -207,32 +207,24 @@ public class PlayerController : MonoBehaviour
         //가능한 상황인지 확인
         if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            //레이캐스트 쏘기
-            Debug.DrawRay(transform.position, new Vector3(_stare * _player.Stat.Get(StatType.DashLength), 0, 0), Color.green, 0.7f);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(_stare, 0), _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
-            //레이캐스트 닿으면
-            if (hit.collider != null)
-            {
-                //원래 위치에 잔상 남기기
-                GenerateAlter(transform.position, new Vector2(hit.transform.position.x + -_stare * GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y));
-                transform.position = new Vector2(hit.transform.position.x + -_stare * GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
-            }
-            //아니면 이동
-            else
-            {
-                //원래 위치에 잔상 남기기
-                GenerateAlter(transform.position, new Vector2(transform.position.x + _stare * _player.Stat.Get(StatType.DashLength), transform.position.y));
-                transform.Translate(new Vector2(_stare * _player.Stat.Get(StatType.DashLength), 0));
-            }
+            var pos = new Vector2(transform.position.x, _collider2D.bounds.min.y + 0.1f);
+            var hit = Physics2D.Raycast(pos, Vector2.right * _stare, _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
+            float targetX;
+
+            if(hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
+            else targetX = transform.position.x + _player.Stat.Get(StatType.DashLength) * _stare;
+
+            GenerateAlter(transform.position.x, targetX);
+            transform.position = new(targetX, transform.position.y);
 
             _player.DashStamina -= _player.Stat.Get(StatType.DashCost);
             StartCoroutine(DashCool());
         }
     }
-    public void GenerateAlter(Vector3 startPos, Vector3 endPos)
+    public void GenerateAlter(float startPos, float endPos)
     {
-        float startX = Mathf.Min(startPos.x, endPos.x);
-        float endX = Mathf.Max(startPos.x, endPos.x);
+        float startX = Mathf.Min(startPos, endPos);
+        float endX = Mathf.Max(startPos, endPos);
         SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
         for (float x = startX; x < endX; x += 1.2f)
         {

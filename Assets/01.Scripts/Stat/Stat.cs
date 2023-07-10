@@ -18,7 +18,7 @@ public class Stat
             [StatType.JumpForce] = 24f,
             [StatType.ParryingAttackForce] = 10f,
             [StatType.MoveSpeed] = 12f,
-            [StatType.DashLength] = 4f,
+            [StatType.DashLength] = 10f,
             [StatType.DashCost] = 30f,
             [StatType.ParryingCost] = 30f,
             [StatType.LowParryingFeedback] = 1f,
