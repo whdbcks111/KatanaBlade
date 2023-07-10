@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class EssenceOfFlame : Item
 {
-    public float ActiveRadius = 10;
+    public float ActiveRadius = 15;
     private static readonly float ActiveDamage = 5f;
 
     public float PassiveTick;
@@ -15,22 +16,23 @@ public class EssenceOfFlame : Item
     private float _dT;
 
     public EssenceOfFlame()
-        : base(ItemType.Essence, "È­¿°ÀÇ Á¤¼ö",
+        : base(ItemType.Essence, "í™”ì—¼ì˜ ì •ìˆ˜",
             string.Format(
-                "»ç¿ë ½Ã : ÁÖº¯ Àû¿¡°Ô Åõ»çÃ¼¸¦ ³¯·Á <color=red>{0}</color>¸¸Å­ ÇÇÇØ¸¦ ÀÔÈ÷°í <color=red>{1}</color>¸¸Å­ Áö¼ÓÇÇÇØ¸¦ ÀÔÈü´Ï´Ù.\n" +
-                " <color=gray>(Àç»ç¿ë ´ë½Ã±â°£ : {2:0.0}ÃÊ)</color>\n" +
-                "±âº» Áö¼Ó È¿°ú : ÁÖº¯ Àû¿¡°Ô <color=red>{3}</color> ¸¸Å­ Áö¼ÓÇÇÇØ¸¦ ÀÔÈü´Ï´Ù.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
+                "ì‚¬ìš© ì‹œ : ì£¼ë³€ ì ì—ê²Œ íˆ¬ì‚¬ì²´ë¥¼ ë‚ ë ¤ <color=red>{0}</color>ë§Œí¼ í”¼í•´ë¥¼ ì…íˆê³  <color=red>{1}</color>ë§Œí¼ ì§€ì†í”¼í•´ë¥¼ ì…í™ë‹ˆë‹¤.\n" +
+                " <color=gray>(ì¬ì‚¬ìš© ëŒ€ì‹œê¸°ê°„ : {2:0.0}ì´ˆ)</color>\n" +
+                "ê¸°ë³¸ ì§€ì† íš¨ê³¼ : ì£¼ë³€ ì ì—ê²Œ <color=red>{3}</color> ë§Œí¼ ì§€ì†í”¼í•´ë¥¼ ì…í™ë‹ˆë‹¤.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
             Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
     {
     }
 
+    [ContextMenu("ì•¡í‹°ë¸Œ ì‚¬ìš©")]
     public override void OnActiveUse()
     {
         if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
         _lastUsed = Time.realtimeSinceStartup;
 
-        //Àû ·¹ÀÌ¾î Ãß°¡ÇØ¾ßÇÔ
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, PassiveRadius);
+        //ì  ë ˆì´ì–´ ì¶”ê°€í•´ì•¼í•¨
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
         
         if(enemies.Length > 0)
         {
@@ -42,8 +44,11 @@ public class EssenceOfFlame : Item
                     minDist = i;
                 }
             }
-
-            //Àû¿¡°Ô Åõ»çÃ¼ ¹ß»ç ÄÚµå, ¸ÂÀº Àû¿¡°Ô ´ë¹ÌÁö ÀÔÈ÷´Â ÄÚµå
+            GameObject gO = new GameObject();
+            gO.transform.position = Player.Instance.transform.position;
+            Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+            StartCoroutine(ChaseTarget(map, gO.transform, enemies[minDist].transform.position, 1f));
+            //ì ì—ê²Œ íˆ¬ì‚¬ì²´ ë°œì‚¬ ì½”ë“œ, ë§ì€ ì ì—ê²Œ ëŒ€ë¯¸ì§€ ì…íˆëŠ” ì½”ë“œ
         }
     }
 
@@ -63,6 +68,39 @@ public class EssenceOfFlame : Item
             _dT = 0;
         }
     }
+    
+    private IEnumerator ChaseTarget(Tilemap tilemap, Transform obj, Vector2 target, float totalTime)
+    {
+        while ((Vector2)obj.transform.position != target)
+        {
+            var position = obj.transform.position;
+            var nextPos = Pathfinder.GetNextPath(tilemap, position, target);
+            position = Vector2.MoveTowards(position, nextPos, 5 * Time.deltaTime);
+            obj.transform.position = position;
+            Debug.Log(position);
+            //dT += Time.deltaTime;
+            yield return null;
+        }
+        //int cnt = path.Count;
+        //Debug.Log(cnt);
+        //float dT = 0;
+        //while(path.Count > 0)
+        //{
+        //    Path dir = path.Pop();
+        //    Vector2 originPos = obj.transform.position;
+        //    while (true)
+        //    {
+        //        if((Vector2)obj.transform.position == originPos + dir.Pos)
+        //        {
+        //            break;
+        //        }
+
+        //        obj.transform.position = Vector2.Lerp(originPos, originPos + dir.Pos, dT / (totalTime / cnt));
+        //        dT += Time.deltaTime;
+        //        yield return null;
+        //    }
+        //}
+
 
     public override void OnMount()
     {

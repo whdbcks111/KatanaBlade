@@ -32,7 +32,7 @@ public class EssenceOfLightning : Item
 
         _entities.Clear();
 
-        //가장 가까운 몬스터 찾기
+        //기준 몬스터 찾기
         Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
         int min = -1;
         for (int i = 0; i < enemies.Length; i++)
@@ -73,7 +73,7 @@ public class EssenceOfLightning : Item
 
     public void Lightning(Entity entity, int cnt)
     {
-        if(cnt <= 0)
+        if(cnt <= 0)            //재귀호출 종료시(주변 적 없다면)
         {
             if(_line == null)
             {
@@ -94,7 +94,7 @@ public class EssenceOfLightning : Item
                 Player.Instance.StartCoroutine(LightningAnim(1.5f));
             }
         }
-        else
+        else        //주변 적 탐색, 재귀 호출
         {
             Collider2D[] enemies = Physics2D.OverlapCircleAll(entity.transform.position, ActiveRadius);
             if (enemies.Length > 0)
