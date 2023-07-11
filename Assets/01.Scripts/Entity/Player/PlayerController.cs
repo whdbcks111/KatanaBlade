@@ -131,48 +131,47 @@ public class PlayerController : MonoBehaviour
             //원 콜라이더 생성
             RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
             //플레이어와 마우스 사이 각도구하기
-            float parryDirection = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+            float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
             //닿은게 몬스터, 투사체인지 확인
             foreach (RaycastHit2D inst in hit)
             {
 
-                if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
+                if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
                 {
                     print(inst.collider.gameObject);
                     //적이 해당 방향/범위 안에 있는지 확인
-                    float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+                    float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
                     //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
                     //패링 성공
                     //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                    if (Mathf.Abs(parryDirection - MonsterDirection) < 25)
+                    if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
                     {
                         //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                        if (t.TryGetComponent(out MeleeMonster m) && m.CanParrying)
+                        if (t is MeleeMonster m && m.CanParrying)
                         {
                             //패링 성공 이후 공격
                             t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
                             //패링 후 효과
-
+                            t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
                         }
 
-
-                        //패링 성공 이후 공격
-                        //t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
-
-
-
-                        //보스만 플레이어가 뒤로 밀리는걸로
-                        /*if (t is MeleeMonster)
+                        else if(t is Boss)
                         {
-                            //오른쪽일 경우 ~90도, 270~
-                            //왼쪽일 경우 90< 적정범위 <270
-                            _rigid.velocity = new Vector2(_knockbackPlaceHolder * , 0);
-                        }*/
-
+                            //패링 성공 이후 공격
+                            t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                            //패링 후 효과
+                            _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
+                            t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
+                        }
                     }
-
-
-
+                }
+                else if(inst.collider.TryGetComponent(out Projectile p))
+                {
+                    p.transform.Rotate(Vector3.forward * 180);
+                }
+                else if(inst.collider.TryGetComponent(out FlyingProjectile fp))
+                {
+                    Destroy(fp);
                 }
 
             }
