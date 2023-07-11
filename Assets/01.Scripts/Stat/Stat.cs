@@ -60,6 +60,11 @@ public class Stat
         InitStats();
     }
 
+    public void SetDefault(StatType type, float defaultVal)
+    {
+        _defaultValues[type] = defaultVal;
+    }
+
     public void Add(StatType type, float addition)
     {
         _addValues[type] += addition;
