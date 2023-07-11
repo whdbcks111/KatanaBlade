@@ -99,6 +99,45 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    public List<Vector2> GetProperPoints(Vector2Int size, Vector2Int pos)
+    {
+        List<Vector2> result = new();
+
+        Vector2Int mapCenterPos = pos * MapSize;
+        var shape = _map[pos];
+
+        for (int i = -MapSize / 2; i < MapSize / 2 - size.x + 1; ++i)
+        {
+            for (int j = -MapSize / 2; j < MapSize / 2 - size.y + 1; ++j)
+            {
+                bool flag = true;
+                
+                for(int sx = 0; sx < size.x; ++sx)
+                {
+                    for(int sy = 0; sy < size.y; ++sy)
+                    {
+                        var offset = Vector3Int.right * (i + sx) + Vector3Int.up * (j + sy);
+                        var hasTile = shape.ShapeMap.HasTile(offset);
+
+                        if (hasTile)
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag)
+                {
+                    result.Add(_targetTilemap.CellToWorld((Vector3Int)(mapCenterPos + (size - Vector2Int.one) / 2)));
+                }
+
+            }
+        }
+
+        return result;
+    }
+
     public void CreateMapTiles(Vector2Int pos, StageShape shape)
     {
         _map[pos] = shape;

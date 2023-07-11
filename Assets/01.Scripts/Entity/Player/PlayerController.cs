@@ -167,10 +167,12 @@ public class PlayerController : MonoBehaviour
                 }
                 else if(inst.collider.TryGetComponent(out Projectile p))
                 {
+                    //패링으로 쳐내기
                     p.transform.Rotate(Vector3.forward * 180);
                 }
                 else if(inst.collider.TryGetComponent(out FlyingProjectile fp))
                 {
+                    //패링으로 없애기
                     Destroy(fp);
                 }
 

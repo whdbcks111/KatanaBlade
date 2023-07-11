@@ -73,6 +73,11 @@ public class Entity : MonoBehaviour
         _effects.Add(eff);
     }
 
+    public bool HasEffect<T>() where T : StatusEffect
+    {
+        return _effects.Find(e => e is T) is not null;
+    }
+
     private void UpdateEffects()
     {
         _deleteEffects.Clear();
