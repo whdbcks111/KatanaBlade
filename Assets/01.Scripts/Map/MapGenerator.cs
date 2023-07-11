@@ -15,6 +15,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] StageShape[] _shapes;
     [SerializeField] TileBase _wallTile, _platformTile, _ladderTile;
 
+    [SerializeField] BossPortal _portalPrefab;
+
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
 
     private readonly Dictionary<Vector2Int, StageShape> _map = new();
