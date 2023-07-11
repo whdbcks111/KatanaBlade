@@ -43,9 +43,9 @@ public class PlayerController : MonoBehaviour
         {
             PlayerJump();
             StaminaGen();
-            PlayerParry();
             PlayerDash();
             PlayerMove();
+            PlayerParry();
 
             FallingAnim();
         }
