@@ -222,6 +222,68 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &392192114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 392192116}
+  - component: {fileID: 392192115}
+  - component: {fileID: 392192117}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &392192115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392192114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: ddf1ef19c6141184f8637516db7b35f5, type: 2}
+--- !u!4 &392192116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392192114}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.3964581, y: 8.078334, z: -0.33581823}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &392192117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392192114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e772c8a291f284aa6729f77713872a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &411507275
 GameObject:
   m_ObjectHideFlags: 0
@@ -11345,6 +11407,10 @@ PrefabInstance:
       propertyPath: _ladderTile
       value: 
       objectReference: {fileID: 11400000, guid: 37724843504972647997183a157bb963, type: 2}
+    - target: {fileID: 5325436998416378251, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
+      propertyPath: _portalPrefab
+      value: 
+      objectReference: {fileID: 5349418435399231871, guid: bb195f96b1044e84f979dd72aab040b1, type: 3}
     - target: {fileID: 5325436998416378251, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
       propertyPath: _ladderTilemap
       value: 
