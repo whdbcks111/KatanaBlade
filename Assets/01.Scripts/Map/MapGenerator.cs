@@ -10,10 +10,10 @@ public class MapGenerator : MonoBehaviour
     public static readonly int MapSize = 30, MapCount = 50, BossCount = 3;
     public static MapGenerator Instance;
 
-    [SerializeField] Tilemap _targetTilemap;
+    [SerializeField] Tilemap _targetTilemap, _ladderTilemap;
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
-    [SerializeField] TileBase _wallTile, _platformTile;
+    [SerializeField] TileBase _wallTile, _platformTile, _ladderTile;
 
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
 
@@ -109,7 +109,20 @@ public class MapGenerator : MonoBehaviour
             for (int j = -MapSize / 2; j < MapSize / 2; ++j)
             {
                 var offset = Vector3Int.right * i + Vector3Int.up * j;
-                _targetTilemap.SetTile(mapCenterPos + offset, shape.ShapeMap.HasTile(offset) ? _platformTile : null);
+
+                Tilemap tilemap = _targetTilemap;
+                TileBase targetTile;
+                var tile = shape.ShapeMap.GetTile(offset);
+
+                if (tile == _ladderTile)
+                {
+                    targetTile = _ladderTile;
+                    tilemap = _ladderTilemap;
+                }
+                else if (tile is null) targetTile = null;
+                else targetTile = _platformTile;
+
+                tilemap.SetTile(mapCenterPos + offset, targetTile);
 
             }
         } 
