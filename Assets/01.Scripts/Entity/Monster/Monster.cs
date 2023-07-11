@@ -2,7 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : Entity
+public abstract class Monster : Entity
 {
-    
+    protected int GoldDrop;
+    public override void Damage(float damage)
+    {
+        base.Damage(damage);
+        if(HP <= 0)
+            OnMonsterDie();
+    }
+
+    public virtual void OnMonsterDie()
+    {
+        Debug.Log("코인 드랍함");
+
+    }
 }
