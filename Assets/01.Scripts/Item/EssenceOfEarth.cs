@@ -18,7 +18,7 @@ public class EssenceOfEarth : Item
         string.Format(
             "사용 시 : 주변 적들을 <color=brown>띄웁</color>니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
             "기본 지속 효과 : {1}초마다 주변 적을 <color=brown>기절</color>시킵니다.", Cooldown, PassiveTick),
-        Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+        Resources.Load<Sprite>("Item/Icon/Essence/Essence_0"))
     {
     }
 
@@ -39,6 +39,11 @@ public class EssenceOfEarth : Item
         }
     }
 
+    private void Update()
+    {
+        PassiveUpdate();
+    }
+
     public override void PassiveUpdate()
     {
         _dT += Time.deltaTime;
@@ -47,7 +52,7 @@ public class EssenceOfEarth : Item
             Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in area)
             {
-
+                enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, .5f, Player.Instance));
             }
             _dT = 0;
         }

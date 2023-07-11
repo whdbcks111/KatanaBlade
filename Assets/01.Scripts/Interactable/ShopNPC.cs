@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class ShopNPC : Interactable
 {
-    private List<Dictionary<string, object>> itemTable;
-    private List<int> itemList;
+    List<Dictionary<string, object>> itemTable;
+    List<int> itemList = new List<int>();
 
     private void Start()
     {
         itemTable = CSVReader.Read("Item/ItemTable");
 
-        for (int i = 0; i < itemTable.Count; i++)
-        {
-            Debug.Log(itemTable[i]["ItemName"]);
-        }
     }
 
     public override void OnInteract(Player player)
     {
         // 상점 주인 상호작용 구현
+
     }
 
+    [ContextMenu("랜덤 아이템 가져오기")]
     public void GetRandomItems()
     {
         itemList.Clear();
@@ -31,11 +29,11 @@ public class ShopNPC : Interactable
             Debug.Log(itemTable[item]["ItemName"]);
         }
     }
-
+    
     private List<int> GetItemID()
     {
         List<int> result = new List<int>();
-
+        
         while (result.Count < 4)
         {
             while (true)
@@ -44,7 +42,7 @@ public class ShopNPC : Interactable
                 bool notEqual = true;
                 foreach (var id in result)
                 {
-                    if (rand == id)
+                    if(rand == id)
                     {
                         notEqual = false;
                         break;
