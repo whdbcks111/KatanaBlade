@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 199689388}
   - component: {fileID: 199689387}
   - component: {fileID: 199689386}
+  - component: {fileID: 199689391}
   m_Layer: 8
   m_Name: RangeMonster
   m_TagString: Untagged
@@ -221,7 +222,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: bd3cb4af8406d4436a2ae8c2aafe1f8d, type: 3}
+  m_Sprite: {fileID: -971295838, guid: 4e509bc1e3f78784f9997abd20641eb9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -254,6 +255,7 @@ MonoBehaviour:
   JumpSenseTr: {fileID: 1834203395}
   ChargeImage: {fileID: 1290720053}
   BulletPrefab: {fileID: 7576737795903924694, guid: f81657439a130f848b773b772fd6e8e6, type: 3}
+  ArcherAnimator: {fileID: 199689391}
 --- !u!4 &199689390
 Transform:
   m_ObjectHideFlags: 0
@@ -271,6 +273,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &199689391
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199689385}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 28b9f64eff5fcd84a96024eb6e82e7d8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &544276756
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +452,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 581119996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94632394b3c9a1f499e58561387884df, type: 3}
+  m_Script: {fileID: 11500000, guid: 68ffb325e0ced3c4789004b7bf2a1e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &643701957
@@ -1064,7 +1086,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2f87472ac1fdb064d9f62829c0677df9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
