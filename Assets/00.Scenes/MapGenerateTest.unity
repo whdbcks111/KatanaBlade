@@ -701,7 +701,7 @@ GameObject:
   - component: {fileID: 1266310619}
   - component: {fileID: 1266310618}
   - component: {fileID: 1266310623}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: LadderTilemap
   m_TagString: Floor
   m_Icon: {fileID: 0}
