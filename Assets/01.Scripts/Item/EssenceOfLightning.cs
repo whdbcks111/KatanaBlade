@@ -32,20 +32,20 @@ public class EssenceOfLightning : Item
 
         _entities.Clear();
 
-        //가장 가까운 몬스터 찾기
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
-        int min = -1;
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            if (enemies[i].GetComponent<Entity>() is Monster)
-            {
-                min = i;
-                break;
-            }
-        }
-        //없다면 중지
-        if (min == -1)
-            return;
+        //기준 몬스터 찾기
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
+        int min = 0;
+        //for (int i = 0; i < enemies.Length; i++)
+        //{
+        //    if (enemies[i].GetComponent<Entity>() is Monster)
+        //    {
+        //        min = i;
+        //        break;
+        //    }
+        //}
+        ////없다면 중지
+        //if (min == -1)
+        //    return;
 
         if(enemies.Length > 0)
         {
@@ -73,7 +73,7 @@ public class EssenceOfLightning : Item
 
     public void Lightning(Entity entity, int cnt)
     {
-        if(cnt <= 0)
+        if(cnt <= 0)            //재귀호출 종료시(주변 적 없다면)
         {
             if(_line == null)
             {
@@ -94,27 +94,27 @@ public class EssenceOfLightning : Item
                 Player.Instance.StartCoroutine(LightningAnim(1.5f));
             }
         }
-        else
+        else        //주변 적 탐색, 재귀 호출
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(entity.transform.position, ActiveRadius);
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(entity.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
             if (enemies.Length > 0)
             {
-                int min = -1;
-                for (int i = 0; i < enemies.Length; i++)
-                {
-                    if (enemies[i].GetComponent<Entity>() is Monster
-                        && _entities.Contains(enemies[i].GetComponent<Entity>()) == false)
-                    {
-                        if (enemies[i].GetComponent<Entity>() == entity)
-                            continue;
-                        min = i;
-                        break;
-                    }
-                }
+                int min = 0;
+                //for (int i = 0; i < enemies.Length; i++)
+                //{
+                //    if (enemies[i].GetComponent<Entity>() is Monster
+                //        && _entities.Contains(enemies[i].GetComponent<Entity>()) == false)
+                //    {
+                //        if (enemies[i].GetComponent<Entity>() == entity)
+                //            continue;
+                //        min = i;
+                //        break;
+                //    }
+                //}
 
 
-                if(min == -1)
-                    Lightning(entity, 0);
+                //if(min == -1)
+                //    Lightning(entity, 0);
 
                 for (int i = 0; i < enemies.Length; i++)
                 {
