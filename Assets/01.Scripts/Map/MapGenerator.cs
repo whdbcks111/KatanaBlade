@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -15,11 +17,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] StageShape[] _shapes;
     [SerializeField] TileBase _wallTile, _platformTile, _ladderTile;
 
+    [SerializeField] BossPortal _portalPrefab;
+    [SerializeField] Boss[] _bossPrefabs;
+
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
-
     private readonly Dictionary<Vector2Int, StageShape> _map = new();
-
     private readonly HashSet<Vector2Int> _usedPositions = new();
+
+    private Vector3 _bossRoomPos;
 
     private void Awake()
     {
@@ -36,6 +41,12 @@ public class MapGenerator : MonoBehaviour
             if (shape.IsBottomOpened) _bottomOpened.Add(shape);
             if (shape.IsLeftOpened) _leftOpened.Add(shape);
             if (shape.IsRightOpened) _rightOpened.Add(shape);
+
+            shape.KeyPositionOffsets = new Vector3[shape.ShapeMap.transform.childCount];
+            for(int i = 0; i < shape.ShapeMap.transform.childCount; ++i)
+            {
+                shape.KeyPositionOffsets[i] = shape.ShapeMap.transform.GetChild(i).localPosition;
+            }
         }
         Generate();
     }
@@ -95,6 +106,35 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        for(int i = 0; i < 5; i++)
+        {
+            CreateWalls(new(i + MapCount + 1, 0));
+            CreateWalls(new(i + MapCount + 1, 4));
+            CreateWalls(new(MapCount + 1, i));
+            CreateWalls(new(MapCount + 5, i));
+        }
+        _bossRoomPos = _targetTilemap.CellToWorld(new Vector3Int(MapCount + 3, 1) * MapSize) + Vector3.up * 4;
+
+        int remainBossCount = BossCount;
+        while(remainBossCount > 0)
+        {
+            var entry = _map.ElementAt(UnityEngine.Random.Range(0, _map.Count));
+            var pos = entry.Key;
+            var shape = entry.Value;
+            var offsets = shape.KeyPositionOffsets;
+
+            if(offsets.Length > 0)
+            {
+                var offset = offsets[UnityEngine.Random.Range(0, offsets.Length)];
+                remainBossCount--;
+                shape.Type = StageType.Boss;
+                BossPortal portal = Instantiate(_portalPrefab, _targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset + 
+                    Vector3.up * _portalPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2, Quaternion.identity);
+                portal.BossMapPos = _bossRoomPos;
+                portal.BossPrefab = _bossPrefabs[UnityEngine.Random.Range(0, _bossPrefabs.Length)];
+            }
+        }
     }
 
     public void CreateMapTiles(Vector2Int pos, StageShape shape)
@@ -146,11 +186,12 @@ public class MapGenerator : MonoBehaviour
 }
 
 [Serializable]
-public struct StageShape
+public class StageShape
 {
     public Tilemap ShapeMap;
     public bool IsTopOpened, IsBottomOpened, IsLeftOpened, IsRightOpened;
     public StageType Type;
+    [HideInInspector] public Vector3[] KeyPositionOffsets;
 }
 
 public enum StageType

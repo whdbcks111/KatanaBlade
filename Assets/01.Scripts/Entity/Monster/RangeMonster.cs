@@ -35,13 +35,16 @@ public class RangeMonster : Monster
     protected override void Update()
     {
         base.Update();
-        if(Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
+        if(HasEffect<EffectStun>() == false)
         {
-            Move(Player.Instance);
-        }
-        else
-        {
-            Attack(Player.Instance);
+            if(Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
+            {
+                Move(Player.Instance);
+            }
+            else
+            {
+                Attack(Player.Instance);
+            }
         }
     }
 
@@ -91,6 +94,7 @@ public class RangeMonster : Monster
     {
         ChargeImage.SetActive(true);
         ChargeImage.transform.localScale = Vector3.one;
+        ChargeImage.transform.eulerAngles = Vector3.zero;
         float dT = 0;
         while (true)
         {
@@ -101,6 +105,13 @@ public class RangeMonster : Monster
             yield return null;
 
             ChargeImage.transform.localScale = Vector3.one * (1 - (dT / (1 / _attSpeed)));
+            ChargeImage.transform.eulerAngles = new Vector3(0, 0, (dT / (1 / _attSpeed) * 360));
+            if (HasEffect<EffectStun>())
+            {
+                ChargeImage.SetActive(false);
+                StopCoroutine(_attackCor);
+                _attackCor = null;
+            }
         }
         ChargeImage.SetActive(false);
         ChargeImage.transform.localScale = Vector3.one;

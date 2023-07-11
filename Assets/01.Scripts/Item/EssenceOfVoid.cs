@@ -15,7 +15,7 @@ public class EssenceOfVoid : Item
     : base(ItemType.Essence, "공허의 정수",
         string.Format(
             "사용 시 : 주변 투사체를 <color=darkviolet>파괴</color>하는 영역을 생성합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n", Cooldown),
-        Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+        Resources.Load<Sprite>("Item/Icon/Essence/Essence_3"))
     {
 
     }
