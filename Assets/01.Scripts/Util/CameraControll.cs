@@ -55,6 +55,11 @@ public class CameraControll : MonoBehaviour
             ref _vel, 0.2f) + Vector3.forward * transform.position.z;
     }
 
+    public void Teleport()
+    {
+        _targetPosition = _followTarget.position;
+    }
+
     public void RestrictMove()
     {
         // 이동 제한 코드

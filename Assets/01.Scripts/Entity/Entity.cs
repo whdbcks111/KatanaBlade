@@ -37,6 +37,12 @@ public class Entity : MonoBehaviour
         Init();
     }
 
+    public void Teleport(Vector3 pos)
+    {
+        transform.position = pos;
+        if (Camera.main.TryGetComponent(out CameraControll cc)) cc.Teleport();
+    }
+
     public void LateAct(Action action)
     {
         _lateActions.Enqueue(action);

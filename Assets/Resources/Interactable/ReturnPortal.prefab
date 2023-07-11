@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1165226457632230733}
   - component: {fileID: 1165226457632230732}
-  - component: {fileID: 1165226457632230771}
   - component: {fileID: 1165226457632230770}
   m_Layer: 0
   m_Name: ReturnPortal
@@ -86,21 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1165226457632230771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1165226457632230769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2033a19b1bd90d041b73d63b3d33aedb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactDistance: 2
-  BossMapPos: {x: 0, y: 30, z: 0}
-  BossPrefab: {fileID: 0}
 --- !u!114 &1165226457632230770
 MonoBehaviour:
   m_ObjectHideFlags: 0
