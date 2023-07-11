@@ -139,4 +139,9 @@ public class RangeMonster : Monster
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(JumpSenseTr.position, 0.1f);
     }
+
+    public override void OnMonsterDie()
+    {
+        base.OnMonsterDie();
+    }
 }
