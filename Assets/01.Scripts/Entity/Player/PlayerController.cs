@@ -134,17 +134,15 @@ public class PlayerController : MonoBehaviour
             //닿은게 몬스터, 투사체인지 확인
             foreach (RaycastHit2D inst in hit)
             {
-
-                if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
+                float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+                if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
                 {
-                    print(inst.collider.gameObject);
-                    //적이 해당 방향/범위 안에 있는지 확인
-                    float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
-                    //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
-                    //패링 성공
-                    //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                    if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
+                    if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
                     {
+                        print(inst.collider.gameObject);
+                        //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
+                        //패링 성공
+                        //몬스터가 공격중인지 판단해서 패링 성공인지 
                         //몬스터가 공격중인지 판단해서 패링 성공인지 판단
                         if (t is MeleeMonster m && m.CanParrying)
                         {
@@ -163,18 +161,19 @@ public class PlayerController : MonoBehaviour
                             t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
                         }
                     }
+                    else if (inst.collider.TryGetComponent(out Projectile p))
+                    {
+                        //패링으로 쳐내기
+                        //p.transform.Rotate(Vector3.forward * 180);
+                        p.SetOwner(_player, parryAngle);
+                    }
+                    else if (inst.collider.TryGetComponent(out FlyingProjectile fp))
+                    {
+                        //패링으로 없애기
+                        Destroy(fp.gameObject);
+                    }
+        
                 }
-                else if (inst.collider.TryGetComponent(out Projectile p))
-                {
-                    //패링으로 쳐내기
-                    p.SetOwner(_player, parryAngle);
-                }
-                else if (inst.collider.TryGetComponent(out FlyingProjectile fp))
-                {
-                    //패링으로 없애기
-                    Destroy(fp.gameObject);
-                }
-
             }
 
             StartCoroutine(Stun(.6f));
