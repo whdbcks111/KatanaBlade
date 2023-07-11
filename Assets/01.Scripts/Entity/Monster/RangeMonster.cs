@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class RangeMonster : Monster
 {
-
     public float Speed;
     [Range(3f, 9f)]
     public float AttDist;
@@ -21,9 +20,10 @@ public class RangeMonster : Monster
     public GameObject ChargeImage;
     public GameObject BulletPrefab;
     public Animator ArcherAnimator;
-    private bool _flipX;
+    private Vector3 dir = Vector3.one;
     private Coroutine _attackCor;
     private Rigidbody2D _rb2d;
+    private Collider2D _tile;
 
     protected override void Awake()
     {
@@ -39,17 +39,28 @@ public class RangeMonster : Monster
         base.Update();
         if(HasEffect<EffectStun>() == false)
         {
-            Collider2D tile = Physics2D.OverlapCircle(JumpSenseTr.position, 0.1f, 1 << LayerMask.NameToLayer("Platform"));
-            if (Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null && tile != null)
+            if (Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
             {
-                ArcherAnimator.SetBool("Idle", false);
-                ArcherAnimator.SetBool("Walk", true);
+                _tile = Physics2D.OverlapCircle(TileDetectTr.position, 0.1f, 1 << LayerMask.NameToLayer("Platform"));
+                if (_tile == null)
+                {
+                    ArcherAnimator.SetBool("Idle", true);
+                    ArcherAnimator.SetBool("Walk", false);
+                    ArcherAnimator.SetBool("Attack", false);
+                }
+                else
+                {
+                    ArcherAnimator.SetBool("Idle", false);
+                    ArcherAnimator.SetBool("Walk", true);
+                    ArcherAnimator.SetBool("Attack", false);
+                }
                 Move(Player.Instance);
             }
             else
             {
                 ArcherAnimator.SetBool("Attack", true);
                 ArcherAnimator.SetBool("Walk", false);
+                ArcherAnimator.SetBool("Idle", false);
                 Attack(Player.Instance);
             }
         }
@@ -63,19 +74,19 @@ public class RangeMonster : Monster
 
     private void Move(Entity moveTo)
     {
-        if(moveTo.transform.position.x > transform.position.x)
+        if (moveTo.transform.position.x > transform.position.x)
         {
-            transform.Translate(Vector2.right * Speed * Time.deltaTime);
-            //_rb2d.velocity = new Vector2(Speed, _rb2d.velocity.y);
-            _flipX = false;
+            dir = Vector3.one;
         }
         else
         {
-            transform.Translate(Vector2.left * Speed * Time.deltaTime);
-            //_rb2d.velocity = new Vector2(-1 * Speed, _rb2d.velocity.y);
-            _flipX = true;
+            dir = new Vector3(-1, 1, 1);
         }
-        transform.localScale = _flipX ? new Vector3(-1, 1, 1) : Vector3.one;
+        transform.localScale = dir;
+
+        if (_tile != null)
+            transform.Translate(dir * Speed * Time.deltaTime);
+
         Collider2D obs = Physics2D.OverlapCircle(JumpSenseTr.position, 0.1f, 1 << LayerMask.NameToLayer("Platform"));
         if(obs != null && _rb2d.velocity.y == 0)
         {
@@ -86,7 +97,15 @@ public class RangeMonster : Monster
 
     public override void Attack(Entity other)
     {
-        //_rb2d.velocity = new Vector2(0, _rb2d.velocity.y);
+        if (other.transform.position.x > transform.position.x)
+        {
+            dir = Vector3.one;
+        }
+        else
+        {
+            dir = new Vector3(-1, 1, 1);
+        }
+        transform.localScale = dir;
         if (Vector2.Distance(transform.position, other.transform.position) > AttDist)
         {
             if (_attackCor != null)
