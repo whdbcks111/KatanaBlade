@@ -34,7 +34,6 @@ public class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
-        print(name);
         Init();
     }
 

@@ -67,7 +67,6 @@ public class PlayerController : MonoBehaviour
         else
             _animator.SetBool("Running", false);
 
-        print(GetComponentInChildren<SpriteRenderer>());
         if (_stare < 0)
             GetComponentInChildren<SpriteRenderer>().flipX = true;
         else
