@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 else if (inst.collider.TryGetComponent(out FlyingProjectile fp))
                 {
                     //패링으로 없애기
-                    Destroy(fp);
+                    Destroy(fp.gameObject);
                 }
 
             }
