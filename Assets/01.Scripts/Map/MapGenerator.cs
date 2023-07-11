@@ -10,10 +10,12 @@ public class MapGenerator : MonoBehaviour
     public static readonly int MapSize = 30, MapCount = 50, BossCount = 3;
     public static MapGenerator Instance;
 
-    [SerializeField] Tilemap _targetTilemap;
+    [SerializeField] Tilemap _targetTilemap, _ladderTilemap;
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
-    [SerializeField] TileBase _wallTile, _platformTile;
+    [SerializeField] TileBase _wallTile, _platformTile, _ladderTile;
+
+    [SerializeField] BossPortal _portalPrefab;
 
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
 
@@ -97,6 +99,45 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    public List<Vector2> GetProperPoints(Vector2Int size, Vector2Int pos)
+    {
+        List<Vector2> result = new();
+
+        Vector2Int mapCenterPos = pos * MapSize;
+        var shape = _map[pos];
+
+        for (int i = -MapSize / 2; i < MapSize / 2 - size.x + 1; ++i)
+        {
+            for (int j = -MapSize / 2; j < MapSize / 2 - size.y + 1; ++j)
+            {
+                bool flag = true;
+                
+                for(int sx = 0; sx < size.x; ++sx)
+                {
+                    for(int sy = 0; sy < size.y; ++sy)
+                    {
+                        var offset = Vector3Int.right * (i + sx) + Vector3Int.up * (j + sy);
+                        var hasTile = shape.ShapeMap.HasTile(offset);
+
+                        if (hasTile)
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag)
+                {
+                    result.Add(_targetTilemap.CellToWorld((Vector3Int)(mapCenterPos + (size - Vector2Int.one) / 2)));
+                }
+
+            }
+        }
+
+        return result;
+    }
+
     public void CreateMapTiles(Vector2Int pos, StageShape shape)
     {
         _map[pos] = shape;
@@ -109,7 +150,20 @@ public class MapGenerator : MonoBehaviour
             for (int j = -MapSize / 2; j < MapSize / 2; ++j)
             {
                 var offset = Vector3Int.right * i + Vector3Int.up * j;
-                _targetTilemap.SetTile(mapCenterPos + offset, shape.ShapeMap.HasTile(offset) ? _platformTile : null);
+
+                Tilemap tilemap = _targetTilemap;
+                TileBase targetTile;
+                var tile = shape.ShapeMap.GetTile(offset);
+
+                if (tile == _ladderTile)
+                {
+                    targetTile = _ladderTile;
+                    tilemap = _ladderTilemap;
+                }
+                else if (tile is null) targetTile = null;
+                else targetTile = _platformTile;
+
+                tilemap.SetTile(mapCenterPos + offset, targetTile);
 
             }
         } 

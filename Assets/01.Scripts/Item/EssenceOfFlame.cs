@@ -22,8 +22,8 @@ public class EssenceOfFlame : Item
             string.Format(
                 "사용 시 : 주변 적에게 투사체를 날려 <color=red>{0}</color>만큼 피해를 입히고 <color=red>{1}</color>만큼 지속피해를 입힙니다.\n" +
                 " <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
-                "기본 지속 효과 : 주변 적에게 <color=red>{3}</color> 만큼 지속피해를 입힙니다.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
-            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+                "기본 지속 효과 : 주변 적에게 초당 <color=red>{3}</color>만큼 피해를 입힙니다.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_2"))
     {
     }
 
@@ -48,7 +48,7 @@ public class EssenceOfFlame : Item
             }
             bullet.transform.position = Player.Instance.transform.position;
             Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-            StartCoroutine(ChaseTarget(map, bullet.transform, enemies[minDist].transform.position));
+            Player.Instance.StartCoroutine(ChaseTarget(map, bullet.transform, enemies[minDist].transform.position));
             //적에게 투사체 발사 코드, 맞은 적에게 대미지 입히는 코드
         }
     }
@@ -63,7 +63,7 @@ public class EssenceOfFlame : Item
             {
                 if (enemy.GetComponent<Entity>() is Monster)
                 {
-                    enemy.GetComponent<Entity>().Damage(PassiveDamage);
+                    enemy.GetComponent<Entity>().Damage(PassiveDamage * Time.deltaTime);
                 }
             }
             _dT = 0;

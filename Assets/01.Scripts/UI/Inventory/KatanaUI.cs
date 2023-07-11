@@ -7,43 +7,19 @@ public class KatanaUI : MonoBehaviour
 {
     public float time;
     public Image image;
-    public Color essenceColor;
-    private Coroutine nowCor;
 
     void Start()
     {
-        FadeIn(time);
+        //FadeIn(time);
     }
 
     void Update()
     {
+        var essence = Player.Instance.Inventory.MountedEssence;
+        Color essenceColor = essence is null ? Color.white : ExtraMath.GetMainColor(essence.Icon);
+
+
+        image.color = Color.Lerp(Color.white, essenceColor, Mathf.Clamp01(Player.Instance.EssenceCooldownRatio));
         
-    }
-
-    private void FadeIn(float time)
-    {
-        if (nowCor == null)
-            nowCor = StartCoroutine(FadeInCor(time));
-    }
-
-    private IEnumerator FadeInCor(float time)
-    {
-        Color origin = new Color(essenceColor.r, essenceColor.g, essenceColor.b, 0);
-        float dT = 0;
-        while (true)
-        {
-            if (dT > time)
-                break;
-
-            dT += Time.deltaTime;
-            yield return null;
-
-            float a = dT / time;
-            Color temp = new Color(origin.r, origin.g, origin.b, a);
-            image.color = temp;
-        }
-
-        image.color = essenceColor;
-        nowCor = null;
     }
 }

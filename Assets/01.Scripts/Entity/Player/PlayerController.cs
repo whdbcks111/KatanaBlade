@@ -131,54 +131,55 @@ public class PlayerController : MonoBehaviour
             //원 콜라이더 생성
             RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
             //플레이어와 마우스 사이 각도구하기
-            float parryDirection = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+            float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
             //닿은게 몬스터, 투사체인지 확인
             foreach (RaycastHit2D inst in hit)
             {
 
-                if (inst.transform.TryGetComponent(out Entity t) && t is not Player)
+                if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
                 {
                     print(inst.collider.gameObject);
                     //적이 해당 방향/범위 안에 있는지 확인
-                    float MonsterDirection = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+                    float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
                     //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
                     //패링 성공
                     //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                    if (Mathf.Abs(parryDirection - MonsterDirection) < 25)
+                    if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
                     {
                         //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                        if (t.TryGetComponent(out MeleeMonster m) && m.CanParrying)
+                        if (t is MeleeMonster m && m.CanParrying)
                         {
                             //패링 성공 이후 공격
                             t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
                             //패링 후 효과
-
+                            t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
                         }
 
-
-                        //패링 성공 이후 공격
-                        //t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
-
-
-
-                        //보스만 플레이어가 뒤로 밀리는걸로
-                        /*if (t is MeleeMonster)
+                        else if(t is Boss)
                         {
-                            //오른쪽일 경우 ~90도, 270~
-                            //왼쪽일 경우 90< 적정범위 <270
-                            _rigid.velocity = new Vector2(_knockbackPlaceHolder * , 0);
-                        }*/
-
+                            //패링 성공 이후 공격
+                            t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                            //패링 후 효과
+                            _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
+                            t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
+                        }
                     }
-
-
-
+                }
+                else if(inst.collider.TryGetComponent(out Projectile p))
+                {
+                    //패링으로 쳐내기
+                    p.transform.Rotate(Vector3.forward * 180);
+                }
+                else if(inst.collider.TryGetComponent(out FlyingProjectile fp))
+                {
+                    //패링으로 없애기
+                    Destroy(fp);
                 }
 
             }
 
             StartCoroutine(Stun(.6f));
-            _player.DashStamina -= _player.Stat.Get(StatType.ParryingCost);
+            _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
             StartCoroutine(ParryCool());
         }
     }
@@ -207,11 +208,11 @@ public class PlayerController : MonoBehaviour
         //가능한 상황인지 확인
         if (_dashCan && Input.GetKeyDown(KeyCode.LeftShift) && _player.DashStamina >= _player.Stat.Get(StatType.DashCost))
         {
-            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size, 0, Vector2.right * _stare, 
+            var hit = Physics2D.BoxCast(_collider2D.bounds.center, (Vector2)_collider2D.bounds.size * .9f, 0, Vector2.right * _stare,
                 _player.Stat.Get(StatType.DashLength), LayerMask.GetMask("Platform"));
             float targetX;
 
-            if(hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
+            if (hit.collider is not null) targetX = hit.point.x - _stare * _collider2D.bounds.size.x / 2;
             else targetX = transform.position.x + _player.Stat.Get(StatType.DashLength) * _stare;
 
             GenerateAlter(transform.position.x, targetX);
@@ -224,13 +225,13 @@ public class PlayerController : MonoBehaviour
     public void GenerateAlter(float startPos, float endPos)
     {
         SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
-        float startX = Mathf.Min(startPos, endPos);
-        float endX = Mathf.Max(startPos, endPos);
         var span = 1.2f;
-        int count = Mathf.FloorToInt((endX - startX) / span);
+        int count = Mathf.FloorToInt(Mathf.Abs(endPos - startPos) / span);
+        List<SpriteRenderer> renders = new List<SpriteRenderer>();
         for (int i = 0; i < count; i++)
         {
-            GameObject copy = Instantiate(_alter, new Vector3(startX + i * span, childRenderer.transform.position.y), _alter.transform.rotation);
+
+            GameObject copy = Instantiate(_alter, new Vector3(startPos + _stare * i * span, childRenderer.transform.position.y), _alter.transform.rotation);
             var renderer = copy.GetComponent<SpriteRenderer>();
             renderer.flipX = childRenderer.flipX;
             renderer.sprite = childRenderer.sprite;
@@ -238,13 +239,14 @@ public class PlayerController : MonoBehaviour
             col.a = Mathf.Clamp01((float)i / count + 0.3f);
             renderer.color = col;
             copy.transform.localScale = transform.localScale;
+            renders.Add(renderer);
             StartCoroutine(AlphaDestroy(renderer));
         }
     }
 
     IEnumerator AlphaDestroy(SpriteRenderer renderer)
     {
-        while(renderer.color.a > 0)
+        while (renderer.color.a > 0)
         {
             var c = renderer.color;
             c.a -= Time.deltaTime;
