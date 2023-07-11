@@ -107,4 +107,12 @@ public class EssenceOfDarkness : Item
         Object.Destroy(effect);
         //
     }
+
+    public override void OnMount()
+    {
+    }
+
+    public override void OnUnmount()
+    {
+    }
 }

@@ -84,5 +84,11 @@ public class EssenceOfVoid : Item
         //
     }
 
-    
+    public override void OnMount()
+    {
+    }
+
+    public override void OnUnmount()
+    {
+    }
 }

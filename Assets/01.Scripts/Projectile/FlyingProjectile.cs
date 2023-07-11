@@ -11,10 +11,15 @@ public class FlyingProjectile : MonoBehaviour
 
     public void Update()
     {
-        var position = transform.position;
-        var nextPos = Pathfinder.GetNextPath(tilemap, position, target.position);
-        position = Vector2.MoveTowards(position, nextPos, Time.deltaTime * 6);
-        transform.position = position;
+        Pathfinder.Follow(tilemap, transform, target.position, 10);
     }
-    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.TryGetComponent(out Entity entity)) return;
+        
+        entity.Damage(10f);
+        Destroy(this.gameObject, 0f);
+            
+        ParticleManager.Instance.SpawnParticle(transform.position, "Smoke");
+    }
 }

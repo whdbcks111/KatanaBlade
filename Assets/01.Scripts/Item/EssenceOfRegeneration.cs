@@ -30,5 +30,13 @@ public class EssenceOfRegeneration : Item
     {
         Player.Instance.Heal(Time.deltaTime * 2);
     }
+
+    public override void OnMount()
+    {
+    }
+
+    public override void OnUnmount()
+    {
+    }
 }
 

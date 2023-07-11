@@ -8,6 +8,8 @@ public class Player : Entity
 
     public readonly Inventory Inventory = new();
 
+    private PlayerController _controller;
+    private Animator _animator;
     protected override void Awake()
     {
         base.Awake();
@@ -38,11 +40,5 @@ public class Player : Entity
             _controller.IsConscious = false;
             _animator.SetBool("Dead", true);
         }
-    }
-    IEnumerator Stun(float stunSec)
-    {
-        _controller.IsConscious = false;
-        yield return new WaitForSeconds(stunSec);
-        _controller.IsConscious = true;
     }
 }
