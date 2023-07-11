@@ -20,7 +20,7 @@ public class EssenceOfDarkness : Item
             string.Format(
                 "사용 시 : 주변을 느려지게 하는 영역을 전개합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
                 "기본 지속 효과 : -", Cooldown),
-            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_6"))
     {
     }
 

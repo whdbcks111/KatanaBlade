@@ -11,7 +11,7 @@ public class FlyingProjectile : MonoBehaviour
 
     public void Update()
     {
-        Pathfinder.Follow(tilemap, transform, target.position, 10);
+        Pathfinder.Follow(tilemap, transform, target.position, 6);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
