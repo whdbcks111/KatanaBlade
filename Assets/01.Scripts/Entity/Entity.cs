@@ -19,8 +19,11 @@ public class Entity : MonoBehaviour
 
     private readonly Queue<Action> _lateActions = new();
     private readonly List<StatusEffect> _effects = new();
-
     private readonly HashSet<StatusEffect> _deleteEffects = new();
+
+    private Rigidbody2D _rigid;
+
+    public float MovingVelocity = 0, KnockbackVelocity = 0;
 
     public void Init()
     {
@@ -28,22 +31,41 @@ public class Entity : MonoBehaviour
         DashStamina = Stat.Get(StatType.MaxDashStamina);
         ParryingStamina = Stat.Get(StatType.MaxParryingStamina);
     }
+    protected virtual void Awake()
+    {
+        _rigid = GetComponent<Rigidbody2D>();
+        print(name);
+        Init();
+    }
 
     public void LateAct(Action action)
     {
         _lateActions.Enqueue(action);
     }
 
-    protected virtual void Awake()
-    {
-        Init();
-    }
-
     protected virtual void Update()
     {
         UpdateEffects();
 
-        print(HP);
+        if (Input.GetKeyDown(KeyCode.K)) Knockback(30);
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        VelocityUpdate();
+    }
+
+    private void VelocityUpdate()
+    {
+        var vel = _rigid.velocity;
+        vel.x = MovingVelocity + KnockbackVelocity;
+        _rigid.velocity = vel;
+        KnockbackVelocity = Mathf.MoveTowards(KnockbackVelocity, 0f, Time.deltaTime * 30);
+    }
+
+    public void Knockback(float power)
+    {
+        KnockbackVelocity += power;
     }
 
     public void AddEffect(StatusEffect eff)
@@ -79,13 +101,13 @@ public class Entity : MonoBehaviour
 
     public virtual void Attack(Entity other)
     {
-        var damage = 1; // ¿¹½Ã °ª, ½ÇÁ¦·Î´Â °è»ê
+        var damage = 1; // ì˜ˆì‹œ ê°’, ì‹¤ì œë¡œëŠ” ê³„ì‚°
         other.Damage(damage);
     }
 
     public virtual void Damage(float damage)
     {
-        // HP ´â´Â ÄÚµå ±¸Çö
+        // HP ë‹³ëŠ” ì½”ë“œ êµ¬í˜„
         HP -= damage;
     }
 

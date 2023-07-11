@@ -1,19 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
-    public static readonly int MapSize = 30, StageCount = 50, BossCount = 3;
+    public static readonly int MapSize = 30, MapCount = 50, BossCount = 3;
     public static MapGenerator Instance;
 
     [SerializeField] Tilemap _targetTilemap;
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
+    [SerializeField] TileBase _wallTile, _platformTile;
+
+    private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
 
     private readonly Dictionary<Vector2Int, StageShape> _map = new();
+
+    private readonly HashSet<Vector2Int> _usedPositions = new();
 
     private void Awake()
     {
@@ -23,31 +29,78 @@ public class MapGenerator : MonoBehaviour
             Debug.LogWarning("맵 생성기가 2개 이상 있습니다!");
             Destroy(gameObject);
         }
+
+        foreach(var shape in _shapes)
+        {
+            if (shape.IsTopOpened) _topOpened.Add(shape);
+            if (shape.IsBottomOpened) _bottomOpened.Add(shape);
+            if (shape.IsLeftOpened) _leftOpened.Add(shape);
+            if (shape.IsRightOpened) _rightOpened.Add(shape);
+        }
+        Generate();
     }
 
     public void Generate()
     {
+        _usedPositions.Clear();
         _targetTilemap.ClearAllTiles();
+        _map.Clear();
 
+        Queue<Vector2Int> queue = new();
         CreateMapTiles(Vector2Int.zero, _spawnShape);
-        TryGenerateTransition(Vector2Int.zero);
-    }
+        queue.Enqueue(Vector2Int.zero);
+        while(queue.TryDequeue(out Vector2Int curPos))
+        {
+            if (!_map.ContainsKey(curPos)) continue;
+            var curShape = _map[curPos];
+            if (_map.Count >= MapCount) break;
 
-    public void TryGenerateTransition(Vector2Int curPos, int transitionCount = 0)
-    {
-        var curShape = _map[curPos];
-        if (curShape is null) return;
+            List<Vector2Int> allowDirections = new();
 
-        List<Vector2Int> allowDirections = new();
-        if (curShape.IsTopOpened) allowDirections.Add(Vector2Int.up);
-        if (curShape.IsBottomOpened) allowDirections.Add(Vector2Int.down);
-        if (curShape.IsLeftOpened) allowDirections.Add(Vector2Int.left);
-        if (curShape.IsRightOpened) allowDirections.Add(Vector2Int.right);
+            if (curShape.IsTopOpened && !_map.ContainsKey(curPos + Vector2Int.up)) 
+                allowDirections.Add(Vector2Int.up);
+            if (curShape.IsBottomOpened && !_map.ContainsKey(curPos + Vector2Int.down)) 
+                allowDirections.Add(Vector2Int.down);
+            if (curShape.IsLeftOpened && !_map.ContainsKey(curPos + Vector2Int.left)) 
+                allowDirections.Add(Vector2Int.left);
+            if (curShape.IsRightOpened && !_map.ContainsKey(curPos + Vector2Int.right)) 
+                allowDirections.Add(Vector2Int.right);
+
+            for (int i = 0; allowDirections.Count > 0; i++)
+            {
+                var idx = UnityEngine.Random.Range(0, allowDirections.Count);
+                var direction = allowDirections[idx];
+                allowDirections.RemoveAt(idx);
+
+                List<StageShape> targetShapes = null;
+                if (direction.x > 0) targetShapes = _leftOpened;
+                else if (direction.x < 0) targetShapes = _rightOpened;
+                else if (direction.y > 0) targetShapes = _bottomOpened;
+                else if (direction.y < 0) targetShapes = _topOpened;
+
+                if (targetShapes is null || targetShapes.Count == 0) continue;
+
+                CreateMapTiles(curPos + direction, targetShapes[UnityEngine.Random.Range(0, targetShapes.Count)]);
+                queue.Enqueue(curPos + direction);
+            } 
+        }
+
+        foreach(var pos in _map.Keys)
+        {
+            for(int i = -1; i <= 1; i++)
+            {
+                for(int j = -1; j <= 1; j++)
+                {
+                    if (i != 0 || j != 0) CreateWalls(pos + new Vector2Int(i, j));
+                }
+            }
+        }
     }
 
     public void CreateMapTiles(Vector2Int pos, StageShape shape)
     {
         _map[pos] = shape;
+        _usedPositions.Add(pos);
 
         Vector3Int mapCenterPos = (Vector3Int)pos * MapSize;
 
@@ -55,18 +108,34 @@ public class MapGenerator : MonoBehaviour
         {
             for (int j = -MapSize / 2; j < MapSize / 2; ++j)
             {
-                _targetTilemap.SetTile(mapCenterPos + Vector3Int.right * i + Vector3Int.up * j,
-                    shape.ShapeMap.GetTile(Vector3Int.right * i + Vector3Int.up * j));
+                var offset = Vector3Int.right * i + Vector3Int.up * j;
+                _targetTilemap.SetTile(mapCenterPos + offset, shape.ShapeMap.HasTile(offset) ? _platformTile : null);
+
+            }
+        } 
+    }
+
+    public void CreateWalls(Vector2Int pos)
+    {
+        if (_usedPositions.Contains(pos)) return;
+        _usedPositions.Add(pos);
+        Vector3Int mapCenterPos = (Vector3Int)pos * MapSize;
+
+        for (int i = -MapSize / 2; i < MapSize / 2; ++i)
+        {
+            for (int j = -MapSize / 2; j < MapSize / 2; ++j)
+            {
+                var p = mapCenterPos + Vector3Int.right * i + Vector3Int.up * j;
+                _targetTilemap.SetTile(p, _wallTile);
             }
         }
     }
 }
 
 [Serializable]
-public class StageShape
+public struct StageShape
 {
     public Tilemap ShapeMap;
-    public Transform KeyPositions;
     public bool IsTopOpened, IsBottomOpened, IsLeftOpened, IsRightOpened;
     public StageType Type;
 }

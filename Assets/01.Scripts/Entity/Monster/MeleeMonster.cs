@@ -5,38 +5,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MeleeMonster : Entity
+public class MeleeMonster : Monster
 {
-    Rigidbody2D _rigid;
-    Animator _anim;
+    protected Coroutine sco = null;
 
-    private bool _isAttacking;
-    private int _nextMove;
+    [SerializeField] protected bool _isAttacking;
+    protected int _nextMove;
     private float _changeTimer = 0f;
 
-    public bool IsParrying { get { return _isAttacking; } }
+    public bool CanParrying { get { return _isAttacking; } }
+
+    private bool _inRange;
 
     private void Start()
     {
-        _rigid = GetComponent<Rigidbody2D>();
-        _anim = GetComponentInChildren<Animator>();
         Think();
 
         Invoke("Think", 5);
     }
 
-    private void FixedUpdate()
+    protected override void Update()
     {
-        if (!_isAttacking)
-            MonsterMove();
-  
+        base.Update();
+
+        Stat.Multiply(StatType.MoveSpeed, 0.5f);
     }
 
-    // ���� ������ ����
-    private void MonsterMove()
+    protected override void FixedUpdate()
     {
-        transform.position += new Vector3(_nextMove, _rigid.velocity.y) * Time.fixedDeltaTime;
-        _anim.SetFloat("WalkSpeed", Mathf.Abs(_nextMove));
+        base.FixedUpdate();
+        Chacing();
+        if (!_inRange)
+        {
+            Chacing();
+        }
+        MonsterMove();
+
+    }
+
+    protected virtual void MonsterMove()
+    {
+        MovingVelocity = _isAttacking ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
+
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
         transform.localScale = originScale;
@@ -55,36 +65,68 @@ public class MeleeMonster : Entity
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
     }
 
-    // ���Ͱ� ������� ������ �� �ִ� ��� ���
-    private void Think()
+    
+    private void Chacing()
     {
-        _nextMove = Random.Range(-2, 3);
-    }
+        var dir = (Player.Instance.transform.position - transform.position);
 
+        var distance = dir.magnitude;
 
-
-    // ��� ���� ����� ��� 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if(other.TryGetComponent(out Player p))
+        if (distance <= 10.0f)
         {
-            Attack(p);
+            _nextMove = dir.x > 0 ? 1 : -1;
         }
     }
-
-    public override void Attack(Entity other)
+    
+    private void Think()
     {
+        _nextMove = Random.Range(-1, 2);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+
+            if (other.TryGetComponent(out Player p))
+            {
+                _inRange = true;
+                StartAttack(p);
+            }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+
+        if (other.TryGetComponent(out Player p))
+        {
+            _inRange = false;
+        }
+
+    }
+
+    public virtual void StartAttack(Player other)
+    {
+
         if (_isAttacking) return;
         _isAttacking = true;
-        _anim.SetTrigger("Attack");
-        StartCoroutine(CountAttackDelay());
-        base.Attack(other);
+
+        if (sco is null)
+            sco = StartCoroutine(CountAttackDelay(other));
     }
-    IEnumerator CountAttackDelay()
+
+    IEnumerator CountAttackDelay(Player other)
     {
+        //  print("attackStart");
         yield return new WaitForSeconds(0.4f);
 
+        Attack(other);
+        if (_inRange) 
+        print(other.HP);
+        //  print("Attacked");
+        yield return new WaitForSeconds(0.6f);
 
         _isAttacking = false;
+
+        sco = null;
+        //   print("attackEnd");
     }
 }

@@ -1,0 +1,48 @@
+﻿@model Umbraco.Web.Models.RenderModel
+@using Vega.USiteBuilder;
+@using Newtonsoft.Json;
+@{
+    bool isActiveSet = false;
+    bool first = true;
+    //int bannerCounter = 0;
+    
+<div id="banner" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        @*@foreach (var pagination in Banner.GetList())
+        {
+            <li data-target="#homepage-banner" data-slide-to="@bannerCounter" class="@if(first){ <text>active</text>; first = false; }">@Convert.ToInt32(bannerCounter + 1)</li>
+        *@
+        <li data-target="#banner" data-slide-to="0" class="active"></li>
+        <li data-target="#banner" data-slide-to="1"></li>
+        <li data-target="#banner" data-slide-to="2"></li>
+        @*
+            bannerCounter++;
+        }
+        @{
+            bannerCounter = 0;
+        }*@
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        @*@foreach (var item in Banner.GetList())
+        {
+            var itemPub = EquHelper.GetIPublishedContent(item.Id);
+            string picUrl = itemPub.GetCropUrl("picture", "default");
+        *@
+        <div class="item active" style="background-image: url('http://placehold.it/1920x400');filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://placehold.it/1920x400', sizingMethod='scale');-ms-filter " progid:dximagetransform.microsoft.alphaimageloader(src='http://placehold.it/1920x400' , sizingmethod='scale' )"></div>
+        <div class="item" style="background-image: url('http://placehold.it/1920x400');filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://placehold.it/1920x400', sizingMethod='scale');-ms-filter " progid:dximagetransform.microsoft.alphaimageloader(src='http://placehold.it/1920x400' , sizingmethod='scale' )"></div>
+        <div class="item" style="background-image: url('http://placehold.it/1920x400');filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://placehold.it/1920x400', sizingMethod='scale');-ms-filter " progid:dximagetransform.microsoft.alphaimageloader(src='http://placehold.it/1920x400' , sizingmethod='scale' )"></div>
+        @*}*@
+    </div>
+
+    <!-- Controls -->
+    <a class="btn-previous" href="#banner" role="button" data-slide="prev">
+        < LEFT
+    </a>
+    <a class="btn-next" href="#banner" role="button" data-slide="next">
+        RIGHT >
+    </a>
+</div>
+}

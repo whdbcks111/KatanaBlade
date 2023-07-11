@@ -6,30 +6,31 @@ using UnityEngine;
 public class Stat
 {
     private readonly Dictionary<StatType, float> 
-        _defaultValues = new(), 
+        _defaultValues = new()
+        {
+            [StatType.MaxHP] = 100f,
+            [StatType.MaxParryingStamina] = 100f,
+            [StatType.MaxDashStamina] = 100f,
+            [StatType.ParryingTime] = 0.2f,
+            [StatType.ParryingStaminaRegen] = 10f,
+            [StatType.DashCooldown] = 2f,
+            [StatType.DashStaminaRegen] = 10f,
+            [StatType.JumpForce] = 24f,
+            [StatType.ParryingAttackForce] = 10f,
+            [StatType.MoveSpeed] = 12f,
+            [StatType.DashLength] = 10f,
+            [StatType.DashCost] = 30f,
+            [StatType.ParryingCost] = 30f,
+            [StatType.LowParryingFeedback] = 1f,
+            [StatType.MiddleParryingFeedback] = 2f,
+            [StatType.HighParryingFeedback] = 3f
+        }, 
         _addValues = new(), 
         _multiplyValues = new(), 
         _currentValues = new();
 
     public Stat()
     {
-        _defaultValues[StatType.MaxHP] = 100f;
-        _defaultValues[StatType.MaxParryingStamina] = 100f;
-        _defaultValues[StatType.MaxDashStamina] = 100f;
-        _defaultValues[StatType.ParryingTime] = 0.2f;
-        _defaultValues[StatType.ParryingStaminaRegen] = 10f;
-        _defaultValues[StatType.DashCooldown] = 2f;
-        _defaultValues[StatType.DashStaminaRegen] = 10f;
-        _defaultValues[StatType.JumpForce] = 9f;
-        _defaultValues[StatType.ParryingAttackForce] = 10f;
-        _defaultValues[StatType.MoveSpeed] = 5f;
-        _defaultValues[StatType.DashLength] = 4f;
-        _defaultValues[StatType.DashCost] = 30f;
-        _defaultValues[StatType.ParryingCost] = 30f;
-        _defaultValues[StatType.LowParryingFeedback] = 1f;
-        _defaultValues[StatType.MiddleParryingFeedback] = 2f;
-        _defaultValues[StatType.HighParryingFeedback] = 3f;
-
         InitStats();
         UpdateStatValues();
     }
