@@ -9,7 +9,7 @@ public class EssenceOfLightning : Item
 
     private LineRenderer _line;
     private float _lastUsed = -1;
-    private static readonly float Cooldown = 5f;
+    private static readonly float Cooldown = 1.5f;
     private static readonly float ActiveRadius = 10f;
     private static readonly int ActiveCount = 5;
     private static readonly int ActiveDamage = 10;
@@ -52,9 +52,7 @@ public class EssenceOfLightning : Item
             for (int i = 0; i < enemies.Length; i++)
             {
                 //가장 가까운 적 찾기
-                if (Vector2.Distance(Player.Instance.transform.position, enemies[i].transform.position) < Vector2.Distance(Player.Instance.transform.position, enemies[min].transform.position)
-                    && enemies[i].GetComponent<Entity>() is Monster
-                    && enemies[i].GetComponent<Entity>() is Player == false)
+                if (Vector2.Distance(Player.Instance.transform.position, enemies[i].transform.position) < Vector2.Distance(Player.Instance.transform.position, enemies[min].transform.position))
                 {
                     min = i;
                 }
@@ -62,7 +60,7 @@ public class EssenceOfLightning : Item
             if (enemies[min] != null)
             {
                 _entities.Add(enemies[min].GetComponent<Entity>());
-                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount - 1);
+                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount);
             }
         }
     }
@@ -86,9 +84,9 @@ public class EssenceOfLightning : Item
             }
             _line.positionCount = _entities.Count + 1;
             _line.SetPosition(0, Player.Instance.transform.position);
+            Debug.Log(_entities.Count);
             for (int i = 0; i < _entities.Count; i++)
             {
-                Debug.Log(_entities[i].name);
                 _line.SetPosition(i + 1, _entities[i].transform.position);
                 _entities[i].Damage(10f);
                 Player.Instance.StartCoroutine(LightningAnim(1.5f));
@@ -96,41 +94,32 @@ public class EssenceOfLightning : Item
         }
         else        //주변 적 탐색, 재귀 호출
         {
+            Debug.Log("실행됨");
             Collider2D[] enemies = Physics2D.OverlapCircleAll(entity.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
-            if (enemies.Length > 0)
+            if(enemies.Length > 0)
             {
                 int min = 0;
-                //for (int i = 0; i < enemies.Length; i++)
-                //{
-                //    if (enemies[i].GetComponent<Entity>() is Monster
-                //        && _entities.Contains(enemies[i].GetComponent<Entity>()) == false)
-                //    {
-                //        if (enemies[i].GetComponent<Entity>() == entity)
-                //            continue;
-                //        min = i;
-                //        break;
-                //    }
-                //}
-
-
-                //if(min == -1)
-                //    Lightning(entity, 0);
+                for (int i = 0; i < enemies.Length; i++)
+                {
+                    if (Vector2.Distance(entity.transform.position, enemies[i].transform.position) > Vector2.Distance(entity.transform.position, enemies[min].transform.position)
+                        && enemies[i].GetComponent<Entity>() != entity
+                        && !_entities.Contains(enemies[i].GetComponent<Entity>()))
+                        min = i;
+                }
+                //min값이 본인을 갖진 않음
 
                 for (int i = 0; i < enemies.Length; i++)
                 {
-                    //가장 가까운 적 찾기
                     if (Vector2.Distance(entity.transform.position, enemies[i].transform.position) < Vector2.Distance(entity.transform.position, enemies[min].transform.position)
-                        && enemies[i].GetComponent<Entity>() is Monster
-                        && enemies[i].GetComponent<Entity>() is Player == false
-                        && _entities.Contains(enemies[i].GetComponent<Entity>()) == false)
+                        && enemies[i].GetComponent<Entity>() != entity
+                        && !_entities.Contains(enemies[i].GetComponent<Entity>()))
                     {
-                        if (enemies[i].GetComponent<Entity>() == entity)
-                            continue;
                         min = i;
                     }
                 }
-                if (_entities.Contains(enemies[min].GetComponent<Entity>()))     //탐색할 적이 더 이상 없다면
+                if (_entities.Contains(enemies[min].GetComponent<Entity>()))
                 {
+                    Debug.Log("!");
                     Lightning(entity, 0);
                 }
                 else
@@ -143,6 +132,48 @@ public class EssenceOfLightning : Item
             {
                 Lightning(entity, 0);
             }
+
+            //if (enemies.Length > 0)
+            //{
+            //    int min = -1;
+            //    for (int i = 0; i < enemies.Length; i++)
+            //    {
+            //        if (enemies[i].GetComponent<Entity>() != entity &&
+            //            _entities.Contains(enemies[i].GetComponent<Entity>()) == false) 
+            //        {
+            //            min = i;
+            //            break;
+            //        }
+            //    }
+            //    Debug.Log(entity.gameObject.name + ", " +  min);
+            //    if (min == -1)
+            //    {
+            //        return;
+            //    }
+
+            //    for (int i = 0; i < enemies.Length; i++)
+            //    {
+            //        //가장 가까운 적 찾기
+            //        if (Vector2.Distance(entity.transform.position, enemies[i].transform.position) < Vector2.Distance(entity.transform.position, enemies[min].transform.position)
+            //            && enemies[i].GetComponent<Entity>() != entity)
+            //        {
+            //            min = i;
+            //        }
+            //    }
+            //    if (enemies[min].GetComponent<Entity>() == entity)     //탐색할 적이 더 이상 없다면
+            //    {
+            //        Lightning(entity, 0);
+            //    }
+            //    else
+            //    {
+            //        _entities.Add(enemies[min].GetComponent<Entity>());
+            //        Lightning(enemies[min].GetComponent<Entity>(), cnt - 1);
+            //    }
+            //}
+            //else
+            //{
+            //    Lightning(entity, 0);
+            //}
         }
     }
 
