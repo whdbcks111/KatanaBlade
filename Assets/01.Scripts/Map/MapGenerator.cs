@@ -38,6 +38,12 @@ public class MapGenerator : MonoBehaviour
             if (shape.IsBottomOpened) _bottomOpened.Add(shape);
             if (shape.IsLeftOpened) _leftOpened.Add(shape);
             if (shape.IsRightOpened) _rightOpened.Add(shape);
+
+            shape.KeyPositionOffsets = new Vector3[shape.ShapeMap.transform.childCount];
+            for(int i = 0; i < shape.ShapeMap.transform.childCount; ++i)
+            {
+                shape.KeyPositionOffsets[i] = shape.ShapeMap.transform.GetChild(i).localPosition;
+            }
         }
         Generate();
     }
@@ -97,45 +103,14 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-    }
 
-    public List<Vector2> GetProperPoints(Vector2Int size, Vector2Int pos)
-    {
-        List<Vector2> result = new();
-
-        Vector2Int mapCenterPos = pos * MapSize;
-        var shape = _map[pos];
-
-        for (int i = -MapSize / 2; i < MapSize / 2 - size.x + 1; ++i)
+        for(int i = 0; i < 5; i++)
         {
-            for (int j = -MapSize / 2; j < MapSize / 2 - size.y + 1; ++j)
-            {
-                bool flag = true;
-                
-                for(int sx = 0; sx < size.x; ++sx)
-                {
-                    for(int sy = 0; sy < size.y; ++sy)
-                    {
-                        var offset = Vector3Int.right * (i + sx) + Vector3Int.up * (j + sy);
-                        var hasTile = shape.ShapeMap.HasTile(offset);
-
-                        if (hasTile)
-                        {
-                            flag = false;
-                            break;
-                        }
-                    }
-                }
-
-                if(flag)
-                {
-                    result.Add(_targetTilemap.CellToWorld((Vector3Int)(mapCenterPos + (size - Vector2Int.one) / 2)));
-                }
-
-            }
+            CreateWalls(new(i + MapCount + 1, 0));
+            CreateWalls(new(i + MapCount + 1, 4));
+            CreateWalls(new(MapCount + 1, i));
+            CreateWalls(new(MapCount + 5, i));
         }
-
-        return result;
     }
 
     public void CreateMapTiles(Vector2Int pos, StageShape shape)
@@ -187,11 +162,12 @@ public class MapGenerator : MonoBehaviour
 }
 
 [Serializable]
-public struct StageShape
+public class StageShape
 {
     public Tilemap ShapeMap;
     public bool IsTopOpened, IsBottomOpened, IsLeftOpened, IsRightOpened;
     public StageType Type;
+    [HideInInspector] public Vector3[] KeyPositionOffsets;
 }
 
 public enum StageType
