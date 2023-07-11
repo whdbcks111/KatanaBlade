@@ -17,6 +17,7 @@ public class RangeMonster : Monster
     public float JumpPow;
 
     public Transform JumpSenseTr;
+    public Transform TileDetectTr;
     public GameObject ChargeImage;
     public GameObject BulletPrefab;
     public Animator ArcherAnimator;
@@ -38,7 +39,8 @@ public class RangeMonster : Monster
         base.Update();
         if(HasEffect<EffectStun>() == false)
         {
-            if(Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
+            Collider2D tile = Physics2D.OverlapCircle(JumpSenseTr.position, 0.1f, 1 << LayerMask.NameToLayer("Platform"));
+            if (Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null && tile != null)
             {
                 ArcherAnimator.SetBool("Idle", false);
                 ArcherAnimator.SetBool("Walk", true);
@@ -138,5 +140,6 @@ public class RangeMonster : Monster
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(JumpSenseTr.position, 0.1f);
+        Gizmos.DrawWireSphere(TileDetectTr.position, 0.1f);
     }
 }
