@@ -11,7 +11,8 @@ public class ItemIconUI : MonoBehaviour, IPointerClickHandler, IPointerExitHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.button == PointerEventData.InputButton.Right)
+        if(eventData.button == PointerEventData.InputButton.Right &&
+            Player.Instance.Inventory.GetItem(ItemIndex) is not null)
         {
             var popup = GameManager.instance.CreateEquipPopup();
             var item = Player.Instance.Inventory.GetItem(ItemIndex);

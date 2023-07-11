@@ -179,7 +179,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -200,6 +200,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0937c5710073a4f4f9d64cd9fe78e2cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MovingVelocity: 0
+  KnockbackVelocity: 0
+  _isAttacking: 0
 --- !u!1 &5529599799470648464
 GameObject:
   m_ObjectHideFlags: 0

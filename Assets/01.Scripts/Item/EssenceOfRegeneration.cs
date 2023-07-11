@@ -13,7 +13,7 @@ public class EssenceOfRegeneration : Item
             string.Format(
                 "사용 시 : HP를 <color=green>10</color> 회복합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
                 "기본 지속 효과 : 1초당 HP를 <color=green>2</color> 회복합니다.", Cooldown),
-            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_5"))
 
     {
     }
