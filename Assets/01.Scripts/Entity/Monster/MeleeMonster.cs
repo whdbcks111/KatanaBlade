@@ -129,4 +129,9 @@ public class MeleeMonster : Monster
         sco = null;
         //   print("attackEnd");
     }
+
+    public override void OnMonsterDie()
+    {
+        throw new NotImplementedException();
+    }
 }
