@@ -10,7 +10,7 @@ public class EssenceOfLightning : Item
     private LineRenderer _line;
     private float _lastUsed = -1;
     private static readonly float Cooldown = 1.5f;
-    private static readonly float ActiveRadius = 10f;
+    private static readonly float EssenceRadius = 5f;
     private static readonly int ActiveCount = 5;
     private static readonly int ActiveDamage = 10;
 
@@ -18,9 +18,9 @@ public class EssenceOfLightning : Item
     public EssenceOfLightning()
         : base(ItemType.Essence, "번개의 정수",
             string.Format(
-                "사용 시 : 주변 적 {0}명에게 <color=yellow>번개</color>를 내려 {1}의 대미지를 입힙니다.. <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
-                "기본 지속 효과 : -", ActiveCount, ActiveDamage, Cooldown),
-            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+                "사용 시 : 주변 적 {0}명에게 <color=yellow>번개</color>를 내려 {1}의 대미지를 입힙니다. <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
+                "기본 지속 효과 : - ", ActiveCount, ActiveDamage, Cooldown),
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_1"))
     {
     }
 
@@ -31,22 +31,9 @@ public class EssenceOfLightning : Item
         _lastUsed = Time.realtimeSinceStartup;
 
         _entities.Clear();
-
         //기준 몬스터 찾기
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, EssenceRadius, 1 << LayerMask.NameToLayer("Enemy"));
         int min = 0;
-        //for (int i = 0; i < enemies.Length; i++)
-        //{
-        //    if (enemies[i].GetComponent<Entity>() is Monster)
-        //    {
-        //        min = i;
-        //        break;
-        //    }
-        //}
-        ////없다면 중지
-        //if (min == -1)
-        //    return;
-
         if(enemies.Length > 0)
         {
             for (int i = 0; i < enemies.Length; i++)
@@ -60,16 +47,20 @@ public class EssenceOfLightning : Item
             if (enemies[min] != null)
             {
                 _entities.Add(enemies[min].GetComponent<Entity>());
-                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount);
+                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount - 1, ActiveDamage);
             }
         }
+    }
+
+    private void Update()
+    {
     }
 
     public override void PassiveUpdate()
     {
     }
 
-    public void Lightning(Entity entity, int cnt)
+    public void Lightning(Entity entity, int cnt, float damage)
     {
         if(cnt <= 0)            //재귀호출 종료시(주변 적 없다면)
         {
@@ -88,14 +79,14 @@ public class EssenceOfLightning : Item
             for (int i = 0; i < _entities.Count; i++)
             {
                 _line.SetPosition(i + 1, _entities[i].transform.position);
-                _entities[i].Damage(10f);
-                Player.Instance.StartCoroutine(LightningAnim(1.5f));
+                _entities[i].Damage(damage);
+                Player.Instance.StartCoroutine(LightningAnim(.3f));
             }
         }
         else        //주변 적 탐색, 재귀 호출
         {
             Debug.Log("실행됨");
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(entity.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(entity.transform.position, EssenceRadius, 1 << LayerMask.NameToLayer("Enemy"));
             if(enemies.Length > 0)
             {
                 int min = 0;
@@ -119,61 +110,18 @@ public class EssenceOfLightning : Item
                 }
                 if (_entities.Contains(enemies[min].GetComponent<Entity>()))
                 {
-                    Debug.Log("!");
-                    Lightning(entity, 0);
+                    Lightning(entity, 0, damage);
                 }
                 else
                 {
                     _entities.Add(enemies[min].GetComponent<Entity>());
-                    Lightning(enemies[min].GetComponent<Entity>(), cnt - 1);
+                    Lightning(enemies[min].GetComponent<Entity>(), cnt - 1, damage);
                 }
             }
             else
             {
-                Lightning(entity, 0);
+                Lightning(entity, 0, damage);
             }
-
-            //if (enemies.Length > 0)
-            //{
-            //    int min = -1;
-            //    for (int i = 0; i < enemies.Length; i++)
-            //    {
-            //        if (enemies[i].GetComponent<Entity>() != entity &&
-            //            _entities.Contains(enemies[i].GetComponent<Entity>()) == false) 
-            //        {
-            //            min = i;
-            //            break;
-            //        }
-            //    }
-            //    Debug.Log(entity.gameObject.name + ", " +  min);
-            //    if (min == -1)
-            //    {
-            //        return;
-            //    }
-
-            //    for (int i = 0; i < enemies.Length; i++)
-            //    {
-            //        //가장 가까운 적 찾기
-            //        if (Vector2.Distance(entity.transform.position, enemies[i].transform.position) < Vector2.Distance(entity.transform.position, enemies[min].transform.position)
-            //            && enemies[i].GetComponent<Entity>() != entity)
-            //        {
-            //            min = i;
-            //        }
-            //    }
-            //    if (enemies[min].GetComponent<Entity>() == entity)     //탐색할 적이 더 이상 없다면
-            //    {
-            //        Lightning(entity, 0);
-            //    }
-            //    else
-            //    {
-            //        _entities.Add(enemies[min].GetComponent<Entity>());
-            //        Lightning(enemies[min].GetComponent<Entity>(), cnt - 1);
-            //    }
-            //}
-            //else
-            //{
-            //    Lightning(entity, 0);
-            //}
         }
     }
 

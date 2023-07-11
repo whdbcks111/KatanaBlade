@@ -21,6 +21,9 @@ public class Player : Entity
 
 
         Inventory.AddItem(new EssenceOfRegeneration());
+        Inventory.AddItem(new EssenceOfDarkness());
+        Inventory.AddItem(new EssenceOfCloud());
+        Inventory.AddItem(new EssenceOfVoid());
         Inventory.AddItem(new AccessoryTest());
 
         _controller = GetComponent<PlayerController>();
