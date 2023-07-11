@@ -28,7 +28,7 @@ public class EssenceOfEarth : Item
         if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
         _lastUsed = Time.realtimeSinceStartup;
 
-        Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f);
+        Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
         foreach (var enemy in area)
         {
             if(enemy.GetComponent<Entity>() is Monster)
@@ -44,6 +44,11 @@ public class EssenceOfEarth : Item
         _dT += Time.deltaTime;
         if(_dT > PassiveTick)
         {
+            Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
+            foreach (var enemy in area)
+            {
+
+            }
             _dT = 0;
         }
     }
