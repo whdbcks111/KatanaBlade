@@ -11419,6 +11419,14 @@ PrefabInstance:
       propertyPath: _targetTilemap
       value: 
       objectReference: {fileID: 411507278}
+    - target: {fileID: 5325436998416378251, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
+      propertyPath: _bossPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5325436998416378251, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
+      propertyPath: _bossPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 813678068579684149, guid: 233717030f0e80b45b9c1a622f3bbbac, type: 3}
     - target: {fileID: 5325436998416378292, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
       propertyPath: m_Name
       value: MapGenerator

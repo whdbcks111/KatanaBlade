@@ -18,8 +18,13 @@ public class BossPortal : Interactable
 
     private IEnumerator ReturnPortalRoutine()
     {
-        yield return new WaitUntil(() => _boss.HP <= 0);
-        var p = Instantiate(Resources.Load<ReturnPortal>("Interactable/ReturnPortal"), _boss.transform.position, Quaternion.identity);
+        Vector3 lastPos = _boss.transform.position;
+        while(!_boss.Equals(null))
+        {
+            lastPos = _boss.transform.position;
+            yield return null;
+        }
+        var p = Instantiate(Resources.Load<ReturnPortal>("Interactable/ReturnPortal"), lastPos, Quaternion.identity);
         p.ParentPortal = this;
     }
 }
