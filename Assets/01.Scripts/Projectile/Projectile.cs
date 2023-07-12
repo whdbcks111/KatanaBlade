@@ -16,7 +16,6 @@ public class Projectile : MonoBehaviour
     void Update()
     {
         transform.Translate(Speed * Time.deltaTime * Vector3.right);
-       
     }
 
     public void SetOwner(Entity entity, float angle)
