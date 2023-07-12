@@ -153,7 +153,7 @@ public class RangeMonster : Monster
         ChargeImage.SetActive(false);
         ChargeImage.transform.localScale = Vector3.one;
         Projectile bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
-        bullet.Speed = 5f;
+        bullet.Speed = 10f;
         bullet.SetOwner(this, ExtraMath.DirectionToAngle(Player.Instance.transform.position - transform.position));
         yield return new WaitForSeconds(0.1f);
         _attackCor = null;

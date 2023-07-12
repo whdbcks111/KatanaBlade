@@ -204,7 +204,7 @@ MonoBehaviour:
   AttDist: 14.8
   MoveDist: 10.5
   AttSpeed: 1
-  JumpPow: 4
+  JumpPow: 14.59
   JumpSenseTr: {fileID: 1506616150352020816}
   TileDetectTr: {fileID: 1506616151041381836}
   ChargeImage: {fileID: 1506616150897995622}
