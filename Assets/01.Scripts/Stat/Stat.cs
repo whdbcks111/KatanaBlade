@@ -23,7 +23,8 @@ public class Stat
             [StatType.ParryingCost] = 4f,
             [StatType.LowParryingFeedback] = 20f,
             [StatType.MiddleParryingFeedback] = 2f,
-            [StatType.HighParryingFeedback] = 3f
+            [StatType.HighParryingFeedback] = 3f,
+            [StatType.CoinObtainMultiplier] = 5f
         }, 
         _addValues = new(), 
         _multiplyValues = new(), 
@@ -83,6 +84,7 @@ public class Stat
 
 public enum StatType
 {
+    CoinObtainMultiplier, // 코인 획득 배율
     MaxHP, // 최대 HP
     MaxDashStamina, // 대시 게이지 최대치
     MaxParryingStamina, // 패링 게이지 최대치
