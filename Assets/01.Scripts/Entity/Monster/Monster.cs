@@ -14,8 +14,8 @@ public abstract class Monster : Entity
 
     public virtual void OnMonsterDie()
     {
-        Debug.Log("���� �����");
-
+        Debug.Log("코인 드랍함");
+        
     }
     protected bool _isStun;
 }
