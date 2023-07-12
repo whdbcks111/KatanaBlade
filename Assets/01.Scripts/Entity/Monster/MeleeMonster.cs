@@ -31,6 +31,8 @@ public class MeleeMonster : Monster
     {
         base.Update();
 
+        print(CanParrying);
+
         Stat.Multiply(StatType.MoveSpeed, 0.5f);
     }
 
