@@ -19,6 +19,7 @@ public class RangeMonster : Monster
     public Transform JumpSenseTr;
     public GameObject ChargeImage;
     public GameObject BulletPrefab;
+    public Animator ArcherAnimator;
     private bool _flipX;
     private Coroutine _attackCor;
     private Rigidbody2D _rb2d;
@@ -35,13 +36,26 @@ public class RangeMonster : Monster
     protected override void Update()
     {
         base.Update();
-        if(Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
+        if(HasEffect<EffectStun>() == false)
         {
-            Move(Player.Instance);
+            if(Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
+            {
+                ArcherAnimator.SetBool("Idle", false);
+                ArcherAnimator.SetBool("Walk", true);
+                Move(Player.Instance);
+            }
+            else
+            {
+                ArcherAnimator.SetBool("Attack", true);
+                ArcherAnimator.SetBool("Walk", false);
+                Attack(Player.Instance);
+            }
         }
         else
         {
-            Attack(Player.Instance);
+            ArcherAnimator.SetBool("Idle", true);
+            ArcherAnimator.SetBool("Walk", false);
+            ArcherAnimator.SetBool("Attack", false);
         }
     }
 
@@ -91,6 +105,7 @@ public class RangeMonster : Monster
     {
         ChargeImage.SetActive(true);
         ChargeImage.transform.localScale = Vector3.one;
+        ChargeImage.transform.eulerAngles = Vector3.zero;
         float dT = 0;
         while (true)
         {
@@ -101,13 +116,20 @@ public class RangeMonster : Monster
             yield return null;
 
             ChargeImage.transform.localScale = Vector3.one * (1 - (dT / (1 / _attSpeed)));
+            ChargeImage.transform.eulerAngles = new Vector3(0, 0, (dT / (1 / _attSpeed) * 360));
+            if (HasEffect<EffectStun>())
+            {
+                ChargeImage.SetActive(false);
+                StopCoroutine(_attackCor);
+                _attackCor = null;
+            }
         }
+        ArcherAnimator.SetTrigger("Shot");
         ChargeImage.SetActive(false);
         ChargeImage.transform.localScale = Vector3.one;
-        Bullet bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Bullet>();
-        bullet.DeadTime = 5f;
-        bullet.Speed = 3f;
-        bullet.Angle = ExtraMath.DirectionToAngle(Player.Instance.transform.position - transform.position);
+        Projectile bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
+        bullet.Speed = 5f;
+        bullet.SetOwner(this, ExtraMath.DirectionToAngle(Player.Instance.transform.position - transform.position));
         yield return new WaitForSeconds(0.1f);
         _attackCor = null;
     }

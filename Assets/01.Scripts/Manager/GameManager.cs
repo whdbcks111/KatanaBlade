@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     public Image ItemPopupIcon;
     public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
 
+    [Header("ShopPopup")]
+    public GameObject ShopPopup;
+    public Image ShopPopupIcon;
+    public TextMeshProUGUI ShopPopupName, ShopPopupDesc;
+
     private MonoBehaviour _currentShowingUI;
     private GameObject _openedPopup;
 
@@ -83,6 +88,21 @@ public class GameManager : MonoBehaviour
     {
         if (_currentShowingUI == itemIconUI)
             ItemPopup.SetActive(false);
+    }
+
+    public void ShopItemPopup(MonoBehaviour ui, Sprite icon, string name, string desc)
+    {
+        ShopPopup.SetActive(true);
+        ShopPopupIcon.sprite = icon;
+        ShopPopupDesc.SetText(desc);
+        ShopPopupName.SetText(name);
+        _currentShowingUI = ui;
+    }
+
+    public void HideShopPopup(MonoBehaviour shopIconUI)
+    {
+        if (_currentShowingUI == shopIconUI)
+            ShopPopup.SetActive(false);
     }
 
     public EquipPopup CreateEquipPopup()
