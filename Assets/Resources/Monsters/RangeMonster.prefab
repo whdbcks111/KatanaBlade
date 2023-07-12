@@ -200,10 +200,11 @@ MonoBehaviour:
   MovingVelocity: 0
   KnockbackVelocity: 0
   Speed: 3
-  AttDist: 9
-  MoveDist: 7
+  DetectDist: 18.6
+  AttDist: 14.8
+  MoveDist: 10.5
   AttSpeed: 1
-  JumpPow: 4
+  JumpPow: 14.59
   JumpSenseTr: {fileID: 1506616150352020816}
   TileDetectTr: {fileID: 1506616151041381836}
   ChargeImage: {fileID: 1506616150897995622}
@@ -295,8 +296,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: 0.13419235, y: -0.07225752}
+  m_Size: {x: 1.8877342, y: 5.158681}
   m_Direction: 0
 --- !u!95 &1506616151854938364
 Animator:

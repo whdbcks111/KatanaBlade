@@ -129,9 +129,8 @@ public class MeleeMonster : Monster
         yield return new WaitForSeconds(0.4f / _attackSpeed);
 
         _isAttacking = true;
-
-        Attack(other);
-        if (_inRange) 
+        
+        if (_inRange) Attack(other);
         print(other.HP);
 
 //       yield return new WaitForSeconds(0.6f);
