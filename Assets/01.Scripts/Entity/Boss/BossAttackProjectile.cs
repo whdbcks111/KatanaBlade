@@ -22,6 +22,10 @@ public class BossAttackProjectile : Entity
         else
             Move();
     }
+    public void Fire()
+    {
+        _mode = 1;
+    }
 
     public void setTarget(Vector2 pos)
     {
@@ -33,15 +37,16 @@ public class BossAttackProjectile : Entity
         transform.position = Vector2.Lerp(transform.position, _targetSpot, _speed);
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Player p))
         {
+            _mode = 0;
             p.Damage(_damage);
         }
         if (collision.gameObject == MotherBoss.gameObject)
         {
+            _mode = 0;
             MotherBoss.Damage(_hittedDamage);
         }
     }

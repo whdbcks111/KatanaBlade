@@ -47,10 +47,17 @@ public class PlayerController : MonoBehaviour
             PlayerMove();
             PlayerParry();
 
+            StareSet();
             FallingAnim();
         }
     }
-
+    private void StareSet()
+    {
+        if (_stare < 0)
+            GetComponentInChildren<SpriteRenderer>().flipX = true;
+        else
+            GetComponentInChildren<SpriteRenderer>().flipX = false;
+    }
     // 플레이어 움직임 구현
     private void PlayerMove()
     {
@@ -67,10 +74,6 @@ public class PlayerController : MonoBehaviour
         else
             _animator.SetBool("Running", false);
 
-        if (_stare < 0)
-            GetComponentInChildren<SpriteRenderer>().flipX = true;
-        else
-            GetComponentInChildren<SpriteRenderer>().flipX = false;
     }
 
     // 플레이어 점프 구현
@@ -123,63 +126,68 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerParry()
     {
-        if (_parryCan && Input.GetMouseButtonDown(0) && _player.DashStamina >= _player.Stat.Get(StatType.ParryingCost))
+        if (_parryCan && Input.GetMouseButtonDown(0) && _player.ParryingStamina >= _player.Stat.Get(StatType.ParryingCost))
         {
 
             _animator.SetTrigger("Parry");
-            //원 콜라이더 생성
-            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
-            //플레이어와 마우스 사이 각도구하기
-            float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
-            //닿은게 몬스터, 투사체인지 확인
-            foreach (RaycastHit2D inst in hit)
-            {
-                float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
-                if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
-                {
-                    if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
-                    {
-                        print(inst.collider.gameObject);
-                        //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
-                        //패링 성공
-                        //몬스터가 공격중인지 판단해서 패링 성공인지 
-                        //몬스터가 공격중인지 판단해서 패링 성공인지 판단
-                        if (t is MeleeMonster m && m.CanParrying)
-                        {
-                            //패링 성공 이후 공격
-                            t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
-                            //패링 후 효과
-                            t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
-                        }
-
-                        else if (t is Boss)
-                        {
-                            //패링 성공 이후 공격
-                            t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
-                            //패링 후 효과
-                            _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
-                            t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
-                        }
-                    }
-                    else if (inst.collider.TryGetComponent(out Projectile p))
-                    {
-                        //패링으로 쳐내기
-                        //p.transform.Rotate(Vector3.forward * 180);
-                        p.SetOwner(_player, parryAngle);
-                    }
-                    else if (inst.collider.TryGetComponent(out FlyingProjectile fp))
-                    {
-                        //패링으로 없애기
-                        Destroy(fp.gameObject);
-                    }
-        
-                }
-            }
-
-            StartCoroutine(Stun(.6f));
-            _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
-            StartCoroutine(ParryCool());
+            StartCoroutine(ParryContinue());
         }
+    }
+    IEnumerator ParryContinue()
+    {
+        yield return new WaitUntil(() => !_animator.IsInTransition(0) && _animator.GetNextAnimatorStateInfo(0).normalizedTime > 3 / 9);
+        //원 콜라이더 생성
+        RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
+        //플레이어와 마우스 사이 각도구하기
+        float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+        //닿은게 몬스터, 투사체인지 확인
+        foreach (RaycastHit2D inst in hit)
+        {
+            float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
+            if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
+            {
+                if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
+                {
+                    print(inst.collider.gameObject);
+                    //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
+                    //패링 성공
+                    //몬스터가 공격중인지 판단해서 패링 성공인지 
+                    //몬스터가 공격중인지 판단해서 패링 성공인지 판단
+                    if (t is MeleeMonster m && m.CanParrying)
+                    {
+                        //패링 성공 이후 공격
+                        t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                        //패링 후 효과
+                        t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
+                    }
+
+                    else if (t is Boss)
+                    {
+                        //패링 성공 이후 공격
+                        t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                        //패링 후 효과
+                        _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
+                        t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
+                    }
+                }
+                else if (inst.collider.TryGetComponent(out Projectile p))
+                {
+                    //패링으로 쳐내기
+                    //p.transform.Rotate(Vector3.forward * 180);
+                    p.SetOwner(_player, parryAngle);
+                }
+                else if (inst.collider.TryGetComponent(out FlyingProjectile fp))
+                {
+                    //패링으로 없애기
+                    Destroy(fp.gameObject);
+                }
+
+            }
+        }
+
+        StartCoroutine(Stun(.6f));
+        _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
+        StartCoroutine(ParryCool());
     }
 
     IEnumerator ParryCool()
