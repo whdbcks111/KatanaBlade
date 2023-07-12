@@ -431,6 +431,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Skull_Archer_15
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 2
+        width: 19
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a7807b351551f6468328cdc8b870a3c
+      internalID: 1250480349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -449,6 +470,7 @@ TextureImporter:
       Skull_Archer_3: 1159442920
       Skull_Archer_11: 1281435788
       Skull_Archer_13: -526807086
+      Skull_Archer_15: 1250480349
       Skull_Archer_5: 1678024053
       Skull_Archer_7: -919048490
       Skull_Archer_10: 903970212
