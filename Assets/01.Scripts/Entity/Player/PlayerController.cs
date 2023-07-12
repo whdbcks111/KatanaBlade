@@ -128,18 +128,24 @@ public class PlayerController : MonoBehaviour
     {
         if (_parryCan && Input.GetMouseButtonDown(0) && _player.ParryingStamina >= _player.Stat.Get(StatType.ParryingCost))
         {
-
+            float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
             _animator.SetTrigger("Parry");
-            StartCoroutine(ParryContinue());
+            StartCoroutine(ParryContinue(parryAngle));
+            _stare = parryAngle < 90 || parryAngle > 270 ? 1 : -1;
         }
     }
-    IEnumerator ParryContinue()
+    IEnumerator ParryContinue(float parryAngle)
     {
-        yield return new WaitUntil(() => !_animator.IsInTransition(0) && _animator.GetNextAnimatorStateInfo(0).normalizedTime > 3 / 9);
+        StartCoroutine(Stun(.6f));
+        _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
+        StartCoroutine(ParryCool());
+        yield return new WaitUntil(() => _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Parry" && 
+            _animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 3 / 9);
+
         //원 콜라이더 생성
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
         //플레이어와 마우스 사이 각도구하기
-        float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+        
         //닿은게 몬스터, 투사체인지 확인
         foreach (RaycastHit2D inst in hit)
         {
@@ -184,10 +190,6 @@ public class PlayerController : MonoBehaviour
 
             }
         }
-
-        StartCoroutine(Stun(.6f));
-        _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
-        StartCoroutine(ParryCool());
     }
 
     IEnumerator ParryCool()

@@ -9,7 +9,7 @@ using static UnityEditor.PlayerSettings;
 
 public class MapGenerator : MonoBehaviour
 {
-    public static readonly int MapSize = 30, MapCount = 50, BossCount = 3;
+    public static readonly int MapSize = 30, MapCount = 50, BossCount = 3, HealCount = 2;
     public static MapGenerator Instance;
 
     [SerializeField] Tilemap _targetTilemap, _ladderTilemap;
@@ -18,6 +18,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase _wallTile, _platformTile, _ladderTile;
 
     [SerializeField] BossPortal _portalPrefab;
+    [SerializeField] HealArea _healAreaPrefab;
     [SerializeField] Boss[] _bossPrefabs;
 
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
@@ -124,6 +125,9 @@ public class MapGenerator : MonoBehaviour
             var shape = entry.Value;
             var offsets = shape.KeyPositionOffsets;
 
+            if (Mathf.Max(pos.x, pos.y) <= 2) continue;
+            if (shape.Type != StageType.Monster) continue;
+
             if(offsets.Length > 0)
             {
                 var offset = offsets[UnityEngine.Random.Range(0, offsets.Length)];
@@ -133,6 +137,28 @@ public class MapGenerator : MonoBehaviour
                     Vector3.up * _portalPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2, Quaternion.identity);
                 portal.BossMapPos = _bossRoomPos;
                 portal.BossPrefab = _bossPrefabs[UnityEngine.Random.Range(0, _bossPrefabs.Length)];
+            }
+        }
+        
+        int remainHealAreaCount = HealCount;
+        while (remainHealAreaCount > 0)
+        {
+            var entry = _map.ElementAt(UnityEngine.Random.Range(0, _map.Count));
+            var pos = entry.Key;
+            var shape = entry.Value;
+            var offsets = shape.KeyPositionOffsets;
+
+            if (Mathf.Max(pos.x, pos.y) <= 2) continue;
+            if (shape.Type != StageType.Monster) continue;
+
+            if (offsets.Length > 0)
+            {
+                var offset = offsets[UnityEngine.Random.Range(0, offsets.Length)];
+                remainHealAreaCount--;
+                shape.Type = StageType.HealArea;
+                HealArea healArea = Instantiate(_healAreaPrefab, _targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset +
+                    Vector3.up * _portalPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2, Quaternion.identity);
+                healArea.HealAmount = 50f;
             }
         }
     }
