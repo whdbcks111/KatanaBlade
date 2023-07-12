@@ -11,6 +11,10 @@ public class ParticleManager : MonoBehaviour
 
     public static ParticleManager Instance => _instance;
 
+    public GameObject particlePrefebs;
+    public Transform spawnPoint;
+    
+
     private void Awake()
     {
         
