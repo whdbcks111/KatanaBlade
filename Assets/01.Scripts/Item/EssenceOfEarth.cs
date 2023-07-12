@@ -39,11 +39,6 @@ public class EssenceOfEarth : Item
         }
     }
 
-    private void Update()
-    {
-        PassiveUpdate();
-    }
-
     public override void PassiveUpdate()
     {
         _dT += Time.deltaTime;
