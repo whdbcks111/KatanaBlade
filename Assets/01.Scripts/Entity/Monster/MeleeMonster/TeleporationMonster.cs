@@ -1,13 +1,13 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SkullMonster : MeleeMonster
+public class TeleporationMonster : MeleeMonster
 {
     Animator _anim;
+
 
     protected override void Awake()
     {
@@ -18,6 +18,7 @@ public class SkullMonster : MeleeMonster
     protected override void Update()
     {
         base.Update();
+//        rush();
 
         _anim.SetBool("IsAttacking", _isAttacking);
 
@@ -30,6 +31,16 @@ public class SkullMonster : MeleeMonster
         print(Mathf.Abs(MovingVelocity));
         _anim.SetFloat("WalkSpeed", Mathf.Abs(MovingVelocity));
     }
+
+ //   IEnumerable rush()
+ //   {
+  //      yield return new WaitForSeconds(3f);
+  
+
+
+        //        var backDir = Player.Instance.gameObject.GetComponentInChildren<SpriteRenderer>().flipX ? Vector3.right : Vector3.left;
+        //        transform.position = Player.Instance.transform.position + backDir * 2f;
+  //  }
 
     public override void Attack(Entity other)
     {
@@ -64,3 +75,4 @@ public class SkullMonster : MeleeMonster
         base.Heal(amount);
     }
 }
+

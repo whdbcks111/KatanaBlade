@@ -9,9 +9,12 @@ public class MeleeMonster : Monster
 {
     protected Coroutine sco = null;
 
+    public static MeleeMonster Instance { get; private set; }
+
     [SerializeField] protected bool _isAttacking;
     protected int _nextMove;
     private float _changeTimer = 0f;
+    protected float _attackSpeed = 1f;
 
     public bool CanParrying { get { return _isAttacking; } }
 
@@ -34,7 +37,7 @@ public class MeleeMonster : Monster
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        Chacing();
+
         if (!_inRange)
         {
             Chacing();
@@ -45,8 +48,7 @@ public class MeleeMonster : Monster
 
     protected virtual void MonsterMove()
     {
-        MovingVelocity = _isAttacking ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
-
+        MovingVelocity = _isAttacking || HasEffect<EffectStun>() ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
         transform.localScale = originScale;
@@ -55,7 +57,7 @@ public class MeleeMonster : Monster
 
         Debug.DrawRay(frontVec, Vector3.down, new Color(0, 4, 0));
         RaycastHit2D rayHit = Physics2D.Raycast(frontVec, Vector3.down, 4, LayerMask.GetMask("Platform"));
-
+        
         if (rayHit.collider == null && _changeTimer <= 0f)
         {
             _nextMove *= -1;
@@ -63,6 +65,7 @@ public class MeleeMonster : Monster
         }
 
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
+
     }
 
     
@@ -74,7 +77,12 @@ public class MeleeMonster : Monster
 
         if (distance <= 10.0f)
         {
-            _nextMove = dir.x > 0 ? 1 : -1;
+            _nextMove = dir.x > 0 ? 1 : -1; 
+        }
+
+        else
+        {
+            Heal(1f * Time.deltaTime);
         }
     }
     
@@ -100,7 +108,6 @@ public class MeleeMonster : Monster
         {
             _inRange = false;
         }
-
     }
 
     public virtual void StartAttack(Player other)
@@ -115,23 +122,22 @@ public class MeleeMonster : Monster
 
     IEnumerator CountAttackDelay(Player other)
     {
-        //  print("attackStart");
-        yield return new WaitForSeconds(0.4f);
+       
+//        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.4f / _attackSpeed);
+
+        _isAttacking = true;
 
         Attack(other);
         if (_inRange) 
         print(other.HP);
-        //  print("Attacked");
-        yield return new WaitForSeconds(0.6f);
+
+//       yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.6f / _attackSpeed);
 
         _isAttacking = false;
 
         sco = null;
-        //   print("attackEnd");
-    }
-
-    public override void OnMonsterDie()
-    {
-        throw new NotImplementedException();
+       
     }
 }
