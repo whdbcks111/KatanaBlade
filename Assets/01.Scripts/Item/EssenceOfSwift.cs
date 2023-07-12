@@ -7,10 +7,10 @@ public class EssenceOfSwift : Item
     private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     public EssenceOfSwift()
-: base(ItemType.Essence, "½Å¼ÓÀÇ Á¤¼ö",
+: base(ItemType.Essence, "ï¿½Å¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½",
     string.Format(
-        "»ç¿ë ½Ã : ÁÖº¯ Åõ»çÃ¼¸¦ <color=darkviolet>ÆÄ±«</color>ÇÏ´Â ¿µ¿ªÀ» »ý¼ºÇÕ´Ï´Ù. <color=gray>(Àç»ç¿ë ´ë½Ã±â°£ : {0:0.0}ÃÊ)</color>\n" +
-        "±âº» Áö¼Ó È¿°ú : Àü¹æÀ¸·Î <color=cyan>", Cooldown),
+        "ï¿½ï¿½ï¿½ ï¿½ï¿½ : ï¿½Öºï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ <color=#404>ï¿½Ä±ï¿½</color>ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. <color=#aaa>(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã±â°£ : {0:0.0}ï¿½ï¿½)</color>\n", Cooldown),
+
     Resources.Load<Sprite>("Item/Icon/Essence/Essence_3"))
     {
 

@@ -24,7 +24,7 @@ public class Player : Entity
         Inventory.AddItem(new EssenceOfDarkness());
         Inventory.AddItem(new EssenceOfCloud());
         Inventory.AddItem(new EssenceOfVoid());
-        Inventory.AddItem(new AccessoryTest());
+        Inventory.AddItem(new BootsOfTraveler());
 
         _controller = GetComponent<PlayerController>();
         _animator = GetComponentInChildren<Animator>();
