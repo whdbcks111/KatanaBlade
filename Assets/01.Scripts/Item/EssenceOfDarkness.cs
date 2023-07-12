@@ -8,8 +8,8 @@ public class EssenceOfDarkness : Item
     private static readonly float Cooldown = 5f;
 
     private static readonly float SlowMag = 0.4f;
-    private static readonly float MaintainTime = 5;
-    private static readonly float Radius = 3;
+    private static readonly float MaintainTime = 3;
+    private static readonly float Radius = 6;
     private static readonly float CastTime = 0.2f;
 
     private List<GameObject> _skillList = new List<GameObject>();
@@ -42,6 +42,7 @@ public class EssenceOfDarkness : Item
         Sprite sprite = Resources.Load<Sprite>("Item/Icon/Area");
         GameObject effect = new GameObject();
         effect.AddComponent<SpriteRenderer>().sprite = sprite;
+        effect.GetComponent<SpriteRenderer>().color = Color.black;
         effect.transform.localScale = Vector2.zero;
         effect.transform.position = Player.Instance.transform.position;
 
@@ -67,14 +68,13 @@ public class EssenceOfDarkness : Item
             Collider2D[] bullets = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
             foreach (var b in bullets)
             {
-                if (b.name.Contains("Bullet"))
+                if (b?.GetComponent<Projectile>() is Projectile)
                 {
                     if(!_skillList.Contains(b.gameObject))
                     {
-                        Debug.LogError(b.GetComponent<Bullet>().Speed *= SlowMag);
                         _skillList.Add(b.gameObject);
-                        _speedList.Add(b.GetComponent<Bullet>().Speed);
-                        b.GetComponent<Bullet>().Speed *= SlowMag;
+                        _speedList.Add(b.GetComponent<Projectile>().Speed);
+                        b.GetComponent<Projectile>().Speed *= SlowMag;
                     }
                 }
             }
@@ -94,12 +94,11 @@ public class EssenceOfDarkness : Item
         }
 
         //원상태로 복구
-        for (int i = 0; i < _speedList.Count; i++)
+        for (int i = 0; i < _skillList.Count; i++)
         {
             if (_skillList[i] != null)
             {
-                Debug.LogError(_speedList[i] / SlowMag);
-                _skillList[i].GetComponent<Bullet>().Speed = _speedList[i] / SlowMag;
+                _skillList[i].GetComponent<Projectile>().Speed = _speedList[i];
             }
         }
 

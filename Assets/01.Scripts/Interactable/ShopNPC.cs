@@ -1,32 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class ShopNPC : Interactable
 {
-    List<Dictionary<string, object>> itemTable;
-    List<int> itemList = new List<int>();
+    public GameObject ShopPanel;
+    public GameObject[] ItemListUI = new GameObject[4];
+    private List<Dictionary<string, object>> itemTable;
+    private Sprite[] itemSprites = new Sprite[10];
+
 
     private void Start()
     {
         itemTable = CSVReader.Read("Item/ItemTable");
-
+        ShopPanel.SetActive(false);
+        for (int i = 0; i < 10; i++)
+        {
+            Sprite loadImage = Resources.Load<Sprite>("Item/Icon/Accessory/" + itemTable[i]["ItemIcon"]);
+            itemSprites[i] = loadImage;
+        }
     }
 
     public override void OnInteract(Player player)
     {
+        ShopPanel.SetActive(!ShopPanel.activeSelf);
+        List<int> itemIDs = GetItemID();
         // 상점 주인 상호작용 구현
-
-    }
-
-    [ContextMenu("랜덤 아이템 가져오기")]
-    public void GetRandomItems()
-    {
-        itemList.Clear();
-        itemList = GetItemID();
-        foreach (var item in itemList)
+        for (int i = 0; i < 4; i++)
         {
-            Debug.Log(itemTable[item]["ItemName"]);
+            ItemListUI[i].GetComponentInChildren<TextMeshProUGUI>().text = itemTable[itemIDs[i]]["ItemName"].ToString();
+            ItemListUI[i].transform.Find("Image").GetComponent<Image>().sprite = itemSprites[itemIDs[i] - 1];
         }
     }
     

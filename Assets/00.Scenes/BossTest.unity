@@ -505,6 +505,7 @@ GameObject:
   - component: {fileID: 358841394}
   - component: {fileID: 358841396}
   - component: {fileID: 358841397}
+  - component: {fileID: 358841398}
   m_Layer: 0
   m_Name: skulKnifeTrap
   m_TagString: Untagged
@@ -589,7 +590,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -619,6 +620,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &358841398
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358841393}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &360875530
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +653,7 @@ GameObject:
   - component: {fileID: 360875533}
   - component: {fileID: 360875532}
   - component: {fileID: 360875534}
+  - component: {fileID: 360875535}
   m_Layer: 0
   m_Name: skulKnifeTrap (2)
   m_TagString: Untagged
@@ -663,7 +686,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -745,6 +768,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &360875535
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360875530}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &448976446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,6 +1794,7 @@ GameObject:
   - component: {fileID: 1266770395}
   - component: {fileID: 1266770394}
   - component: {fileID: 1266770396}
+  - component: {fileID: 1266770397}
   m_Layer: 0
   m_Name: skulKnifeTrap (6)
   m_TagString: Untagged
@@ -1782,7 +1827,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1864,6 +1909,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1266770397
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266770392}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1271317955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,6 +1942,7 @@ GameObject:
   - component: {fileID: 1271317958}
   - component: {fileID: 1271317957}
   - component: {fileID: 1271317959}
+  - component: {fileID: 1271317960}
   m_Layer: 0
   m_Name: skulKnifeTrap (5)
   m_TagString: Untagged
@@ -1908,7 +1975,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1990,6 +2057,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1271317960
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271317955}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1287197208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,6 +2090,7 @@ GameObject:
   - component: {fileID: 1287197211}
   - component: {fileID: 1287197210}
   - component: {fileID: 1287197212}
+  - component: {fileID: 1287197213}
   m_Layer: 0
   m_Name: skulKnifeTrap (8)
   m_TagString: Untagged
@@ -2034,7 +2123,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2116,6 +2205,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1287197213
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287197208}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1289125534
 GameObject:
   m_ObjectHideFlags: 0
@@ -2240,6 +2350,7 @@ GameObject:
   - component: {fileID: 1332426612}
   - component: {fileID: 1332426611}
   - component: {fileID: 1332426613}
+  - component: {fileID: 1332426614}
   m_Layer: 0
   m_Name: skulKnifeTrap (4)
   m_TagString: Untagged
@@ -2272,7 +2383,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2354,6 +2465,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1332426614
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332426609}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1373301561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2420,6 +2552,7 @@ GameObject:
   - component: {fileID: 1439544013}
   - component: {fileID: 1439544012}
   - component: {fileID: 1439544014}
+  - component: {fileID: 1439544015}
   m_Layer: 0
   m_Name: skulKnifeTrap (3)
   m_TagString: Untagged
@@ -2452,7 +2585,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2534,6 +2667,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1439544015
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439544010}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1492915877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2749,6 +2903,7 @@ GameObject:
   - component: {fileID: 1715441785}
   - component: {fileID: 1715441784}
   - component: {fileID: 1715441786}
+  - component: {fileID: 1715441787}
   m_Layer: 0
   m_Name: skulKnifeTrap (7)
   m_TagString: Untagged
@@ -2781,7 +2936,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2863,6 +3018,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1715441787
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715441782}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1746383268
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,6 +3051,7 @@ GameObject:
   - component: {fileID: 1746383271}
   - component: {fileID: 1746383270}
   - component: {fileID: 1746383272}
+  - component: {fileID: 1746383273}
   m_Layer: 0
   m_Name: skulKnifeTrap (1)
   m_TagString: Untagged
@@ -2907,7 +3084,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2989,6 +3166,27 @@ MonoBehaviour:
   MotherBoss: {fileID: 0}
   _damage: 20
   _parryAble: 0
+--- !u!50 &1746383273
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746383268}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &1789863927
 PrefabInstance:
   m_ObjectHideFlags: 0

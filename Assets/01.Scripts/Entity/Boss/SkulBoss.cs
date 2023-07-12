@@ -20,6 +20,9 @@ public class SkulBoss : Boss
     private static float _backSpeed;
     private static float _frontSpeed;
     private static float _limitRange;
+
+    [SerializeField] Vector2 _knifeThrowSpot;
+    [SerializeField] BossAttackProjectile _knifePrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,20 +73,33 @@ public class SkulBoss : Boss
                 StartCoroutine(Spin());
                 break;
             //패턴1 추적
-            case 2:
+            case 5:
                 MovingVelocity = _stare * _moveSpeed * 1.2f;
                 break;
-            case 3:
+            case 2:
                 StartCoroutine(KnifeStepping());
                 break;
-            case 4:
-
+            case 3:
+                StartCoroutine(KnifeThrowing());
                 break;
         }
 
     }
     public void ChooseNextAct()
     {
+        int minLimit = 1;
+        int maxLimit = 4;
+        //근거리
+        //칼 패턴만
+        if (_distance < _player.Stat.Get(StatType.DashLength) * 1.5f)
+            maxLimit = 2;
+        //원거리
+        //칼만 제외
+        else if (_distance > _player.Stat.Get(StatType.DashLength) * 4.5f)
+            minLimit = 2;
+        //중거리
+        //전부 다
+        _aiMode = Mathf.FloorToInt(Random.Range(minLimit, maxLimit));
 
         //대기 상태에서 플레이어에게 다가갈지, 멀어질지 판단
 
@@ -92,7 +108,7 @@ public class SkulBoss : Boss
     IEnumerator Spin()
     {
         _animator.SetBool("Spin", true);
-        _aiMode = 2;
+        _aiMode = 5;
 
         yield return new WaitForSeconds(10.0f);
         StartCoroutine(PatternTerm());
@@ -106,6 +122,19 @@ public class SkulBoss : Boss
         yield return new WaitForSeconds(2.0f);
         _knifeTrap.GetComponent<Animator>().SetTrigger("Shoot");
         yield return new WaitForSeconds(2.0f);
+        StartCoroutine(PatternTerm());
+    }
+    IEnumerator KnifeThrowing()
+    {
+        _isActing = false;
+        float x = Random.Range(2, 5);
+        for (int i = 0; i < x; i++)
+        {
+            BossAttackProjectile copy = Instantiate(_knifePrefab, _knifeThrowSpot, transform.rotation);
+            yield return new WaitForSeconds(2.0f);
+            copy.Fire();
+            yield return new WaitForSeconds(1.5f);
+        }
         StartCoroutine(PatternTerm());
     }
     IEnumerator PatternTerm()

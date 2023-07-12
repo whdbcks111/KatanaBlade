@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Monster : Entity
 {
+
     protected int GoldDrop;
     public override void Damage(float damage)
     {
@@ -21,6 +22,19 @@ public abstract class Monster : Entity
             Instantiate(goldPrefab, transform.position, Quaternion.identity);
         }
         Destroy(this.gameObject);
+
     }
     protected bool _isStun;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        this.Stat.SetDefault(StatType.MaxHP, 80);
+        LateAct(() =>
+        {
+            this.HP = this.MaxHP;
+        });
+    }
+
 }

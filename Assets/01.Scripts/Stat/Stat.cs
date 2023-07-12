@@ -20,8 +20,8 @@ public class Stat
             [StatType.MoveSpeed] = 12f,
             [StatType.DashLength] = 10f,
             [StatType.DashCost] = 30f,
-            [StatType.ParryingCost] = 30f,
-            [StatType.LowParryingFeedback] = 1f,
+            [StatType.ParryingCost] = 4f,
+            [StatType.LowParryingFeedback] = 20f,
             [StatType.MiddleParryingFeedback] = 2f,
             [StatType.HighParryingFeedback] = 3f
         }, 

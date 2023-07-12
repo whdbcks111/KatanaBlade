@@ -701,7 +701,7 @@ GameObject:
   - component: {fileID: 1266310619}
   - component: {fileID: 1266310618}
   - component: {fileID: 1266310623}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: LadderTilemap
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -5146,7 +5146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -25, y: -60.00006}
+  m_AnchoredPosition: {x: -25, y: -60}
   m_SizeDelta: {x: 254.47266, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &84484683165500063
@@ -10699,7 +10699,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -19.999939}
+  m_AnchoredPosition: {x: 50, y: -20}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2696830444036760062
@@ -11484,6 +11484,10 @@ PrefabInstance:
       propertyPath: _targetTilemap
       value: 
       objectReference: {fileID: 411507278}
+    - target: {fileID: 5325436998416378251, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
+      propertyPath: _healAreaPrefab
+      value: 
+      objectReference: {fileID: 1359456689487373302, guid: 6616fbd05668a254eae1016a5a675681, type: 3}
     - target: {fileID: 5325436998416378251, guid: 1ec780478e077c8469facb8e55379beb, type: 3}
       propertyPath: _bossPrefabs.Array.size
       value: 1
