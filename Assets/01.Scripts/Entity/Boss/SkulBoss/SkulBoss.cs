@@ -6,7 +6,7 @@ public class SkulBoss : Boss
 {
     [SerializeField] private GameObject _knifeTrap;
 
-    private bool _isActing;
+    [SerializeField] private bool _isActing;
     private int _aiMode;
     private float _distance;
 
@@ -14,21 +14,23 @@ public class SkulBoss : Boss
     private SpriteRenderer _renderer;
     private Animator _animator;
 
-    private float _moveSpeed;
+    //private float _moveSpeed;
     private int _stare;
 
-    private static float _backSpeed;
-    private static float _frontSpeed;
-    private static float _limitRange;
 
-    [SerializeField] Vector2 _knifeThrowSpot;
+    private static float _moveSpeed = 10f;
+
+    private static float _NoNoRange = 5f;
+    private static float _maxlimitRange = 10f;
+
     [SerializeField] BossAttackProjectile _knifePrefab;
     // Start is called before the first frame update
     void Start()
     {
         _animator = GetComponentInChildren<Animator>();
         _renderer = GetComponentInChildren<SpriteRenderer>();
-        _moveSpeed = _frontSpeed;
+        _player = FindObjectOfType<Player>();
+        StartCoroutine(PatternTerm());
     }
 
     // Update is called once per frame
@@ -43,12 +45,15 @@ public class SkulBoss : Boss
         if (_player.transform.position.x < transform.position.x)
         {
             _stare = -1;
-            _renderer.flipX = true;
+            //_renderer.flipX = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            
         }
         else
         {
             _stare = 1;
-            _renderer.flipX = false;
+            //_renderer.flipX = true;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
@@ -63,10 +68,12 @@ public class SkulBoss : Boss
             case 0:
                 Staring();
                 _distance = Mathf.Abs(_player.transform.position.x - transform.position.x);
-                if (_distance > _limitRange)
+                if (_distance > _maxlimitRange)
                     MovingVelocity = _stare * _moveSpeed;
+                else if (_distance < _NoNoRange)
+                    MovingVelocity = _stare * -_moveSpeed;
                 else
-                    MovingVelocity = _stare * _backSpeed;
+                    MovingVelocity = 0;
                 break;
             //패턴 1
             case 1:
@@ -91,7 +98,7 @@ public class SkulBoss : Boss
         int maxLimit = 4;
         //근거리
         //칼 패턴만
-        if (_distance < _player.Stat.Get(StatType.DashLength) * 1.5f)
+        if (_distance < _player.Stat.Get(StatType.DashLength) * 0.8f)
             maxLimit = 2;
         //원거리
         //칼만 제외
@@ -107,15 +114,18 @@ public class SkulBoss : Boss
 
     IEnumerator Spin()
     {
-        _animator.SetBool("Spin", true);
+        _animator.SetBool("Spinning", true);
         _aiMode = 5;
 
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(5.0f);
+        _animator.SetBool("Spinning", false);
         StartCoroutine(PatternTerm());
     }
     IEnumerator KnifeStepping()
     {
+        MovingVelocity = 0;
         _isActing = false;
+        _knifeTrap.GetComponent<KnifeStepper>().Shuffle();
         _knifeTrap.GetComponent<Animator>().SetTrigger("Shoot");
         yield return new WaitForSeconds(3.0f);
         _knifeTrap.GetComponent<Animator>().SetTrigger("Shoot");
@@ -126,11 +136,13 @@ public class SkulBoss : Boss
     }
     IEnumerator KnifeThrowing()
     {
+        MovingVelocity = 0;
         _isActing = false;
         float x = Random.Range(2, 5);
         for (int i = 0; i < x; i++)
         {
-            BossAttackProjectile copy = Instantiate(_knifePrefab, _knifeThrowSpot, transform.rotation);
+            BossAttackProjectile copy = Instantiate(_knifePrefab, new Vector2(transform.position.x, transform.position.y + 5.0f), transform.rotation);
+            copy.MotherBoss = this;
             yield return new WaitForSeconds(2.0f);
             copy.Fire();
             yield return new WaitForSeconds(1.5f);
@@ -141,8 +153,17 @@ public class SkulBoss : Boss
     {
         _aiMode = 0;
         _isActing = true;
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(3.0f);
         ChooseNextAct();
+    }
+
+    public override void Damage(float damage)
+    {
+        base.Damage(damage);
+        if (HP < 0)
+        {
+            //발악 패턴 시작
+        }
     }
 }
 /*
