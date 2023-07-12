@@ -1,26 +1,11 @@
-ï»¿ItemID,ItemName,ItemIcon,Item,Abillty,Gold
-1,ì—¬í–‰ìžì˜ ë¶€ì¸ ,boots,ì´ë¦„ ëª¨ë¥´ëŠ” ì—¬í–‰ê°€ê°€ ì°©ìš©í•œ ë¶€ì¸ ë¡œ ì´ë™ì†ë„ë¥¼ ì¦ê°€ì‹œì¼œì¤€ë‹¤.,ì´ë™ì†ë„ 30% ì¦ê°€,
-2,ìš©ì‚¬ì˜ ìž¥ê²€,sword,ìš©ì‚¬ê°€ ë§ˆì™•ì„ ìž¡ì•˜ë˜ ìž¥ê²€ìœ¼ë¡œ ì°©ìš© ì‹œ ìš©ì‚¬ì™€ ê°™ì€ íž˜ì„ ì´ëŒì–´ ë‚¼ ìˆ˜ìžˆë‹¤..,ê³µê²©ë ¥ 50% ì¦ê°€,
-3,ë°”ì´í‚¹ì˜ ë„ë¼,axe,ì˜†ë™ë„¤ ë¦¬ê·¸ì—ì„œ ë°”ì´í‚¹ ì˜¬Xí”„ì”¨ê°€ ì• ìš©í•˜ë˜ ë„ë¼ë¡œ ê³µê²©ë ¥ì„ ì˜¬ë ¤ì¤€ë‹¤.,ê³µê²©ë ¥ 25% ì¦ê°€,
-4,ë§ˆë²• ìŠ¤í¬ë¡¤,scroll,ì •ìˆ˜ì˜ íž˜ì„ ë”ìš± ì¦í­ì‹œì¼œì£¼ëŠ” ì‹ ê¸°í•œ ìŠ¤í¬ë¡¤ì´ë‹¤.,ì •ìˆ˜ ë°ë¯¸ì§€ 30%,
-5,ë§ˆë‚˜ì˜ ëª©ê±¸ì´,necklace,ë§ˆë‚˜ ì¹œë°€ë„ê°€ ë†’ì€ ëª©ê±¸ì´ë¡œ ì •ìˆ˜ì˜ íž˜ì„ ë¹¨ë¦¬ ì´ëŒì–´ë‚¼ ìˆ˜ ìžˆë‹¤.,ì •ìˆ˜ ì¿¨íƒ€ìž„ 30% ê°ì†Œ,
-6,ìš”ì •ì˜ ë§í† ,cloaks,ë°”ëžŒì˜ ìš”ì •ì˜ íž˜ì´ ë‹¹ê¸´ ë§í† ë¡œ ëŒ€ì‰¬ì¿¨íƒ€ìž„ì´ ì¤„ì–´ë“ ë‹¤.,ëŒ€ì‰¬ ì¿¨íƒ€ìž„ 30% ê°ì†Œ,
-7,ë°”ì‹¤ë¦¬ìŠ¤í¬ì˜ í”¼,hp,ê´´ìˆ˜ ë°”ì‹¤ë¦¬ìŠ¤í¬ì˜ í”¼ë¡œ ìµœëŒ€ì²´ë ¥ì„ ì¦ê°€ì‹œì¼œì¤€ë‹¤.,HP 30% ì¦ê°€,
-8,ë§ˆë…€ì˜ ì‚¬ê³¼,apple,ê³µì£¼ë¥¼ ì•”ì‚´í•˜ê¸° ìœ„í•´ ë§Œë“  ì‚¬ê³¼ë¡œ ë³´ìŠ¤ì—ê²Œ í° í”¼í•´ë¥¼ ì¤„ ìˆ˜ ìžˆë‹¤.,ë³´ìŠ¤ë°ë¯¸ì§€ 30% ì¦ê°€,
-9,ê³ ë¸”ë¦°ì˜ ì½”ì¸,coins,ê³ ë¸”ë¦°ë“¤ì´ ëª¨ì•„ë‘” ì½”ì¸ìœ¼ë¡œ ìž¬ë¬¼ìš´ì„ ëŠ˜ë ¤ì¤€ë‹¤.,ê³¨ë“œíšë“ëŸ‰ 30% ì¦ê°€,
-10,ë£¬ ê¸€ëŸ¬ë¸Œ,gloves,ì‹ ë¹„í•œ ë£¬ì˜ íž˜ì´ ë‹´ê¸´ ê¸€ëŸ¬ë¸Œë¡œ íŒ¨ë§ ì¿¨íƒ€ìž„ì´ ì¤„ì–´ë“ ë‹¤.,íŒ¨ë§ ì¿¨íƒ€ìž„ 30% ê°ì†Œ,
-11,,,,,
-12,,,,,
-13,,,,,
-14,,,,,
-15,,,,,
-16,,,,,
-17,,,,,
-18,,,,,
-19,,,,,
-20,,,,,
-21,,,,,
-22,,,,,
-23,,,,,
-24,,,,,
-25,,,,,
+ItemID,ItemName,ItemIcon,Item,Abillty,Gold,Class
+1,¿©ÇàÀÚÀÇ ºÎÃ÷,boots,ÀÌ¸§ ¸ð¸£´Â ¿©Çà°¡°¡ Âø¿ëÇÑ ºÎÃ÷·Î ÀÌµ¿¼Óµµ¸¦ Áõ°¡½ÃÄÑÁØ´Ù,<color=#0ff>ÀÌµ¿¼Óµµ 30% Áõ°¡</color>,80,BootsOfTraveler
+2,¿ë»çÀÇ Àå°Ë,sword,¿ë»ç°¡ ¸¶¿ÕÀ» Àâ¾Ò´ø Àå°ËÀ¸·Î Âø¿ë ½Ã ¿ë»ç¿Í °°Àº ÈûÀ» ÀÌ²ø¾î ³¾ ¼öÀÖ´Ù.,<color=#0ff>°ø°Ý·Â 50% Áõ°¡</color>,200,WarriorLongsword
+3,¹ÙÀÌÅ·ÀÇ µµ³¢,axe,¿·µ¿³× ¸®±×¿¡¼­ ¹ÙÀÌÅ· ¿ÃXÇÁ¾¾°¡ ¾Ö¿ëÇÏ´ø µµ³¢·Î °ø°Ý·ÂÀ» ¿Ã·ÁÁØ´Ù.,<color=#0ff>°ø°Ý·Â 25% Áõ°¡</color>,150,VikingAx
+4,¸¶¹ý ½ºÅ©·Ñ,scroll,Á¤¼öÀÇ ÈûÀ» ´õ¿í ÁõÆø½ÃÄÑÁÖ´Â ½Å±âÇÑ ½ºÅ©·ÑÀÌ´Ù.,<color=#0ff>Á¤¼ö µ¥¹ÌÁö 30%</color>,100,MagicScroll
+5,¸¶³ªÀÇ ¸ñ°ÉÀÌ,necklace,¸¶³ª Ä£¹Ðµµ°¡ ³ôÀº ¸ñ°ÉÀÌ·Î Á¤¼öÀÇ ÈûÀ» »¡¸® ÀÌ²ø¾î³¾ ¼ö ÀÖ´Ù.,<color=#0ff>Á¤¼ö ÄðÅ¸ÀÓ 30%</color>,100,NecklaceOfMana
+6,¿äÁ¤ÀÇ ¸ÁÅä,cloaks,¹Ù¶÷ÀÇ ¿äÁ¤ÀÇ ÈûÀÌ ´ç±ä ¸ÁÅä·Î ´ë½¬ÄðÅ¸ÀÓÀÌ ÁÙ¾îµç´Ù.,<color=#0ff>´ë½¬ ÄðÅ¸ÀÓ 30%</color>,100,FairyCloak
+7,¹Ù½Ç¸®½ºÅ©ÀÇ ÇÇ,hp,±«¼ö ¹Ù½Ç¸®½ºÅ©ÀÇ ÇÇ·Î ÃÖ´ëÃ¼·ÂÀ» Áõ°¡½ÃÄÑÁØ´Ù.,<color=#0ff>HP 30% Áõ°¡</color>,100,BloodOfTheBasilisk
+8,¸¶³àÀÇ »ç°ú,apple,°øÁÖ¸¦ ¾Ï»ìÇÏ±â À§ÇØ ¸¸µç »ç°ú·Î º¸½º¿¡°Ô Å« ÇÇÇØ¸¦ ÁÙ ¼ö ÀÖ´Ù.,<color=#0ff>º¸½ºµ¥¹ÌÁö 30% Áõ°¡</color>,150,WitchApple
+9,°íºí¸°ÀÇ ÄÚÀÎ,coins,°íºí¸°µéÀÌ ¸ð¾ÆµÐ ÄÚÀÎÀ¸·Î Àç¹°¿îÀ» ´Ã·ÁÁØ´Ù,<color=#0ff>°ñµåÈ¹µæ·® 30% Áõ°¡</color>,100,GoblinCoin
+10,·é ±Û·¯ºê,gloves,½ÅºñÇÑ ·éÀÇ ÈûÀÌ ´ã±ä ±Û·¯ºê·Î ÆÐ¸µ ÄðÅ¸ÀÓÀÌ ÁÙ¾îµç´Ù.,<color=#0ff>ÆÐ¸µ ÄðÅ¸ÀÓ 30% °¨¼Ò</color>,100,RuneGlove

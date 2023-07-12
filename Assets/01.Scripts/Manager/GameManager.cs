@@ -92,18 +92,18 @@ public class GameManager : MonoBehaviour
             ItemPopup.SetActive(false);
     }
 
-    public void ShopItemPopup(MonoBehaviour ui, Sprite icon, string name, string desc)
+    public void ShopItemPopup(GameObject ui, Sprite icon, string name, string desc)
     {
         ShopPopup.SetActive(true);
         ShopPopupIcon.sprite = icon;
         ShopPopupDesc.SetText(desc);
         ShopPopupName.SetText(name);
-        _currentShowingUI = ui;
+        //_currentShowingUI = ui;
     }
 
-    public void HideShopPopup(MonoBehaviour shopIconUI)
+    public void HideShopPopup(GameObject shopIconUI)
     {
-        if (_currentShowingUI == shopIconUI)
+        //if (_currentShowingUI == shopIconUI)
             ShopPopup.SetActive(false);
     }
 

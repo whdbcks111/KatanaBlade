@@ -24,7 +24,7 @@ public class InventoryDisplay : MonoBehaviour
         for (int i = 0; i < Inventory.InventorySpace; i++)
         {
             var item = Player.Instance.Inventory.GetItem(i);
-            print(i + "/" + item?.Name);
+            //print(i + "/" + item?.Name);
             if (item is null) SlotList[i].sprite = null;
             else SlotList[i].sprite = item.Icon;
 
