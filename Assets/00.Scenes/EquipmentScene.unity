@@ -1835,6 +1835,7 @@ MonoBehaviour:
   ShopPopupIcon: {fileID: 0}
   ShopPopupName: {fileID: 0}
   ShopPopupDesc: {fileID: 0}
+  Gold: 0
 --- !u!4 &539590323
 Transform:
   m_ObjectHideFlags: 0
@@ -2300,7 +2301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6932008487000361122, guid: 311dc46178cec554b87c83ea48e9d7b1, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6932008487000361122, guid: 311dc46178cec554b87c83ea48e9d7b1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4412,11 +4413,11 @@ RectTransform:
   m_Father: {fileID: 1991816860}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -753, y: 461}
-  m_SizeDelta: {x: 349, y: 68}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 32.49994, y: 459.8883}
+  m_SizeDelta: {x: 462.3917, y: 70.2234}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1463329751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4500,7 +4501,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -173.42255, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5007,7 +5008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8044859247362721348, guid: 3626113f502489f4ca790c5459422353, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8044859247362721348, guid: 3626113f502489f4ca790c5459422353, type: 3}
       propertyPath: m_AnchorMax.x

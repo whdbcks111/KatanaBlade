@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AccessoryTest : Item
+public class RuneGlove : Item
 {
 
-    public AccessoryTest() 
-        : base(ItemType.Accessory, "테스트 장신구", 
+    public RuneGlove() 
+        : base(ItemType.Accessory, "룬 글러브", 
             string.Format(
-                "엑세사리 테스트"), 
-            Resources.Load<Sprite>("Item/Icon/Essence/Essence_9"))
+                "신비한 룬의 힘이 담긴 글러브로 패링 쿨타임이 줄어든다." +
+                "\n<color=#0ff>패링 쿨타임 30% 감소</ color>"), 
+            Resources.Load<Sprite>("Item/Icon/Accessory/gloves"))
     {
     }
 

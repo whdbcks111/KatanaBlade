@@ -18,7 +18,7 @@ public class EssenceOfDarkness : Item
     public EssenceOfDarkness()
         : base(ItemType.Essence, "암흑의 정수",
             string.Format(
-                "사용 시 : 주변을 느려지게 하는 영역을 전개합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+                "사용 시 : 주변을 느려지게 하는 영역을 전개합니다. <color=#aaa>(재사용 대시기간 : {0:0.0}초)</color>\n" +
                 "기본 지속 효과 : -", Cooldown),
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_6"))
     {
@@ -27,8 +27,7 @@ public class EssenceOfDarkness : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         Player.Instance.StartCoroutine(SkillCor(MaintainTime, Radius, CastTime));
     }
