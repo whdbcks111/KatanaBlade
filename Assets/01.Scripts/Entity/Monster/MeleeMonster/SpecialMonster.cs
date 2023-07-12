@@ -1,13 +1,12 @@
-
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class SkullMonster : MeleeMonster
+public class SpeedupMonster : MeleeMonster
 {
-    Animator _anim;
+    private Animator _anim;
+
+    public float magnitude;
 
     protected override void Awake()
     {
@@ -20,7 +19,6 @@ public class SkullMonster : MeleeMonster
         base.Update();
 
         _anim.SetBool("IsAttacking", _isAttacking);
-
     }
 
     protected override void MonsterMove()
@@ -52,15 +50,11 @@ public class SkullMonster : MeleeMonster
 
         }
     }
-    public override void OnMonsterDie()
-    {
-        throw new NotImplementedException();
-    }
-
-
 
     public override void Heal(float amount)
     {
         base.Heal(amount);
+       
     }
 }
+
