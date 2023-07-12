@@ -15,6 +15,6 @@ public abstract class Monster : Entity
     public virtual void OnMonsterDie()
     {
         Debug.Log("코인 드랍함");
-
+        
     }
 }
