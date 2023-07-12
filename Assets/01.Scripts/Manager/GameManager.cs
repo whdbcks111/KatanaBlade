@@ -57,13 +57,18 @@ public class GameManager : MonoBehaviour
         //SceneManager.sceneLoaded += OnSceneLoadedEvent;
     }
 
-    private void OnSceneLoadedEvent(Scene scene, LoadSceneMode mode)
-    {
-        //if(scene.name == "∏ﬁ¿Œ æ¿ Timer")
-        //{
-        //    ///
-        //}
-    }
+    //private void OnSceneLoadedEvent(Scene scene, LoadSceneMode mode)
+    //{
+    //    if (scene.name == "BossScene")
+    //    {
+    //        Camera.main.transform.position = new Vector3(0, 0, -10);
+            
+    //       //cameraSize = Mathf.Clamp(cameraSize, 7.5f, 15f);
+            
+    //    }
+    //}
+
+
 
 
 
