@@ -15,8 +15,14 @@ public abstract class Monster : Entity
 
     public virtual void OnMonsterDie()
     {
+        var goldPrefab = Resources.Load("Interactable/Gold");
         Debug.Log("코인 드랍함");
-        Destroy(gameObject);
+        for(int i = 0; i < 3; ++i)
+        {
+            Instantiate(goldPrefab, transform.position, Quaternion.identity);
+        }
+        Destroy(this.gameObject);
+
     }
     protected bool _isStun;
 

@@ -5,18 +5,40 @@ using UnityEngine;
 
 public class GoldQuantitie : MonoBehaviour
 {
-    public int value = 5;
+    public int Value = 5;
+    public float Speed = 10;
 
-
+    private void Start()
+    {
+        StartCoroutine(GoldMoveRoutine());
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if(other.TryGetComponent(out Player player))
         {
+            GameManager.instance.Gold += Value;
             Destroy(gameObject);
-            GoldCounter.Instance.IncreaseGolds(value);
-        } 
-    } 
+        }
+    }
+
+    private IEnumerator GoldMoveRoutine()
+    {
+        float angle = Random.Range(0, 360);
+        Vector3 direction = ExtraMath.AngleToDirection(angle);
+
+        for (float i = 0f; i < 1f; i += Time.deltaTime / 0.5f)
+        {
+            transform.position += Speed * Time.deltaTime * direction;
+            yield return null;
+        }
+
+        while (true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Player.Instance.transform.position, Speed * Time.deltaTime);
+            yield return null;
+        }
+    }
 }
     
         

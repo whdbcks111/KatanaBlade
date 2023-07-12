@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
 
+    [HideInInspector] public int Gold = 0;
+    
+
     // 게임 시작과 동시에 싱글톤을 구성
     void Awake()
     {
@@ -70,8 +73,7 @@ public class GameManager : MonoBehaviour
     //시간 증가시키는 메서드 
     void Start()
     {
-        //TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-        //StartCoroutine(StartTimer());
+        StartCoroutine(StartTimer());
 
         ItemPopup.SetActive(false);
     }
@@ -166,6 +168,7 @@ public class GameManager : MonoBehaviour
         GameoverUI.SetActive(true);
     }
 
+    
 
 
 
