@@ -15,7 +15,7 @@ public class BossAttackProjectile : Entity
     {
         _player = FindObjectOfType<Player>();
     }
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (_mode == 0)
             setTarget(_player.transform.position);

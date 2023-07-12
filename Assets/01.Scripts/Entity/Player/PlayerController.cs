@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator ParryContinue(float parryAngle)
     {
+
         StartCoroutine(Stun(.6f));
         _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
         StartCoroutine(ParryCool());
@@ -149,6 +150,7 @@ public class PlayerController : MonoBehaviour
         //닿은게 몬스터, 투사체인지 확인
         foreach (RaycastHit2D inst in hit)
         {
+            print(inst.collider.gameObject.name);
             float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
             if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
             {
@@ -163,6 +165,7 @@ public class PlayerController : MonoBehaviour
                     {
                         //패링 성공 이후 공격
                         t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                        print("Melee Parry");
                         //패링 후 효과
                         t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
                     }

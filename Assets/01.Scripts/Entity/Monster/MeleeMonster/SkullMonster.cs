@@ -54,7 +54,7 @@ public class SkullMonster : MeleeMonster
     }
     public override void OnMonsterDie()
     {
-        throw new NotImplementedException();
+
     }
 
 

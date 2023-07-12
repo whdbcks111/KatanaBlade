@@ -200,7 +200,6 @@ MonoBehaviour:
   MovingVelocity: 0
   KnockbackVelocity: 0
   Speed: 3
-  DetectDist: 0
   AttDist: 9
   MoveDist: 7
   AttSpeed: 1
