@@ -34,8 +34,13 @@ public class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
-        print(name);
         Init();
+    }
+
+    public void Teleport(Vector3 pos)
+    {
+        transform.position = pos;
+        if (Camera.main.TryGetComponent(out CameraControll cc)) cc.Teleport();
     }
 
     public void LateAct(Action action)

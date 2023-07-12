@@ -12,14 +12,35 @@ public class BossPortal : Interactable
     public override void OnInteract(Player player)
     {
         _boss = Instantiate(BossPrefab, BossMapPos, Quaternion.identity);
-        player.transform.position = BossMapPos;
+        player.Teleport(BossMapPos);
         StartCoroutine(ReturnPortalRoutine());
+        player.StartCoroutine(ScreenEffectRoutine());
+    }
+
+    private IEnumerator ScreenEffectRoutine()
+    {
+        for (var i = 0f; i < 1f; i += Time.deltaTime)
+        {
+            yield return null;
+            ScreenEffectManager.Instance.SetSaturation(Mathf.Clamp01(1 - i) * 100 - 100);
+        }
+        for (var i = 0f; i < 1f; i += Time.deltaTime)
+        {
+            yield return null;
+            ScreenEffectManager.Instance.SetSaturation(Mathf.Clamp01(i) * 100 - 100);
+        }
+        ScreenEffectManager.Instance.ResetSaturation();
     }
 
     private IEnumerator ReturnPortalRoutine()
     {
-        yield return new WaitUntil(() => _boss.HP <= 0);
-        var p = Instantiate(Resources.Load<ReturnPortal>("Interactable/ReturnPortal"), _boss.transform.position, Quaternion.identity);
+        Vector3 lastPos = _boss.transform.position;
+        while(!_boss.Equals(null))
+        {
+            lastPos = _boss.transform.position;
+            yield return null;
+        }
+        var p = Instantiate(Resources.Load<ReturnPortal>("Interactable/ReturnPortal"), lastPos, Quaternion.identity);
         p.ParentPortal = this;
     }
 }

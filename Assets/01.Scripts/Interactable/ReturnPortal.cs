@@ -8,7 +8,7 @@ public class ReturnPortal : Interactable
 
     public override void OnInteract(Player player)
     {
-        player.transform.position = ParentPortal.transform.position;
+        player.Teleport(ParentPortal.transform.position);
         Destroy(gameObject);
         Destroy(ParentPortal.gameObject);
     }
