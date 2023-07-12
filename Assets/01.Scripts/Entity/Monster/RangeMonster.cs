@@ -7,11 +7,11 @@ public class RangeMonster : Monster
 {
     public float Speed;
 
-    [Range(10f, 20)]
+    [Range(10f, 40f)]
     public float DetectDist;
-    [Range(3f, 9f)]
+    [Range(10f, 30f)]
     public float AttDist;       //공격 최대 거리
-    [Range(2f, 7f)]
+    [Range(5f, 15f)]
     public float MoveDist;      //공격 시 최소 사거리
 
     public float AttSpeed;

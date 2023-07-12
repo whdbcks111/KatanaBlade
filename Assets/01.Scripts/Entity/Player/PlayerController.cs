@@ -128,10 +128,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_parryCan && Input.GetMouseButtonDown(0) && _player.ParryingStamina >= _player.Stat.Get(StatType.ParryingCost))
         {
-            float parryAngle = ExtraMath.DirectionToAngle(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+            var dir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            float parryAngle = ExtraMath.DirectionToAngle(dir);
             _animator.SetTrigger("Parry");
             StartCoroutine(ParryContinue(parryAngle));
-            _stare = parryAngle < 90 || parryAngle > 270 ? 1 : -1;
+            _stare = dir.x > 0 ? 1 : -1;
         }
     }
     IEnumerator ParryContinue(float parryAngle)
