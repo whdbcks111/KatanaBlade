@@ -16,8 +16,8 @@ public class EssenceOfEarth : Item
     public EssenceOfEarth()
     : base(ItemType.Essence, "대지의 정수",
         string.Format(
-            "사용 시 : 주변 적들을 <color=brown>띄웁</color>니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
-            "기본 지속 효과 : {1}초마다 주변 적을 <color=brown>기절</color>시킵니다.", Cooldown, PassiveTick),
+            "사용 시 : 주변 적들을 <color=brown>밀어내고</color> 기절시킵니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+            "기본 지속 효과 : {1}초마다 여진을 일으켜 주변 적을 <color=brown>기절</color>시킵니다.", Cooldown, PassiveTick),
         Resources.Load<Sprite>("Item/Icon/Essence/Essence_0"))
     {
     }
@@ -33,8 +33,10 @@ public class EssenceOfEarth : Item
         {
             if(enemy.GetComponent<Entity>() is Monster)
             {
+                enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, 2f, Player.Instance));
                 //대상과의 거리에 따라 에어본이 달라짐
                 enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (ActiveMag + (SkillWidth - Vector2.Distance(enemy.transform.position, Player.Instance.transform.position))), ForceMode2D.Impulse);
+                enemy.GetComponent<Entity>().Knockback(ActiveMag * Random.Range(-1, 2) * 2);
             }
         }
     }
