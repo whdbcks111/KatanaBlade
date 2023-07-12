@@ -18,10 +18,10 @@ public class HealArea : Interactable
 
     private void Update()
     {
-        Collider2D[] objects= Physics2D.OverlapCircleAll(transform.position, Radius);
+        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, Radius);
         foreach (var player in objects)
         {
-            if(player.TryGetComponent(out Player p) && _isHealed == false)
+            if (player.TryGetComponent(out Player p) && _isHealed == false)
             {
                 p.Heal(HealAmount);
                 print("Healed! " + HealAmount);
@@ -37,6 +37,6 @@ public class HealArea : Interactable
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, Radius); 
+        Gizmos.DrawWireSphere(transform.position, Radius);
     }
 }
