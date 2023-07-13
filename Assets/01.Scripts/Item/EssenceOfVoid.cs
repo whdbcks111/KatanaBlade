@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EssenceOfVoid : Item
 {
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 10f;
 
     private static readonly float MaintainTime = 5;
@@ -23,8 +22,7 @@ public class EssenceOfVoid : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         Player.Instance.StartCoroutine(SkillCor(MaintainTime, Radius, CastTime));
     }

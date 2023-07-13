@@ -27,8 +27,7 @@ public class EssenceOfLightning : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         _entities.Clear();
         //기준 몬스터 찾기

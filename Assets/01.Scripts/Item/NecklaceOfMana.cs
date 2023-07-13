@@ -7,7 +7,7 @@ public class NecklaceOfMana : Item
 {
 
     public NecklaceOfMana() 
-        : base(ItemType.Accessory, "여행자의 부츠", 
+        : base(ItemType.Accessory, "마나 목걸이", 
             string.Format(
                 "마나 친밀도가 높은 목걸이로 정수의 힘을 빨리 이끌어낼 수 있다." +
                 "\n<color=#0ff>정수 쿨타임 30% 감소</ color>"), 
@@ -29,5 +29,6 @@ public class NecklaceOfMana : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.EssenceCooldown, 0.7f);
     }
 }
