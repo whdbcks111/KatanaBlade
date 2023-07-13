@@ -5,16 +5,16 @@ using UnityEngine;
 public class EssenceOfVoid : Item
 {
     private float _lastUsed = -1;
-    private static readonly float Cooldown = 5f;
+    private static readonly float Cooldown = 10f;
 
     private static readonly float MaintainTime = 5;
-    private static readonly float Radius = 3;
+    private static readonly float Radius = 6;
     private static readonly float CastTime = 0.2f;
 
     public EssenceOfVoid()
     : base(ItemType.Essence, "공허의 정수",
         string.Format(
-            "사용 시 : 주변 투사체를 <color=darkviolet>파괴</color>하는 영역을 생성합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n", Cooldown),
+            "사용 시 : 주변 투사체를 <color=#404>파괴</color>하는 영역을 생성합니다. <color=#aaa>(재사용 대시기간 : {0:0.0}초)</color>\n", Cooldown),
         Resources.Load<Sprite>("Item/Icon/Essence/Essence_3"))
     {
 
@@ -39,6 +39,7 @@ public class EssenceOfVoid : Item
         Sprite sprite = Resources.Load<Sprite>("Item/Icon/Area");
         GameObject effect = new GameObject();
         effect.AddComponent<SpriteRenderer>().sprite = sprite;
+        effect.GetComponent<SpriteRenderer>().color = new Color(102f / 255f, 0, 102f/255f);
         effect.transform.localScale = Vector2.zero;
         effect.transform.position = Player.Instance.transform.position;
 
@@ -58,11 +59,10 @@ public class EssenceOfVoid : Item
 
         while (dT < maintainTime)
         {
-            Collider2D[] bullets = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
-            foreach (var b in bullets)
+            Collider2D[] projectiles = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
+            foreach (var b in projectiles)
             {
-                Debug.LogError(b.name.Contains("Bullet"));
-                if (b.name.Contains("Bullet"))
+                if (b?.GetComponent<Projectile>() is Projectile)
                     Object.Destroy(b.gameObject);
             }
             yield return null;

@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class FlyingProjectile : MonoBehaviour
+public class FlyingProjectile : Projectile
 {
     public Tilemap tilemap;
     public Transform target;
 
     public void Update()
     {
-        Pathfinder.Follow(tilemap, transform, target.position, 6);
+        Pathfinder.Follow(tilemap, transform, target.position, Speed);
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.gameObject.TryGetComponent(out Entity entity)) return;

@@ -18,18 +18,19 @@ public class BossPortal : Interactable
     }
 
     private IEnumerator ScreenEffectRoutine()
-    {
-        for (var i = 0f; i < 1f; i += Time.deltaTime)
+    { 
+        Camera.main.GetComponent<CameraControll>().Shake(2f, 0.3f);
+        for (var i = 0f; i < 1f; i += Time.deltaTime * 4)
         {
             yield return null;
-            ScreenEffectManager.Instance.SetSaturation(Mathf.Clamp01(1 - i) * 100 - 100);
+            ScreenEffectManager.Instance.SetContrast(Mathf.Clamp01(i) * 100);
         }
-        for (var i = 0f; i < 1f; i += Time.deltaTime)
-        {
+        for (var i = 0f; i < 1f; i += Time.deltaTime / 4)
+        { 
             yield return null;
-            ScreenEffectManager.Instance.SetSaturation(Mathf.Clamp01(i) * 100 - 100);
+            ScreenEffectManager.Instance.SetContrast(Mathf.Clamp01(1 - i) * 100);
         }
-        ScreenEffectManager.Instance.ResetSaturation();
+        ScreenEffectManager.Instance.ResetContrast();
     }
 
     private IEnumerator ReturnPortalRoutine()

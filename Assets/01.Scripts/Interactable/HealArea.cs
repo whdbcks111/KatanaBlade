@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealArea : Interactable
+public class HealArea : MonoBehaviour
 {
     public float HealAmount;
     [Range(0.5f, 5f)]
     public float Radius;
     private bool _isHealed = false;
-
-
-    private void Start()
-    {
-        //health = maxHP;
-    }
 
     private void Update()
     {
@@ -28,10 +22,6 @@ public class HealArea : Interactable
                 _isHealed = true;
             }
         }
-    }
-
-    public override void OnInteract(Player player)
-    {
     }
 
     private void OnDrawGizmos()

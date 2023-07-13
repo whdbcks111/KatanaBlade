@@ -6,6 +6,17 @@ using UnityEngine.AddressableAssets;
 public abstract class Monster : Entity
 {
     protected int GoldDrop;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        this.Stat.SetDefault(StatType.MaxHP, 80);
+        LateAct(() =>
+        {
+            this.HP = this.MaxHP;
+        });
+    }
+
     public override void Damage(float damage)
     {
         base.Damage(damage);
@@ -19,7 +30,7 @@ public abstract class Monster : Entity
         int GoldDrop = 5;
         float spread = 0.8f;
         {
-            GameObject load = Resources.Load<GameObject>("Item/Gold");
+            GameObject load = Resources.Load<GameObject>("Interactable/Gold");
             while (GoldDrop > 0)
             {
                 GameObject gold = Instantiate(load, transform.position, Quaternion.identity);
@@ -34,4 +45,5 @@ public abstract class Monster : Entity
             }
         }
     }
+
 }
