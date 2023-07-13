@@ -17,7 +17,7 @@ public class GoldQuantitie : MonoBehaviour
     {
         if(other.TryGetComponent(out Player player))
         {
-            GameManager.instance.Gold += Value;
+            GameManager.instance.Gold += (int)(Value * player.Stat.Get(StatType.GoldObtainMultiplier));
             Destroy(gameObject);
         }
     }
