@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Projectile : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.name.Contains("Tilemap"))
+        {
+            Debug.Log("!");
+            Destroy(gameObject);
+        }
         if (collision.gameObject.TryGetComponent(out Entity entity) && owner != collision.gameObject.GetComponent<Entity>())
         {
             entity.Damage(10f);
