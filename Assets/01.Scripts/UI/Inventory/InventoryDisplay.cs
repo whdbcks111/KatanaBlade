@@ -31,6 +31,8 @@ public class InventoryDisplay : MonoBehaviour
         }
     }
 
+    public void ExitInventory() => GameManager.instance.InventoryUI.SetActive(false);
+
 }
 
 
