@@ -1,5 +1,0 @@
-{       
-    css: [
-        '~/App_Plugins/Accordion/style.css'
-    ]
-}

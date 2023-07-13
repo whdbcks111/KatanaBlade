@@ -1,31 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public abstract class Monster : Entity
 {
-
     protected int GoldDrop;
-    public override void Damage(float damage)
-    {
-        base.Damage(damage);
-        if(HP <= 0)
-            OnMonsterDie();
-    }
-
-    public virtual void OnMonsterDie()
-    {
-        var goldPrefab = Resources.Load("Interactable/Gold");
-        Debug.Log("코인 드랍함");
-        for(int i = 0; i < 3; ++i)
-        {
-            Instantiate(goldPrefab, transform.position, Quaternion.identity);
-        }
-        Destroy(this.gameObject);
-
-    }
-    protected bool _isStun;
-
 
     protected override void Awake()
     {
@@ -35,6 +15,34 @@ public abstract class Monster : Entity
         {
             this.HP = this.MaxHP;
         });
+    }
+
+    public override void Damage(float damage)
+    {
+        base.Damage(damage);
+        if(HP <= 0)
+            OnMonsterDie();
+    }
+
+    public virtual void OnMonsterDie()
+    {
+        Debug.Log("Gold Drop");
+        int GoldDrop = 5;
+        {
+            GameObject load = Resources.Load<GameObject>("Interactable/Gold");
+            while (GoldDrop > 0)
+            {
+                Instantiate(load, transform.position + new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f)), Quaternion.identity);
+                GoldDrop--;
+
+                //GoldDrop -= 1;
+                //Vector3 position = transform.position;
+                //position.x += spread * UnityEngine.Random.value - spread / 2;
+                //position.y += spread * UnityEngine.Random.value - spread / 2;
+            }
+        }
+
+        Destroy(gameObject);
     }
 
 }
