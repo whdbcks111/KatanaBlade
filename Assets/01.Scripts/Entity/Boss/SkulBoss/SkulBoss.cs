@@ -27,6 +27,8 @@ public class SkulBoss : Boss
     // Start is called before the first frame update
     void Start()
     {
+        this.Stat.SetDefault(StatType.MaxHP, 700);
+        HP = MaxHP;
         _animator = GetComponentInChildren<Animator>();
         _renderer = GetComponentInChildren<SpriteRenderer>();
         _player = FindObjectOfType<Player>();
@@ -47,7 +49,7 @@ public class SkulBoss : Boss
             _stare = -1;
             //_renderer.flipX = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            
+
         }
         else
         {
@@ -114,11 +116,13 @@ public class SkulBoss : Boss
 
     IEnumerator Spin()
     {
+        IsAttcking = true;
         _animator.SetBool("Spinning", true);
         _aiMode = 5;
 
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(4.0f);
         _animator.SetBool("Spinning", false);
+        IsAttcking = false;
         StartCoroutine(PatternTerm());
     }
     IEnumerator KnifeStepping()
@@ -156,14 +160,28 @@ public class SkulBoss : Boss
         yield return new WaitForSeconds(3.0f);
         ChooseNextAct();
     }
-
+    IEnumerator hit()
+    {
+        StopAllCoroutines();
+        _isActing = false;
+        MovingVelocity = 0;
+        _animator.SetBool("Spinning", false);
+        yield return new WaitForSeconds(1.0f);
+        StartCoroutine(PatternTerm());
+    }
     public override void Damage(float damage)
     {
-        base.Damage(damage);
+        base.Damage(damage * _player.Stat.Get(StatType.BossAttackForce));
+        //패턴 멈추기는 각 부분에서 알아서 처리
+        _animator.SetTrigger("Hitted");
+
+
         if (HP < 0)
         {
             //발악 패턴 시작
         }
+        else if (IsAttcking)
+            StartCoroutine(hit());
     }
 }
 /*

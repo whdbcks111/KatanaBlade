@@ -10,6 +10,10 @@ public abstract class Item : ScriptableObject
     public string Description { get; protected set; }
     public Sprite Icon { get; protected set; }
 
+    public float EssenceDamage;
+
+    public float EssenceCooldown;
+
     protected Item(ItemType type, string name, string description, Sprite icon)
     {
         Type = type;

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class EssenceOfEarth : Item
 {
-
-
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     private static readonly float PassiveTick = 5f;
     private static readonly float ActiveMag = 5f;
@@ -25,8 +22,7 @@ public class EssenceOfEarth : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
         foreach (var enemy in area)

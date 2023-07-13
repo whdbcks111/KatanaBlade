@@ -21,8 +21,8 @@ public class EssenceOfRegeneration : Item
     public override void OnActiveUse()
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
-
         Player.Instance.Heal(10);
+        ParticleManager.Instance.SpawnParticle(Player.Instance.transform.position, "Healing");
         Player.Instance.SetEssenceCooldown(5);
     }
 

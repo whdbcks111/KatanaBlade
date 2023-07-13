@@ -19,7 +19,7 @@ public abstract class Monster : Entity
 
     public override void Damage(float damage)
     {
-        base.Damage(damage);
+        base.Damage(damage * Player.Instance.Stat.Get(StatType.ParryingAttackForce));
         if(HP <= 0)
             OnMonsterDie();
     }
@@ -27,7 +27,7 @@ public abstract class Monster : Entity
     public virtual void OnMonsterDie()
     {
         Debug.Log("Gold Drop");
-        int GoldDrop = 5;
+        int GoldDrop = 5 + Random.Range(-2, 3);
         {
             GameObject load = Resources.Load<GameObject>("Interactable/Gold");
             while (GoldDrop > 0)

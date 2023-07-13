@@ -29,5 +29,6 @@ public class VikingAx : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.ParryingAttackForce, 1.5f);
     }
 }

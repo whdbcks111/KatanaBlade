@@ -21,7 +21,7 @@ public class Player : Entity
         Instance = this;
 
 
-        Inventory.AddItem(new EssenceOfRegeneration());
+        Inventory.AddItem(new EssenceOfFlame());
         Inventory.AddItem(new EssenceOfDarkness());
         Inventory.AddItem(new EssenceOfCloud());
         Inventory.AddItem(new EssenceOfVoid());
@@ -55,7 +55,7 @@ public class Player : Entity
 
     public void SetEssenceCooldown(float time)
     {
-        _essenceCooldown = _essenceRemainCooldown = time;
+        _essenceCooldown = _essenceRemainCooldown = time * Instance.Stat.Get(StatType.EssenceCooldown);
     }
 
     public override void Damage(float damageAmount)
@@ -70,6 +70,7 @@ public class Player : Entity
             StopAllCoroutines();
             _controller.IsConscious = false;
             _animator.SetBool("Dead", true);
+            GameManager.instance.OnPlayerDead();
         }
     }
 }

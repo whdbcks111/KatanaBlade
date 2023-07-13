@@ -29,5 +29,6 @@ public class WitchApple : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.BossAttackForce, 1.3f);
     }
 }
