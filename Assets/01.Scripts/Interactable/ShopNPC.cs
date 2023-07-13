@@ -86,4 +86,7 @@ public class ShopNPC : Interactable
         }
         return result;
     }
+
+    public void ExitShop() => ShopPanel.SetActive(false);
+
 }
