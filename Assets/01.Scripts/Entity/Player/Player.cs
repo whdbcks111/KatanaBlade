@@ -70,6 +70,7 @@ public class Player : Entity
             StopAllCoroutines();
             _controller.IsConscious = false;
             _animator.SetBool("Dead", true);
+            GameManager.instance.OnPlayerDead();
         }
     }
 }
