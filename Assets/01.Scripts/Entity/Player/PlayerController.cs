@@ -182,14 +182,14 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (inst.collider.TryGetComponent(out Projectile p))
                 {
+                    if (p is FlyingProjectile)
+                        Destroy(p.gameObject);
                     //패링으로 쳐내기
                     //p.transform.Rotate(Vector3.forward * 180);
-                    p.SetOwner(_player, parryAngle);
-                }
-                else if (inst.collider.TryGetComponent(out FlyingProjectile fp))
-                {
-                    //패링으로 없애기
-                    Destroy(fp.gameObject);
+                    else
+                    {
+                        p.SetOwner(_player, parryAngle);
+                    }
                 }
 
             }
