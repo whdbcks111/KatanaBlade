@@ -501,7 +501,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -798,6 +798,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1151140679570386586}
     m_Modifications:
+    - target: {fileID: 3123150456628240501, guid: 338e652f13857e64397d20818c17f18b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 77d8958c2edcefc4f8f564451830bcc4, type: 2}
+    - target: {fileID: 3123150456628240501, guid: 338e652f13857e64397d20818c17f18b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -8706791110744604474, guid: 77d8958c2edcefc4f8f564451830bcc4, type: 2}
     - target: {fileID: 3123150457707490239, guid: 338e652f13857e64397d20818c17f18b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

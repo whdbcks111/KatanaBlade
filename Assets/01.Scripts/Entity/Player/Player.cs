@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : Entity
 {
@@ -43,7 +44,7 @@ public class Player : Entity
         if (Inventory.MountedEssence is not null)
         {
             Inventory.MountedEssence.PassiveUpdate();
-            if(Input.GetMouseButtonDown(1) && _essenceRemainCooldown <= 0)
+            if(Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && _essenceRemainCooldown <= 0)
             {
                 Inventory.MountedEssence.OnActiveUse();
             }

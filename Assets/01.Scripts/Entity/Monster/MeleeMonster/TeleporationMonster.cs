@@ -65,10 +65,8 @@ public class TeleporationMonster : MeleeMonster
     }
     public override void OnMonsterDie()
     {
-        throw new NotImplementedException();
+        base.OnMonsterDie();
     }
-
-
 
     public override void Heal(float amount)
     {
