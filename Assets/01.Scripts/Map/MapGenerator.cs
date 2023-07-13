@@ -167,6 +167,9 @@ public class MapGenerator : MonoBehaviour
         }
 
         var monsterPrefabs = Resources.LoadAll<Monster>("Monsters/");
+        List<Vector3> spawnablePositions = new();
+
+        
         foreach (var entry in _map)
         {
             var pos = entry.Key;
@@ -175,20 +178,33 @@ public class MapGenerator : MonoBehaviour
             var offsets = shape.KeyPositionOffsets;
             if (stage.Type == StageType.Monster)
             {
-                print("shape");
                 foreach(var offset in offsets)
                 {
-                    var monsterPrefab = monsterPrefabs[UnityEngine.Random.Range(0, monsterPrefabs.Length)];
-                    var monster = Instantiate(monsterPrefab, _targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset +
-                    Vector3.up * monsterPrefab.GetComponentInChildren<SpriteRenderer>().bounds.size.y / 2, Quaternion.identity);
+                    spawnablePositions.Add(_targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset);
                 }
+            }
+        }
+
+        int remainCount = (int)(spawnablePositions.Count * 0.4f);
+        int maxCount = spawnablePositions.Count;
+        foreach(var pos in spawnablePositions)
+        {
+            // ·£´ý »Ì±â È®·ü = ³²Àº»Ì±â¼ö / Å½»öÇØ¾ßÇÒ¼ö
+            if(UnityEngine.Random.value < (float)remainCount / (maxCount--))
+            {
+                --remainCount;
+
+                print("Spawned");
+                var monsterPrefab = monsterPrefabs[UnityEngine.Random.Range(0, monsterPrefabs.Length)];
+                var monster = Instantiate(monsterPrefab,
+                    pos + Vector3.up * monsterPrefab.GetComponentInChildren<SpriteRenderer>().bounds.size.y / 2, 
+                    Quaternion.identity);
             }
             else
             {
-
-                print("shape " + stage.Type);
+                print("Unspawned");
             }
-         }
+        }
     }
 
     public void CreateMapTiles(Vector2Int pos, StageShape shape, StageType type = StageType.Monster)
