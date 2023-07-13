@@ -9,8 +9,8 @@ public class RuneGlove : Item
     public RuneGlove() 
         : base(ItemType.Accessory, "룬 글러브", 
             string.Format(
-                "신비한 룬의 힘이 담긴 글러브로 패링 쿨타임이 줄어든다." +
-                "\n<color=#0ff>패링 쿨타임 30% 감소</ color>"), 
+                "신비한 룬의 힘이 담긴 글러브로 패링에 소모되는 비용이 줄어든다." +
+                "\n<color=#0ff>패링 비용 30% 감소</ color>"), 
             Resources.Load<Sprite>("Item/Icon/Accessory/gloves"))
     {
     }
@@ -29,5 +29,6 @@ public class RuneGlove : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.ParryingCost, 0.7f);
     }
 }

@@ -14,7 +14,7 @@ public class EssenceOfStorm : Item
     public EssenceOfStorm()
 : base(ItemType.Essence, "폭풍의 정수",
     string.Format(
-        "사용 시 : 주변 적들을 {0}초간 <color=skyblue>띄우고</color> 기절시킵니다. <color=gray>(재사용 대시기간 : {1:0.0}초)</color>\n" +
+        "사용 시 : 주변에 폭풍을 일으켜 적들을 {0}초간 <color=skyblue>띄우고</color> 기절시킵니다. <color=gray>(재사용 대시기간 : {1:0.0}초)</color>\n" +
         "기본 지속 효과 : - ", MaintainTime,Cooldown),
     Resources.Load<Sprite>("Item/Icon/Essence/Essence_0"))
     {
@@ -23,9 +23,7 @@ public class EssenceOfStorm : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
-
+        Player.Instance.SetEssenceCooldown(Cooldown);
         Player.Instance.StartCoroutine(SkillCor(MaintainTime));
     }
 

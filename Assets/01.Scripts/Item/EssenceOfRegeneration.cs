@@ -21,9 +21,7 @@ public class EssenceOfRegeneration : Item
     public override void OnActiveUse()
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
-
         Player.Instance.Heal(10);
-        Player.Instance.SetEssenceCooldown(5);
     }
 
     public override void PassiveUpdate()
