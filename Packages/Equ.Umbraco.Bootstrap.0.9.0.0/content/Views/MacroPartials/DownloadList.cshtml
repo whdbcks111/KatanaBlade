@@ -1,0 +1,26 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+
+<div class="macro-download-list">
+    @try
+    {
+        var url = "";
+        List<IPublishedContent> list = EquHelper.GetMediaList(Model.MacroParameters["files"]);
+
+        foreach (var item in list)
+        {
+            <div class="download">
+                <h4>@item.Name</h4>
+                <span class="size">(@EquHelper.GetSizeText(item))</span>
+                @{
+                    var typeDotIndex = item.Name.LastIndexOf('.');
+                    var type = item.Name.Substring(typeDotIndex + 1);
+                    <a href="@item.Url" download>Download @type.ToUpper()</a>
+                }
+            </div>
+        }
+    }
+    catch (Exception ex)
+    {
+
+    }
+</div>

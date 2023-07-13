@@ -1,0 +1,9 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@{
+    var file = Umbraco.TypedMedia(Model.MacroParameters["file"].ToString());
+}
+<div class="featured-text">
+    <h3>@Model.MacroParameters["title"].ToString()</h3>
+    <p>@Model.MacroParameters["description"].ToString()</p>
+    <a href="@file.Url" target="_blank" class="arrow-link grey download" download>Download @file.GetPropertyValue("umbracoExtension").ToString().ToUpper() (@Umbraco.GetSizeText(file))</a>
+</div>
