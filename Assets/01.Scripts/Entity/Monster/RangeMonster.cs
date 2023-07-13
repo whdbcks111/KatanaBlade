@@ -35,7 +35,6 @@ public class RangeMonster : Monster
         if (AttDist < MoveDist)
             AttDist = MoveDist + 1;
     }
-    
 
     protected override void Update()
     {
