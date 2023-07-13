@@ -54,7 +54,7 @@ public class Player : Entity
 
     public void SetEssenceCooldown(float time)
     {
-        _essenceCooldown = _essenceRemainCooldown = time;
+        _essenceCooldown = _essenceRemainCooldown = time * Instance.Stat.Get(StatType.EssenceCooldown);
     }
 
     public override void Damage(float damageAmount)

@@ -29,5 +29,6 @@ public class FairyCloak : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.DashCooldown, 0.7f);
     }
 }

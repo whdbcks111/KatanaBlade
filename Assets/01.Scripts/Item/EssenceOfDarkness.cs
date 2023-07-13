@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EssenceOfDarkness : Item
 {
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
     private static readonly float SlowMag = 0.4f;
