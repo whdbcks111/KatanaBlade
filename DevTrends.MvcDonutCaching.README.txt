@@ -1,8 +1,0 @@
-Getting started with DevTrends.MvcDonutCaching
-----------------------------------------------
-
-Find out how to use DevTrends.MvcDonutCaching by visiting http://mvcdonutcaching.codeplex.com/
-
-Please note that this is a beta release which may not function correctly in all situations. 
-
-Please report all bugs and feature requests on CodePlex.
