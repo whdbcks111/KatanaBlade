@@ -9,11 +9,12 @@ public class BossAttackProjectile : Entity
     public Boss MotherBoss;
     [SerializeField] private int _damage;
     private Vector2 _targetSpot;
-    private int _hittedDamage;
+    private float _hittedDamage;
     [SerializeField] private float _speed;
     private void Start()
     {
         _player = FindObjectOfType<Player>();
+        setTarget(_player.transform.position);
     }
     protected override void FixedUpdate()
     {
@@ -44,15 +45,19 @@ public class BossAttackProjectile : Entity
         if (collision.TryGetComponent(out Player p) && _mode == 1)
         {
             p.Damage(_damage);
+            Destroy(this.gameObject);
         }
         if (collision.gameObject == MotherBoss.gameObject && _mode == 2)
         {
             MotherBoss.Damage(_hittedDamage);
+            Destroy(this.gameObject);
         }
-        Destroy(this.gameObject);
+        if (_mode != 0 && !collision.gameObject == MotherBoss.gameObject && !collision.TryGetComponent(out Player pa))
+            Destroy(this.gameObject);
     }
     public override void Damage(float damage)
     {
+        _hittedDamage = _damage + damage;
         _mode = 2;
         setTarget(MotherBoss.transform.position);
     }

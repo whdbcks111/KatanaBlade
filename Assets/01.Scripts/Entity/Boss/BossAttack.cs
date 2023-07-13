@@ -17,7 +17,9 @@ public class BossAttack : Entity
     public override void Damage(float damage)
     {
         if (_parryAble)
+        {
             MotherBoss.Damage(damage);
+        }
     }
 
 }
