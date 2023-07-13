@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class EssenceOfRegeneration : Item
 {
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
     public EssenceOfRegeneration()
