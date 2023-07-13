@@ -29,5 +29,6 @@ public class BootsOfTraveler : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.MoveSpeed, 1.3f);
     }
 }

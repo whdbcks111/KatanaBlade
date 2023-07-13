@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Projectile : MonoBehaviour
 {
@@ -31,6 +32,10 @@ public class Projectile : MonoBehaviour
         {
             entity.Damage(10f);
             Destroy(gameObject, 0f);
+        }
+        if (collision.CompareTag("Floor"))
+        {
+            Debug.Log("!");
         }
     }
 }

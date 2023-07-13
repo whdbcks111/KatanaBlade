@@ -1,28 +1,27 @@
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class EssenceOfFlame : Item
 {
-    public GameObject bullet;
 
     public float ActiveRadius = 15;
     private static readonly float ActiveDamage = 5f;
+    private static readonly float ActiveTotalTime = 2f;
 
     public float PassiveTick;
     public float PassiveRadius;
     private static readonly float PassiveDamage = 5f;
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     private float _dT;
 
     public EssenceOfFlame()
         : base(ItemType.Essence, "화염의 정수",
             string.Format(
-                "사용 시 : 주변 적에게 투사체를 날려 <color=red>{0}</color>만큼 피해를 입히고 <color=red>{1}</color>만큼 지속피해를 입힙니다.\n" +
+                "사용 시 : 주변 적에게 불꽃을 날려 <color=red>{0}</color>만큼 피해를 입히고 <color=red>{1}</color>만큼 지속피해를 입힙니다.\n" +
                 " <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
-                "기본 지속 효과 : 주변 적에게 초당 <color=red>{3}</color>만큼 피해를 입힙니다.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
+                "기본 지속 효과 : 주변 적에게 초당 <color=red>{3}</color>만큼 피해를 입힙니다.", ActiveDamage, PassiveDamage, Cooldown, PassiveDamage),
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_2"))
     {
     }
@@ -30,8 +29,7 @@ public class EssenceOfFlame : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         //적 레이어 추가해야함
         Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
@@ -46,9 +44,10 @@ public class EssenceOfFlame : Item
                     minDist = i;
                 }
             }
-            bullet.transform.position = Player.Instance.transform.position;
+            FlyingProjectile projectile = Instantiate(Resources.Load("Item/FlameProjectile"), Player.Instance.transform.position, Quaternion.identity).GetComponent<FlyingProjectile>();
+
             Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-            Player.Instance.StartCoroutine(ChaseTarget(map, bullet.transform, enemies[minDist].transform.position));
+            Player.Instance.StartCoroutine(ChaseTarget(map, projectile, enemies[minDist].transform));
             //적에게 투사체 발사 코드, 맞은 적에게 대미지 입히는 코드
         }
     }
@@ -63,20 +62,35 @@ public class EssenceOfFlame : Item
             {
                 if (enemy.GetComponent<Entity>() is Monster)
                 {
-                    enemy.GetComponent<Entity>().Damage(PassiveDamage * Time.deltaTime);
+                    enemy.GetComponent<Entity>().Damage(PassiveDamage);
                 }
             }
             _dT = 0;
         }
     }
 
-    private IEnumerator ChaseTarget(Tilemap tilemap, Transform obj, Vector2 target)
+    private IEnumerator ChaseTarget(Tilemap tilemap, FlyingProjectile obj, Transform target)
     {
-        while (Vector2.Distance((Vector2)obj.transform.position, target) > .1f)
+        obj.tilemap = tilemap;
+        obj.owner = Player.Instance;
+        obj.target = target;
+        yield return new WaitUntil(() => Vector2.Distance((Vector2)obj.transform.position, target.transform.position) < .1f);
+
+        target.GetComponent<Entity>().Damage(ActiveDamage);
+        float dT = 0;
+        while(dT < ActiveTotalTime)
         {
-            Pathfinder.Follow(tilemap, obj, target, 6);
-            yield return null;
+            dT += Time.deltaTime;
+            if (target.GetComponent<Entity>().HP > 0)
+            {
+                target.GetComponent<Entity>().Damage(PassiveDamage / ActiveTotalTime * Time.deltaTime);
+            }
+            else
+            {
+                break;
+            }
         }
+        Destroy(obj.gameObject);
     }
 
     public override void OnMount()

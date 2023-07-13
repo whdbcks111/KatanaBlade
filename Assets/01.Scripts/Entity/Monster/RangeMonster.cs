@@ -35,12 +35,11 @@ public class RangeMonster : Monster
         if (AttDist < MoveDist)
             AttDist = MoveDist + 1;
     }
-    
 
     protected override void Update()
     {
         base.Update();
-        if(HasEffect<EffectStun>() == false)
+        if(HasEffect<EffectStun>() == false && Vector2.Distance(transform.position, Player.Instance.transform.position) < DetectDist)
         {
             if (Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
             {

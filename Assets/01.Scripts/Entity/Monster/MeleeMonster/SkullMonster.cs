@@ -52,12 +52,6 @@ public class SkullMonster : MeleeMonster
 
         }
     }
-    public override void OnMonsterDie()
-    {
-
-    }
-
-
 
     public override void Heal(float amount)
     {

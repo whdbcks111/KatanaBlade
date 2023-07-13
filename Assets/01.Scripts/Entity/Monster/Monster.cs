@@ -19,7 +19,7 @@ public abstract class Monster : Entity
 
     public override void Damage(float damage)
     {
-        base.Damage(damage);
+        base.Damage(damage * Player.Instance.Stat.Get(StatType.ParryingAttackForce));
         if(HP <= 0)
             OnMonsterDie();
     }
@@ -27,16 +27,13 @@ public abstract class Monster : Entity
     public virtual void OnMonsterDie()
     {
         Debug.Log("Gold Drop");
-        int GoldDrop = 5;
-        float spread = 0.8f;
+        int GoldDrop = 5 + Random.Range(-2, 3);
         {
             GameObject load = Resources.Load<GameObject>("Interactable/Gold");
             while (GoldDrop > 0)
             {
-                GameObject gold = Instantiate(load, transform.position, Quaternion.identity);
+                Instantiate(load, transform.position + new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f)), Quaternion.identity);
                 GoldDrop--;
-                gold.transform.position = new Vector2(spread * Random.value - spread / 2,
-                    spread * Random.value - spread / 2);
 
                 //GoldDrop -= 1;
                 //Vector3 position = transform.position;
@@ -44,6 +41,8 @@ public abstract class Monster : Entity
                 //position.y += spread * UnityEngine.Random.value - spread / 2;
             }
         }
+
+        Destroy(gameObject);
     }
 
 }

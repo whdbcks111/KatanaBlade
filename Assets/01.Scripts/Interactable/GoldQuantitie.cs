@@ -17,7 +17,7 @@ public class GoldQuantitie : MonoBehaviour
     {
         if(other.TryGetComponent(out Player player))
         {
-            GameManager.instance.Gold += Value;
+            GameManager.instance.Gold += (int)(Value * player.Stat.Get(StatType.GoldObtainMultiplier));
             Destroy(gameObject);
         }
     }
@@ -29,13 +29,16 @@ public class GoldQuantitie : MonoBehaviour
 
         for (float i = 0f; i < 1f; i += Time.deltaTime / 0.5f)
         {
-            transform.position += Speed * Time.deltaTime * direction;
+            transform.position += (1 - i) * Speed * Time.deltaTime * direction;
             yield return null;
         }
 
+        Vector3 _vel = Vector3.zero;
+        float smoothTime = 1f;
         while (true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, Player.Instance.transform.position, Speed * Time.deltaTime);
+            smoothTime -= Time.deltaTime * 0.2f * Speed;
+            transform.position = Vector3.SmoothDamp(transform.position, Player.Instance.transform.position, ref _vel, smoothTime);
             yield return null;
         }
     }

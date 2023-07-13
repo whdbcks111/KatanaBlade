@@ -778,7 +778,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemDescription: 
   itemName: 
-  npc: {fileID: 0}
+  itemAbility: 
 --- !u!1001 &1441973346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1020,7 +1020,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemDescription: 
   itemName: 
-  npc: {fileID: 0}
+  itemAbility: 
 --- !u!1001 &3123150456845722888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1828,7 +1828,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemDescription: 
   itemName: 
-  npc: {fileID: 0}
+  itemAbility: 
 --- !u!114 &3123150456845722900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1846,7 +1846,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemDescription: 
   itemName: 
-  npc: {fileID: 0}
+  itemAbility: 
 --- !u!1001 &5130512595182804226
 PrefabInstance:
   m_ObjectHideFlags: 0

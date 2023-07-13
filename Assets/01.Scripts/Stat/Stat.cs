@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Stat
 {
-    private readonly Dictionary<StatType, float> 
+    private readonly Dictionary<StatType, float>
         _defaultValues = new()
         {
             [StatType.MaxHP] = 100f,
@@ -24,7 +24,9 @@ public class Stat
             [StatType.LowParryingFeedback] = 20f,
             [StatType.MiddleParryingFeedback] = 2f,
             [StatType.HighParryingFeedback] = 3f,
-            [StatType.CoinObtainMultiplier] = 5f
+            [StatType.GoldObtainMultiplier] = 1f,
+            [StatType.EssenceCooldown] = 1f,
+            [StatType.BossAttackForce] = 1f,
         }, 
         _addValues = new(), 
         _multiplyValues = new(), 
@@ -84,7 +86,7 @@ public class Stat
 
 public enum StatType
 {
-    CoinObtainMultiplier, // 코인 획득 배율
+    GoldObtainMultiplier, // 코인 획득 배율
     MaxHP, // 최대 HP
     MaxDashStamina, // 대시 게이지 최대치
     MaxParryingStamina, // 패링 게이지 최대치
@@ -101,4 +103,6 @@ public enum StatType
     LowParryingFeedback, // 패링 피드백 (약)
     MiddleParryingFeedback, // 패링 피드백 (중)
     HighParryingFeedback, // 패링 피드백 (강)
+    EssenceCooldown, //에센스 쿨타임 배율
+    BossAttackForce, //보스 대미지 배율
 }

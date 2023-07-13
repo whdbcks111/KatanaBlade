@@ -30,5 +30,6 @@ public class GoblinCoin : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.GoldObtainMultiplier, 1.3f);
     }
 }
