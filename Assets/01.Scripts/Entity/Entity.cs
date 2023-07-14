@@ -25,6 +25,8 @@ public class Entity : MonoBehaviour
 
     public float MovingVelocity = 0, KnockbackVelocity = 0;
 
+    public StatusEffect[] Effects { get { return _effects.ToArray(); } }
+
     public void Init()
     {
         HP = Stat.Get(StatType.MaxHP);

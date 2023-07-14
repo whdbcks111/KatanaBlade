@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
                         //t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
                     }
-                    else if (t is Boss && t.GetComponent<Boss>().IsAttcking)
+                    else if (t is Boss boss && boss.IsAttcking)
                     {
                         //패링 성공 이후 공격
                         t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));

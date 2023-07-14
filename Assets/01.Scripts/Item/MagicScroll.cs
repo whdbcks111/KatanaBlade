@@ -10,7 +10,7 @@ public class MagicScroll : Item
         : base(ItemType.Accessory, "여행자의 부츠", 
             string.Format(
                 "정수의 힘을 더욱 증폭시켜주는 신기한 스크롤이다." +
-                "\n<color=#0ff>정수 데미지 30%</ color>"), 
+                "\n<color=#0ff>정수 효과 + 50%</ color>"), 
             Resources.Load<Sprite>("Item/Icon/Accessory/scroll"))
     {
     }
@@ -29,5 +29,6 @@ public class MagicScroll : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.EssenceForce, 1.5f);
     }
 }

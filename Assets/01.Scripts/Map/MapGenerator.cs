@@ -9,9 +9,9 @@ using static UnityEditor.PlayerSettings;
 
 public class MapGenerator : MonoBehaviour
 {
-    public static readonly int MapSize = 30, MapCount = 50, BossCount = 3, HealCount = 2;
     public static MapGenerator Instance;
 
+    public int MapSize = 30, MapCount = 50, BossCount = 3, HealCount = 2, ShopCount = 2;
     [SerializeField] Tilemap _targetTilemap, _ladderTilemap;
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
@@ -19,7 +19,8 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] BossPortal _portalPrefab;
     [SerializeField] HealArea _healAreaPrefab;
-    [SerializeField] Boss[] _bossPrefabs;
+    [SerializeField] GameObject[] _bossPrefabs;
+    [SerializeField] ShopNPC _shopNPCPrefab;
 
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
     private readonly Dictionary<Vector2Int, Stage> _map = new();
@@ -118,57 +119,32 @@ public class MapGenerator : MonoBehaviour
         }
         _bossRoomPos = _targetTilemap.CellToWorld(new Vector3Int(MapCount + 3, 1) * MapSize) + Vector3.up * 4;
 
-        int tryCnt = 0;
-        int remainBossCount = BossCount;
-        while(remainBossCount > 0 && tryCnt++ < 500)
+        var portalRenderer = _portalPrefab.GetComponent<SpriteRenderer>();
+        PlaceObjects(BossCount, 500, _portalPrefab, (portal, stage) =>
         {
-            var entry = _map.ElementAt(UnityEngine.Random.Range(0, _map.Count));
-            var pos = entry.Key;
-            var shape = entry.Value;
-            var offsets = shape.Shape.KeyPositionOffsets;
+            stage.Type = StageType.Boss;
+            portal.transform.position += Vector3.up * portalRenderer.bounds.size.y / 2;
+            portal.BossMapPos = _bossRoomPos;
+            portal.BossPrefab = _bossPrefabs[UnityEngine.Random.Range(0, _bossPrefabs.Length)];
+        });
 
-            if (Mathf.Max(pos.x, pos.y) <= 2) continue;
-            if (shape.Type != StageType.Monster) continue;
-
-            if(offsets.Length > 0)
-            {
-                var offset = offsets[UnityEngine.Random.Range(0, offsets.Length)];
-                remainBossCount--;
-                shape.Type = StageType.Boss;
-                BossPortal portal = Instantiate(_portalPrefab, _targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset + 
-                    Vector3.up * _portalPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2, Quaternion.identity);
-                portal.BossMapPos = _bossRoomPos;
-                portal.BossPrefab = _bossPrefabs[UnityEngine.Random.Range(0, _bossPrefabs.Length)];
-            }
-        }
-
-        tryCnt = 0;
-        int remainHealAreaCount = HealCount;
-        while (remainHealAreaCount > 0 && tryCnt++ < 500)
+        var healRenderer = _healAreaPrefab.GetComponent<SpriteRenderer>();
+        PlaceObjects(HealCount, 500, _healAreaPrefab, (healArea, stage) =>
         {
-            var entry = _map.ElementAt(UnityEngine.Random.Range(0, _map.Count));
-            var pos = entry.Key;
-            var stage = entry.Value;
-            var shape = stage.Shape;
-            var offsets = shape.KeyPositionOffsets;
+            stage.Type = StageType.HealArea;
+            healArea.transform.position += Vector3.up * healRenderer.bounds.size.y / 2;
+            healArea.HealAmount = 50f;
+        });
 
-            if (Mathf.Max(pos.x, pos.y) <= 2) continue;
-            if (stage.Type != StageType.Monster) continue;
-
-            if (offsets.Length > 0)
-            {
-                var offset = offsets[UnityEngine.Random.Range(0, offsets.Length)];
-                remainHealAreaCount--;
-                stage.Type = StageType.HealArea;
-                HealArea healArea = Instantiate(_healAreaPrefab, _targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset +
-                    Vector3.up * _healAreaPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2, Quaternion.identity);
-                healArea.HealAmount = 50f;
-            }
-        }
+        var shopRenderer = _shopNPCPrefab.GetComponent<SpriteRenderer>();
+        PlaceObjects(ShopCount, 500, _shopNPCPrefab, (npc, stage) =>
+        {
+            stage.Type = StageType.Shop;
+            npc.transform.position += Vector3.up * shopRenderer.bounds.size.y / 2;
+        });
 
         var monsterPrefabs = Resources.LoadAll<Monster>("Monsters/");
         List<Vector3> spawnablePositions = new();
-
         
         foreach (var entry in _map)
         {
@@ -176,6 +152,7 @@ public class MapGenerator : MonoBehaviour
             var stage = entry.Value;
             var shape = stage.Shape;
             var offsets = shape.KeyPositionOffsets;
+            print(stage.Type);
             if (stage.Type == StageType.Monster)
             {
                 foreach(var offset in offsets)
@@ -194,15 +171,33 @@ public class MapGenerator : MonoBehaviour
             {
                 --remainCount;
 
-                print("Spawned");
                 var monsterPrefab = monsterPrefabs[UnityEngine.Random.Range(0, monsterPrefabs.Length)];
                 var monster = Instantiate(monsterPrefab,
                     pos + Vector3.up * monsterPrefab.GetComponentInChildren<SpriteRenderer>().bounds.size.y / 2, 
                     Quaternion.identity);
             }
-            else
+        }
+    }
+
+    public void PlaceObjects<T>(int count, int tryLimit, T obj, Action<T, Stage> postAction) where T : UnityEngine.Object
+    {
+        while (count > 0 && tryLimit-- > 0)
+        {
+            var entry = _map.ElementAt(UnityEngine.Random.Range(0, _map.Count));
+            var pos = entry.Key;
+            var stage = entry.Value;
+            var shape = stage.Shape;
+            var offsets = shape.KeyPositionOffsets;
+
+            if (Mathf.Max(pos.x, pos.y) <= 2) continue;
+            if (stage.Type != StageType.Monster) continue;
+
+            if (offsets.Length > 0)
             {
-                print("Unspawned");
+                var offset = offsets[UnityEngine.Random.Range(0, offsets.Length)];
+                count--;
+                T spawned = Instantiate(obj, _targetTilemap.CellToWorld((Vector3Int)pos * MapSize) + offset, Quaternion.identity);
+                postAction(spawned, stage);
             }
         }
     }
@@ -255,7 +250,7 @@ public class MapGenerator : MonoBehaviour
     }
 }
 
-public struct Stage
+public class Stage
 {
     public StageShape Shape;
     public StageType Type;

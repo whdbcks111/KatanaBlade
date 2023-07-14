@@ -5,13 +5,17 @@ using UnityEngine;
 public class BossPortal : Interactable
 {
     public Vector3 BossMapPos;
-    public Boss BossPrefab;
+    public GameObject BossPrefab;
 
+    private GameObject _spawned;
     private Boss _boss;
 
     public override void OnInteract(Player player)
     {
-        _boss = Instantiate(BossPrefab, BossMapPos, Quaternion.identity);
+        _spawned = Instantiate(BossPrefab, BossMapPos, Quaternion.identity);
+        _boss = _spawned.GetComponentInChildren<Boss>();
+        GameManager.instance.BossName.SetText(_boss.name);
+        GameManager.instance.BossHPBar.gameObject.SetActive(true);
         player.Teleport(BossMapPos);
         StartCoroutine(ReturnPortalRoutine());
         player.StartCoroutine(ScreenEffectRoutine());
@@ -41,6 +45,9 @@ public class BossPortal : Interactable
             lastPos = _boss.transform.position;
             yield return null;
         }
+
+        GameManager.instance.BossHPBar.gameObject.SetActive(false);
+        Destroy(_spawned);
         var p = Instantiate(Resources.Load<ReturnPortal>("Interactable/ReturnPortal"), lastPos, Quaternion.identity);
         p.ParentPortal = this;
     }
