@@ -4,16 +4,18 @@ using UnityEngine;
 
 public abstract class StatusEffect
 {
+    public Sprite Icon;
     public int Level;
     public float Duration;
     public Entity Caster { get; private set; }
     public float MaxDuration { get; private set; }
 
-    public StatusEffect(int level, float duration, Entity caster = null)
+    public StatusEffect(int level, float duration, Sprite icon, Entity caster = null)
     {
         Level = level;
         MaxDuration = Duration = duration;
         Caster = caster;
+        Icon = icon;
     }
 
     public abstract void OnStart(Entity target);

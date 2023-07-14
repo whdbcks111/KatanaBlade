@@ -27,6 +27,10 @@ public class Player : Entity
         Inventory.AddItem(new EssenceOfVoid());
         Inventory.AddItem(new BootsOfTraveler());
 
+        AddEffect(new EffectFire(1, 5, this));
+        AddEffect(new EffectStun(1, 10, this));
+        AddEffect(new EffectRegeneration(3, 15, this));
+
         _controller = GetComponent<PlayerController>();
         _animator = GetComponentInChildren<Animator>();
     }
