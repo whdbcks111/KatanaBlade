@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506616150352020817}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.75, y: -2.18, z: 0}
+  m_LocalPosition: {x: 1.5, y: -2.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -139,7 +139,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506616151041381837}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.75, y: -3.07, z: 0}
+  m_LocalPosition: {x: 1.5, y: -3.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -166,7 +166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1506616151854938365
 Transform:
   m_ObjectHideFlags: 0
@@ -200,9 +200,9 @@ MonoBehaviour:
   MovingVelocity: 0
   KnockbackVelocity: 0
   Speed: 3
-  DetectDist: 20
-  AttDist: 15
-  MoveDist: 10
+  DetectDist: 30
+  AttDist: 20
+  MoveDist: 15
   AttSpeed: 1
   JumpPow: 20
   JumpSenseTr: {fileID: 1506616150352020816}

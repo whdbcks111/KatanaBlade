@@ -26,7 +26,8 @@ public class Stat
             [StatType.HighParryingFeedback] = 3f,
             [StatType.GoldObtainMultiplier] = 1f,
             [StatType.EssenceCooldown] = 1f,
-            [StatType.BossAttackForce] = 1f,
+            [StatType.EssenceForce] = 1f,
+            [StatType.BossAttackForce] = 10f,
         }, 
         _addValues = new(), 
         _multiplyValues = new(), 
@@ -104,5 +105,6 @@ public enum StatType
     MiddleParryingFeedback, // 패링 피드백 (중)
     HighParryingFeedback, // 패링 피드백 (강)
     EssenceCooldown, //에센스 쿨타임 배율
+    EssenceForce, //에센스 효과 배율
     BossAttackForce, //보스 대미지 배율
 }
