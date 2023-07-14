@@ -9,12 +9,17 @@ public class MeleeMonster : Monster
 {
     protected Coroutine sco = null;
 
+    [SerializeField] private float _jumpCoolTime;
+
+
+
     public static MeleeMonster Instance { get; private set; }
 
     [SerializeField] protected bool _isAttacking;
     protected int _nextMove;
     private float _changeTimer = 0f;
     protected float _attackSpeed = 1f;
+    public float _jumpPower;
 
     public bool CanParrying { get { return _isAttacking; } }
 
@@ -50,27 +55,47 @@ public class MeleeMonster : Monster
 
     protected virtual void MonsterMove()
     {
-        MovingVelocity = _isAttacking || HasEffect<EffectStun>() ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
+
+//      MovingVelocity = _jumpCoolTime > 0 || _isAttacking || HasEffect<EffectStun>() ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
         transform.localScale = originScale;
 
         Vector2 frontVec = (Vector2)transform.position + Vector2.right * _nextMove;
 
-        Debug.DrawRay(frontVec, Vector3.down, new Color(0, 4, 0));
-        RaycastHit2D rayHit = Physics2D.Raycast(frontVec, Vector3.down, 4, LayerMask.GetMask("Platform"));
-        
-        if (rayHit.collider == null && _changeTimer <= 0f)
+        Debug.DrawRay(frontVec, Vector2.down, new Color(0, 4, 0));
+        RaycastHit2D raHitGround = Physics2D.Raycast(frontVec, Vector3.down, 4, LayerMask.GetMask("Platform"));
+
+        var col = GetComponent<Collider2D>();
+        Debug.DrawRay(transform.position, new Vector2(_nextMove, 0), new Color(0, 4, 0));
+
+                RaycastHit2D rayHitWall = Physics2D.BoxCast(transform.position, col.bounds.size, 0, Vector3.right * _nextMove, 
+                                                    col.bounds.size.x / 2 + 0.5f, LayerMask.GetMask("Platform"));
+
+        if (raHitGround.collider == null && _changeTimer <= 0f)
         {
             _nextMove *= -1;
             _changeTimer = 0.5f;
+            _jumpCoolTime = 0;
         }
 
-        if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
+        _jumpCoolTime += Time.deltaTime;
+        if (rayHitWall.collider != null)
+        {
+            if (_jumpCoolTime >= 1.5f && Physics2D.BoxCast(transform.position, col.bounds.size, 0, 
+                Vector3.down, 0.3f, LayerMask.GetMask("Platform")).collider != null)
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.up * _jumpPower;
+                print("¤¸¤½~");
+                _jumpCoolTime = 0;
+            }
+        }
 
+
+        if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
+        MovingVelocity = _isAttacking || HasEffect<EffectStun>() ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
     }
 
-    
     private void Chacing()
     {
         var dir = (Player.Instance.transform.position - transform.position);
@@ -79,7 +104,7 @@ public class MeleeMonster : Monster
 
         if (distance <= 10.0f)
         {
-            _nextMove = dir.x > 0 ? 1 : -1; 
+            _nextMove = dir.x > 0 ? 1 : -1;
         }
 
         else
@@ -87,7 +112,7 @@ public class MeleeMonster : Monster
             Heal(1f * Time.deltaTime);
         }
     }
-    
+
     private void Think()
     {
         _nextMove = Random.Range(-1, 2);
@@ -96,11 +121,11 @@ public class MeleeMonster : Monster
     private void OnTriggerStay2D(Collider2D other)
     {
 
-            if (other.TryGetComponent(out Player p))
-            {
-                _inRange = true;
-                StartAttack(p);
-            }
+        if (other.TryGetComponent(out Player p))
+        {
+            _inRange = true;
+            StartAttack(p);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -124,21 +149,21 @@ public class MeleeMonster : Monster
 
     IEnumerator CountAttackDelay(Player other)
     {
-       
-//        yield return new WaitForSeconds(0.4f);
+
+        //        yield return new WaitForSeconds(0.4f);
         yield return new WaitForSeconds(0.4f / _attackSpeed);
 
         _isAttacking = true;
-        
+
         if (_inRange) Attack(other);
         print(other.HP);
 
-//       yield return new WaitForSeconds(0.6f);
+        //       yield return new WaitForSeconds(0.6f);
         yield return new WaitForSeconds(0.6f / _attackSpeed);
 
         _isAttacking = false;
 
         sco = null;
-       
+
     }
 }

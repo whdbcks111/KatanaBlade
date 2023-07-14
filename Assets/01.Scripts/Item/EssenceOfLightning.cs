@@ -8,18 +8,17 @@ public class EssenceOfLightning : Item
     private List<Entity> _entities = new List<Entity>();
 
     private LineRenderer _line;
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 1.5f;
-    private static readonly float EssenceRadius = 5f;
+    private static readonly float EssenceRadius = 10f;
     private static readonly int ActiveCount = 5;
-    private static readonly int ActiveDamage = 10;
+    private static readonly int EssenceForce = 10;
 
 
     public EssenceOfLightning()
         : base(ItemType.Essence, "번개의 정수",
             string.Format(
-                "사용 시 : 주변 적 {0}명에게 <color=yellow>번개</color>를 내려 {1}의 대미지를 입힙니다. <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
-                "기본 지속 효과 : - ", ActiveCount, ActiveDamage, Cooldown),
+                "사용 시 : 주변 적 {0}명에게 <color=yellow>번개</color>를 내려 {1}의 대미지를 입히고 기절시킵니다. <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
+                "기본 지속 효과 : - ", ActiveCount, EssenceForce, Cooldown),
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_1"))
     {
     }
@@ -46,7 +45,7 @@ public class EssenceOfLightning : Item
             if (enemies[min] != null)
             {
                 _entities.Add(enemies[min].GetComponent<Entity>());
-                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount - 1, ActiveDamage);
+                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount - 1, EssenceForce);
             }
         }
     }
@@ -67,10 +66,9 @@ public class EssenceOfLightning : Item
             {
                 _line = Player.Instance.gameObject.AddComponent<LineRenderer>();
                 _line.material = Resources.Load<Material>("Item/LightningLine");
-                _line.startColor = new Color(0, 255, 237);
-                _line.endColor = new Color(0, 115, 255);
-                _line.startWidth = .3f;
-                _line.endWidth = .3f;
+                _line.startColor = _line.endColor = Color.white;
+                _line.startWidth = _line.endWidth = 1f;
+                _line.textureMode = LineTextureMode.Tile;
             }
             _line.positionCount = _entities.Count + 1;
             _line.SetPosition(0, Player.Instance.transform.position);
@@ -79,6 +77,7 @@ public class EssenceOfLightning : Item
             {
                 _line.SetPosition(i + 1, _entities[i].transform.position);
                 _entities[i].Damage(damage);
+                _entities[i].AddEffect(new EffectStun(1, 2f, Player.Instance));
                 Player.Instance.StartCoroutine(LightningAnim(.3f));
             }
         }
@@ -129,7 +128,7 @@ public class EssenceOfLightning : Item
         float dT = 0;
         while (dT < time)
         {
-            float width = Mathf.Lerp(.3f, .0f, dT / time);
+            float width = Mathf.Lerp(1.5f, 0f, dT / time);
             _line.startWidth = width;
             _line.endWidth = width;
             dT += Time.deltaTime;

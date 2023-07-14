@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EssenceOfStorm : Item
 {
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
 
     private static readonly float MaintainTime = 2;

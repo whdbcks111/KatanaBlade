@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class EssenceOfSwift : Item
 {
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     public EssenceOfSwift()
-: base(ItemType.Essence, "�ż��� ����",
+: base(ItemType.Essence, "신속의 정수",
     string.Format(
         "��� �� : �ֺ� ����ü�� <color=#404>�ı�</color>�ϴ� ������ �����մϴ�. <color=#aaa>(���� ��ñⰣ : {0:0.0}��)</color>\n", Cooldown),
 
@@ -29,5 +28,6 @@ public class EssenceOfSwift : Item
 
     public override void PassiveUpdate()
     {
+        Player.Instance.Stat.Multiply(StatType.MoveSpeed, 1.5f);
     }
 }
