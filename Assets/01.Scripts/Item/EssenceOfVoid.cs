@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EssenceOfVoid : Item
 {
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 10f;
 
     private static readonly float MaintainTime = 5;
@@ -14,7 +13,7 @@ public class EssenceOfVoid : Item
     public EssenceOfVoid()
     : base(ItemType.Essence, "공허의 정수",
         string.Format(
-            "사용 시 : 주변 투사체를 <color=darkviolet>파괴</color>하는 영역을 생성합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n", Cooldown),
+            "사용 시 : 주변 투사체를 <color=#404>파괴</color>하는 영역을 생성합니다. <color=#aaa>(재사용 대시기간 : {0:0.0}초)</color>\n", Cooldown),
         Resources.Load<Sprite>("Item/Icon/Essence/Essence_3"))
     {
 
@@ -23,8 +22,7 @@ public class EssenceOfVoid : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         Player.Instance.StartCoroutine(SkillCor(MaintainTime, Radius, CastTime));
     }

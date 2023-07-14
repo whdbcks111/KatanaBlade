@@ -7,11 +7,11 @@ public class RangeMonster : Monster
 {
     public float Speed;
 
-    [Range(10f, 20)]
+    [Range(10f, 40f)]
     public float DetectDist;
-    [Range(3f, 9f)]
+    [Range(10f, 30f)]
     public float AttDist;       //공격 최대 거리
-    [Range(2f, 7f)]
+    [Range(5f, 15f)]
     public float MoveDist;      //공격 시 최소 사거리
 
     public float AttSpeed;
@@ -35,12 +35,11 @@ public class RangeMonster : Monster
         if (AttDist < MoveDist)
             AttDist = MoveDist + 1;
     }
-    
 
     protected override void Update()
     {
         base.Update();
-        if(HasEffect<EffectStun>() == false)
+        if(HasEffect<EffectStun>() == false && Vector2.Distance(transform.position, Player.Instance.transform.position) < DetectDist)
         {
             if (Vector2.Distance(transform.position, Player.Instance.transform.position) > MoveDist && _attackCor == null)
             {
@@ -153,7 +152,7 @@ public class RangeMonster : Monster
         ChargeImage.SetActive(false);
         ChargeImage.transform.localScale = Vector3.one;
         Projectile bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
-        bullet.Speed = 5f;
+        bullet.Speed = 10f;
         bullet.SetOwner(this, ExtraMath.DirectionToAngle(Player.Instance.transform.position - transform.position));
         yield return new WaitForSeconds(0.1f);
         _attackCor = null;
@@ -167,5 +166,10 @@ public class RangeMonster : Monster
         Gizmos.DrawWireSphere(TileDetectTr.position, 0.1f);
         Gizmos.DrawLine(TileDetectTr.position, TileDetectTr.position + (Vector3.down * 2));
         Gizmos.DrawWireSphere(TileDetectTr.position + (Vector3.down * 2), 0.1f);
+    }
+
+    public override void OnMonsterDie()
+    {
+        base.OnMonsterDie();
     }
 }

@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 25
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -819,7 +819,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_94
+      name: skul_Slash3_1
       rect:
         serializedVersion: 2
         x: 20
@@ -840,7 +840,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_120
+      name: skul_Slash2_1
       rect:
         serializedVersion: 2
         x: 17
@@ -987,7 +987,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_21
+      name: skul_Slash1_1
       rect:
         serializedVersion: 2
         x: 584
@@ -1008,10 +1008,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_22
+      name: skul_Slash1_2
       rect:
         serializedVersion: 2
-        x: 584
+        x: 582
         y: 224
         width: 236
         height: 146
@@ -1029,7 +1029,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_23
+      name: skul_Slash1_3
       rect:
         serializedVersion: 2
         x: 836
@@ -1050,7 +1050,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_24
+      name: skul_Slash2_2
       rect:
         serializedVersion: 2
         x: 216
@@ -1071,7 +1071,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_25
+      name: skul_Slash2_3
       rect:
         serializedVersion: 2
         x: 394
@@ -1092,7 +1092,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_26
+      name: skul_Slash2_4
       rect:
         serializedVersion: 2
         x: 567
@@ -1155,7 +1155,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skul_29
+      name: skul_Slash3_2
       rect:
         serializedVersion: 2
         x: 875
@@ -1257,7 +1257,6 @@ TextureImporter:
       skul_125: 29437574
       skul_35: 719929243
       boyScrolling_4: 1498912398
-      skul_23: 584700193
       skul_80: 2023133667
       skul_81: 1363361136
       skul_95: 545763883
@@ -1272,6 +1271,7 @@ TextureImporter:
       boyWalk_6: 1612402882
       skul_65: 1679637793
       skul_87: -1803896095
+      skul_Slash2_3: -665596439
       skul_170: -1917585737
       boyWalkBack_2: -1956493311
       skulKnife_4: -1716610209
@@ -1290,12 +1290,15 @@ TextureImporter:
       skul_152: -339997406
       skul_159: -627402641
       boyWalk_2: 782249564
+      skul_Slash2_1: 1805884575
       skul_67: -24372882
       boyWalk_4: -1945664935
       skul_157: 1819851809
       boyScrolling_5: 1428123508
       skul_131: 1992101942
       skul_73: -1295394123
+      skul_Slash3_2: -248288612
+      skul_Slash1_2: 1724603702
       skul_79: -934037962
       skul_128: -1930970877
       skul_147: 597254126
@@ -1308,6 +1311,7 @@ TextureImporter:
       skul_144: -1898212118
       boyWalk_7: -1136768714
       skul_82: -594111629
+      skul_Slash2_2: 956617770
       skul_136: -1851469897
       DeathScrollItem: 589773754
       skul_180: 1731389573
@@ -1325,6 +1329,7 @@ TextureImporter:
       skul_163: 137055655
       skul_66: -1846058884
       skul_100: -1525544558
+      skul_Slash3_1: -1591013290
       boyScrollingBack_3: 157852550
       skul_104: -84409791
       skul_105: 2074479933
@@ -1333,6 +1338,7 @@ TextureImporter:
       skul_99: -1864175588
       skul_183: -1208080888
       boyWalkBack_6: -555463168
+      skul_Slash1_3: 584700193
       skul_129: 1410672536
       skul_173: -1613987947
       skul_70: -1305009410
@@ -1359,13 +1365,14 @@ TextureImporter:
       skul_39: 57203723
       skul_156: 1466613653
       skul_175: -240893484
+      skul_Slash2_4: 1412966277
       skul_83: -1748012174
       skul_98: -621911983
       skul_111: -369715464
       skul_153: 137956127
-      skul_120: 1805884575
       skul_115: -557940166
       skulStand: -207157871
+      skul_Slash1_1: -1372441878
       boyWalkBack_5: -1242213678
       skul_164: -1483092028
       boyScrolling_1: 750450108
@@ -1383,7 +1390,6 @@ TextureImporter:
       skul_109: -211573459
       skul_132: 804282596
       skul_148: 2027594989
-      skul_26: 1412966277
       skul_40: -1594402171
       skul_91: 952201958
       skul_102: 1766214030
@@ -1405,10 +1411,7 @@ TextureImporter:
       skul_182: -1227558775
       skul_119: 1362834304
       skulKnife_2: -150460318
-      skul_94: -1591013290
-      skul_21: -1372441878
       skul_165: -1892517598
-      skul_29: -248288612
       boyWalkBack_3: -1098025649
       skul_135: 1755555715
       skul_123: -1990645184
@@ -1426,15 +1429,12 @@ TextureImporter:
       skul_137: 1061883464
       skul_168: 72888625
       skul_92: 1033364425
-      skul_25: -665596439
       skul_122: -164292810
-      skul_22: 1724603702
-      skul_41: 557489204
       boyWalkBack_1: -145283459
+      skul_41: 557489204
       skul_181: -1810692411
-      skul_24: 956617770
-      skul_158: 527921853
       boyWalk_1: -1423590998
+      skul_158: 527921853
       boyScrollingBack_4: -2002064945
       skulStandScream: -867389212
       skulSpin_10: 1663007691

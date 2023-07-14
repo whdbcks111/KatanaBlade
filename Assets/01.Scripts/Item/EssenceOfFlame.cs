@@ -13,7 +13,6 @@ public class EssenceOfFlame : Item
     public float PassiveTick;
     public float PassiveRadius;
     private static readonly float PassiveDamage = 5f;
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     private float _dT;
 
@@ -30,8 +29,7 @@ public class EssenceOfFlame : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         //적 레이어 추가해야함
         Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);

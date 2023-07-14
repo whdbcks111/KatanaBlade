@@ -20,6 +20,7 @@ public class SkullMonster : MeleeMonster
         base.Update();
 
         _anim.SetBool("IsAttacking", _isAttacking);
+
     }
 
     protected override void MonsterMove()
@@ -37,9 +38,23 @@ public class SkullMonster : MeleeMonster
 
     public override void Damage(float damage)
     {
-        base.Damage(damage);
+        HP -= damage;
         _anim.SetTrigger("Hit");
+        base.Damage(damage);
 
+        if (HP <= 0)
+        {
+
+            _anim.SetBool("Dead", true);
+            StopAllCoroutines();
+
+            Destroy(gameObject);
+
+        }
     }
 
+    public override void Heal(float amount)
+    {
+        base.Heal(amount);
+    }
 }

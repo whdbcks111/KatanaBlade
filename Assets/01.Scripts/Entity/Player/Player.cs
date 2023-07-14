@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : Entity
 {
@@ -24,7 +25,7 @@ public class Player : Entity
         Inventory.AddItem(new EssenceOfDarkness());
         Inventory.AddItem(new EssenceOfCloud());
         Inventory.AddItem(new EssenceOfVoid());
-        Inventory.AddItem(new AccessoryTest());
+        Inventory.AddItem(new BootsOfTraveler());
 
         _controller = GetComponent<PlayerController>();
         _animator = GetComponentInChildren<Animator>();
@@ -43,7 +44,7 @@ public class Player : Entity
         if (Inventory.MountedEssence is not null)
         {
             Inventory.MountedEssence.PassiveUpdate();
-            if(Input.GetMouseButtonDown(1) && _essenceRemainCooldown <= 0)
+            if(Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && _essenceRemainCooldown <= 0)
             {
                 Inventory.MountedEssence.OnActiveUse();
             }
@@ -54,7 +55,7 @@ public class Player : Entity
 
     public void SetEssenceCooldown(float time)
     {
-        _essenceCooldown = _essenceRemainCooldown = time;
+        _essenceCooldown = _essenceRemainCooldown = time * Instance.Stat.Get(StatType.EssenceCooldown);
     }
 
     public override void Damage(float damageAmount)

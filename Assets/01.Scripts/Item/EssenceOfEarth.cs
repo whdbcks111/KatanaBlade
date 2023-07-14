@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class EssenceOfEarth : Item
 {
-
-
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     private static readonly float PassiveTick = 5f;
-    private static readonly float ActiveMag = 5f;
-    private static readonly float SkillWidth = 7f;
+    private static readonly float ActiveMag = 10f;
+    private static readonly float ActiveRadius = 15f;
     private float _dT;
 
     public EssenceOfEarth()
@@ -25,18 +22,25 @@ public class EssenceOfEarth : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
-        Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
+        Player.Instance.StartCoroutine(ActiveCameraShake(2f, 1f, 0.5f));
+        Collider2D[] area = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
         foreach (var enemy in area)
         {
             if(enemy.GetComponent<Entity>() is Monster)
             {
                 enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, 2f, Player.Instance));
                 //대상과의 거리에 따라 에어본이 달라짐
-                enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (ActiveMag + (SkillWidth - Vector2.Distance(enemy.transform.position, Player.Instance.transform.position))), ForceMode2D.Impulse);
+                enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (ActiveMag + (ActiveRadius - Vector2.Distance(enemy.transform.position, Player.Instance.transform.position))), ForceMode2D.Impulse);
                 enemy.GetComponent<Entity>().Knockback(ActiveMag * Random.Range(-1, 2) * 2);
+
+                RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, Vector2.down, float.PositiveInfinity, 1 << LayerMask.NameToLayer("Platform"));
+                if (hit)
+                {
+                    Debug.Log(hit.transform.name);
+                    EffectManager.EffectOneShot("Ground Paticle", hit.point);
+                }
             }
         }
     }
@@ -46,12 +50,23 @@ public class EssenceOfEarth : Item
         _dT += Time.deltaTime;
         if(_dT > PassiveTick)
         {
-            Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(SkillWidth * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
+            Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(ActiveRadius * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in area)
             {
                 enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, .5f, Player.Instance));
             }
             _dT = 0;
+        }
+    }
+
+    private IEnumerator ActiveCameraShake(float duration, float maxShake, float minShake)
+    {
+        float dT = 0;
+        while(dT < duration)
+        {
+            Camera.main.GetComponent<CameraControll>().Shake(Time.deltaTime, Mathf.Lerp(maxShake, minShake, dT / duration));
+            dT += Time.deltaTime;
+            yield return null;
         }
     }
 
