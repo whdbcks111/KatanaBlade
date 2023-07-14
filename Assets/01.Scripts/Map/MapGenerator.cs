@@ -152,6 +152,7 @@ public class MapGenerator : MonoBehaviour
             var stage = entry.Value;
             var shape = stage.Shape;
             var offsets = shape.KeyPositionOffsets;
+            print(stage.Type);
             if (stage.Type == StageType.Monster)
             {
                 foreach(var offset in offsets)
@@ -249,7 +250,7 @@ public class MapGenerator : MonoBehaviour
     }
 }
 
-public struct Stage
+public class Stage
 {
     public StageShape Shape;
     public StageType Type;
