@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BoyScrollingBack
+  m_Name: BoySkulHit
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 1392232441, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
+      value: {fileID: -7500690451134026123, guid: 231a726fbd5112f44be25e120055339e, type: 3}
     - time: 0.083333336
-      value: {fileID: -291508144, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
+      value: {fileID: -889859373511162655, guid: 231a726fbd5112f44be25e120055339e, type: 3}
     - time: 0.16666667
-      value: {fileID: 157852550, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
+      value: {fileID: -3088938797480143695, guid: 231a726fbd5112f44be25e120055339e, type: 3}
     - time: 0.25
-      value: {fileID: -2002064945, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
+      value: {fileID: -9206091644520726168, guid: 231a726fbd5112f44be25e120055339e, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,10 +46,10 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 1392232441, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
-    - {fileID: -291508144, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
-    - {fileID: 157852550, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
-    - {fileID: -2002064945, guid: 65bb6f2acd6e2124ca9a440194bfd63d, type: 3}
+    - {fileID: -7500690451134026123, guid: 231a726fbd5112f44be25e120055339e, type: 3}
+    - {fileID: -889859373511162655, guid: 231a726fbd5112f44be25e120055339e, type: 3}
+    - {fileID: -3088938797480143695, guid: 231a726fbd5112f44be25e120055339e, type: 3}
+    - {fileID: -9206091644520726168, guid: 231a726fbd5112f44be25e120055339e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
