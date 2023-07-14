@@ -7,7 +7,8 @@ public class EffectFire : StatusEffect
     public static readonly float FireTicks = 0.3f;
     private float _timer = 0f;
 
-    public EffectFire(int level, float duration, Entity caster = null) : base(level, duration, caster)
+    public EffectFire(int level, float duration, Entity caster = null) 
+        : base(level, duration, Resources.Load<Sprite>("Item/Icon/Spell/spell_24"), caster)
     {
     }
 
