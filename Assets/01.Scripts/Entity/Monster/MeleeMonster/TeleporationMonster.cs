@@ -8,9 +8,12 @@ public class TeleporationMonster : MeleeMonster
 {
     Animator _anim;
 
+    private bool _rushPower;
 
     protected override void Awake()
     {
+        
+
         base.Awake();
         _anim = GetComponentInChildren<Animator>();
     }
@@ -18,7 +21,6 @@ public class TeleporationMonster : MeleeMonster
     protected override void Update()
     {
         base.Update();
-//        rush();
 
         _anim.SetBool("IsAttacking", _isAttacking);
 
@@ -27,20 +29,18 @@ public class TeleporationMonster : MeleeMonster
     protected override void MonsterMove()
     {
         base.MonsterMove();
+        rush();
 
         print(Mathf.Abs(MovingVelocity));
         _anim.SetFloat("WalkSpeed", Mathf.Abs(MovingVelocity));
     }
 
- //   IEnumerable rush()
- //   {
-  //      yield return new WaitForSeconds(3f);
-  
+    private void rush()
+    {
+        Knockback(20);
+        
+    }
 
-
-        //        var backDir = Player.Instance.gameObject.GetComponentInChildren<SpriteRenderer>().flipX ? Vector3.right : Vector3.left;
-        //        transform.position = Player.Instance.transform.position + backDir * 2f;
-  //  }
 
     public override void Attack(Entity other)
     {
