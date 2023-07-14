@@ -26,6 +26,25 @@ public abstract class Item : ScriptableObject
     public abstract void OnUnmount();
     public abstract void OnActiveUse();
     public abstract void PassiveUpdate();
+
+    public static bool operator >(Item item1, Item item2)
+    {
+        if (item2 is null) return true;
+        if (item1 is null) return false;
+
+        if(item1.Type == item2.Type)
+        {
+            return string.Compare(item1.Name, item2.Name) < 0;
+        }
+        else
+        {
+            return item1.Type == ItemType.Essence;
+        }
+    }
+    public static bool operator <(Item item1, Item item2)
+    {
+        return !(item1 > item2) && item1 != item2;
+    }
 }
 
 public enum ItemType
