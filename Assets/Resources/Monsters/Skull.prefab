@@ -222,7 +222,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovingVelocity: 0
   KnockbackVelocity: 0
+  _jumpCoolTime: 1
   _isAttacking: 0
+  _jumpPower: 300
 --- !u!61 &55849200
 BoxCollider2D:
   m_ObjectHideFlags: 0

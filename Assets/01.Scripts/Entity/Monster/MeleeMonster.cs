@@ -56,6 +56,7 @@ public class MeleeMonster : Monster
     protected virtual void MonsterMove()
     {
 
+//        MovingVelocity = _jumpCoolTime > 0 || _isAttacking || HasEffect<EffectStun>() ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
         var originScale = transform.localScale;
         if (_nextMove * originScale.x > 0f) originScale.x *= -1;
         transform.localScale = originScale;
