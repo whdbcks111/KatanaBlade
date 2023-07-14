@@ -6,6 +6,8 @@ using UnityEngine;
 public class EssenceOfRegeneration : Item
 {
     private static readonly float Cooldown = 5f;
+    private GameObject _passiveEffect;
+    private float _dT = 0f;
 
     public EssenceOfRegeneration()
         : base(ItemType.Essence, "재생의 정수",
@@ -15,21 +17,34 @@ public class EssenceOfRegeneration : Item
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_5"))
 
     {
+
     }
 
     public override void OnActiveUse()
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
         Player.Instance.Heal(10);
+        GameObject particle = EffectManager.EffectOneShot("Healing Particle", Player.Instance.transform.position + Vector3.up);
+        particle.transform.localScale = Vector3.one * 2f;
     }
 
     public override void PassiveUpdate()
     {
         Player.Instance.Heal(Time.deltaTime * 2);
+
+        _dT += Time.deltaTime;
+        if(_dT > 2f)
+        {
+            _passiveEffect.transform.position = Player.Instance.transform.position;
+            _passiveEffect.GetComponent<ParticleSystem>().Play();
+            _dT = 0f;
+        }
     }
 
     public override void OnMount()
     {
+        _passiveEffect = EffectManager.EffectOneShot("Healing Particle", Player.Instance.transform.position);
+        _passiveEffect.transform.localScale = Vector3.one * .3f;
     }
 
     public override void OnUnmount()

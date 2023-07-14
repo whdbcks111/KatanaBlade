@@ -229,14 +229,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1506616150352020816, guid: 616f96f1a7d0e084eb596f4009fb0c6c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1506616151041381836, guid: 616f96f1a7d0e084eb596f4009fb0c6c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 1506616151854938362, guid: 616f96f1a7d0e084eb596f4009fb0c6c, type: 3}
       propertyPath: m_Name
       value: RangeMonster
@@ -296,15 +288,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1151140678385276065, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1151140678542537124, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1151140679313454638, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1151140679570386586, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_RootOrder
@@ -356,7 +348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1151140679934345261, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2643055057599143125, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_AnchorMax.x
