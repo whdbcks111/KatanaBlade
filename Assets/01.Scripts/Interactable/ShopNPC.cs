@@ -8,8 +8,7 @@ using System.Linq;
 
 public class ShopNPC : Interactable
 {
-    public GameObject ShopPanel;
-    public GameObject[] ItemListUI = new GameObject[4];
+    
     private List<Dictionary<string, object>> itemTable;
     private Sprite[] itemSprites = new Sprite[10];
 
@@ -17,7 +16,7 @@ public class ShopNPC : Interactable
     private void Start()
     {
         itemTable = CSVReader.Read("Item/ItemTable");
-        ShopPanel.SetActive(false);
+        GameManager.instance.ShopPanel.SetActive(false);
         for (int i = 0; i < 10; i++)
         {
             Sprite loadImage = Resources.Load<Sprite>("Item/Icon/Accessory/" + itemTable[i]["ItemIcon"]);
@@ -30,16 +29,19 @@ public class ShopNPC : Interactable
         {
             int gold = int.Parse(itemTable[itemIDs[i]]["Gold"].ToString().Replace("G", ""));
             string className = itemTable[itemIDs[i]]["Class"].ToString();
-            ShopDisplay display = ItemListUI[i].GetComponent<ShopDisplay>();
+            ShopDisplay display = GameManager.instance.ItemListUI[i].GetComponent<ShopDisplay>();
 
             display.SetCanBuy(true);
             display.itemName = itemTable[itemIDs[i]]["ItemName"].ToString();
             display.itemDescription = itemTable[itemIDs[i]]["Item"].ToString() + "\n"
                 + itemTable[itemIDs[i]]["Abillty"].ToString();
             display.itemIcon = itemSprites[itemIDs[i]];
-            ItemListUI[i].transform.Find("Image").GetComponent<Image>().sprite = itemSprites[itemIDs[i]];
-            ItemListUI[i].GetComponentInChildren<TextMeshProUGUI>().text = itemTable[itemIDs[i]]["Gold"].ToString();
-            ItemListUI[i].GetComponentInChildren<Button>().onClick.AddListener(() =>
+            var itemIcon = GameManager.instance.ItemListUI[i].transform.Find("Image").GetComponent<Image>();
+            itemIcon.sprite = itemSprites[itemIDs[i]];
+            var goldText = GameManager.instance.ItemListUI[i].GetComponentInChildren<TextMeshProUGUI>();
+            goldText.text = itemTable[itemIDs[i]]["Gold"].ToString();
+            
+            GameManager.instance.ItemListUI[i].GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
                 if (GameManager.instance.Gold - gold >= 0 && display.canBuy == true)
                 {
@@ -48,6 +50,8 @@ public class ShopNPC : Interactable
                     Player.Instance.Inventory.AddItem(item);
                     GameManager.instance.Gold -= gold;
                     display.SetCanBuy(false);
+                    itemIcon.sprite = Resources.Load<Sprite>("UI/FoxSprite");
+                    goldText.text = "SOLD";
                 }
             });
         }
@@ -55,7 +59,7 @@ public class ShopNPC : Interactable
 
     public override void OnInteract(Player player)
     {
-        ShopPanel.SetActive(!ShopPanel.activeSelf);
+        GameManager.instance.ShopPanel.SetActive(!GameManager.instance.ShopPanel.activeSelf);
 
     }
     
@@ -87,6 +91,6 @@ public class ShopNPC : Interactable
         return result;
     }
 
-    public void ExitShop() => ShopPanel.SetActive(false);
+    public void ExitShop() => GameManager.instance.ShopPanel.SetActive(false);
 
 }
