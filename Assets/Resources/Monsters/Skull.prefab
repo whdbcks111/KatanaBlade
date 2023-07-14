@@ -224,7 +224,7 @@ MonoBehaviour:
   KnockbackVelocity: 0
   _jumpCoolTime: 1
   _isAttacking: 0
-  _jumpPower: 10
+  _jumpPower: 300
 --- !u!61 &55849200
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -249,7 +249,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.77, y: 3.9}
+  m_Size: {x: 1.298656, y: 1.7886105}
   m_EdgeRadius: 0
 --- !u!212 &55849202
 SpriteRenderer:
