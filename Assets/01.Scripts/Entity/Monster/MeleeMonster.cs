@@ -86,7 +86,7 @@ public class MeleeMonster : Monster
                 Vector3.down, 0.3f, LayerMask.GetMask("Platform")).collider != null)
             {
                 GetComponent<Rigidbody2D>().velocity = Vector2.up * _jumpPower;
-                print("じそ~");
+                print("造存造遜~");
                 _jumpCoolTime = 0;
             }
         }
@@ -151,7 +151,7 @@ public class MeleeMonster : Monster
     {
 
         //        yield return new WaitForSeconds(0.4f);
-        yield return new WaitForSeconds(0.6f / _attackSpeed);
+        yield return new WaitForSeconds(0.4f / _attackSpeed);
 
         _isAttacking = true;
 
@@ -159,7 +159,7 @@ public class MeleeMonster : Monster
         print(other.HP);
 
         //       yield return new WaitForSeconds(0.6f);
-        yield return new WaitForSeconds(0.4f / _attackSpeed);
+        yield return new WaitForSeconds(0.6f / _attackSpeed);
 
         _isAttacking = false;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -22,6 +23,7 @@ public class Entity : MonoBehaviour
     private readonly HashSet<StatusEffect> _deleteEffects = new();
 
     private Rigidbody2D _rigid;
+    private TextMeshProUGUI _damageText;
 
     public float MovingVelocity = 0, KnockbackVelocity = 0;
 
@@ -35,6 +37,7 @@ public class Entity : MonoBehaviour
     }
     protected virtual void Awake()
     {
+        _damageText = Resources.Load<TextMeshProUGUI>("UI/DamageText");
         _rigid = GetComponent<Rigidbody2D>();
         Init();
     }
@@ -121,6 +124,22 @@ public class Entity : MonoBehaviour
     {
         // HP 닳는 코드 구현
         HP -= damage;
+
+        var text = Instantiate(_damageText, GameManager.instance.WorldCanvas.transform);
+        text.SetText(string.Format("{0:0.00}", damage));
+        text.transform.position = transform.position + Vector3.up * GetComponent<Collider2D>().bounds.size.y / 2f;
+        GameManager.instance.StartCoroutine(DamageTextRoutine(text));
+        print("Damage Text");
+    }
+
+    private IEnumerator DamageTextRoutine(TextMeshProUGUI text)
+    {
+        for(float i = 5f; i >= -5f; i -= Time.deltaTime * 9.8f)
+        {
+            text.transform.position += Vector3.up * i * Time.deltaTime;
+            yield return null;
+        }
+        Destroy(text);
     }
 
     public virtual void Heal(float amount)

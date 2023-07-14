@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TimerText;
     public GameObject InventoryUI;
     public Canvas Canvas;
+    public Canvas WorldCanvas;
     public GameObject PauseUI;
 
     [Header("ItemPopup")]

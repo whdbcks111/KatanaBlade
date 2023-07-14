@@ -60,7 +60,7 @@ public class Player : Entity
 
     public override void Damage(float damageAmount)
     {
-        HP -= damageAmount;
+        base.Damage(damageAmount);
 
         if (_controller.IsConscious)
             _animator.SetTrigger("Hit");
