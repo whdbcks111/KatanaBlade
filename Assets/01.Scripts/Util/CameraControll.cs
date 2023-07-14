@@ -7,9 +7,15 @@ public class CameraControll : MonoBehaviour
     [SerializeField] private Transform _followTarget;
     public bool IsMoveRestricted = false;
 
+    private Vector3 _vel;
     private Vector3 _targetPosition, _shakeOffset;
 
-    private void Update()
+    private void Awake()
+    {
+        _targetPosition = transform.position;
+    }
+
+    private void FixedUpdate()
     {
         if (IsMoveRestricted) RestrictMove();
         else Follow();
@@ -17,18 +23,44 @@ public class CameraControll : MonoBehaviour
         transform.position = _targetPosition + _shakeOffset;
     }
 
+    private void Update()
+    {
+
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Shake(0.5f, 0.5f);
+        }
+    }
+
     public void Shake(float time, float force)
     {
-        // Ä«¸Þ¶ó ½¦ÀÌÅ© ·ÎÁ÷ ±¸Çö _shakeOffset º¯¼ö¿¡ ½¦ÀÌÅ© ÀÌµ¿°ª ³Ö±â
+        StartCoroutine(ShakeRoutine(time, force));
+    }
+
+    private IEnumerator ShakeRoutine(float time, float force)
+    {
+        for(float i = 0; i < time; i += Time.deltaTime)
+        {
+            yield return null;
+            _shakeOffset = new(Random.Range(-force, force), Random.Range(-force, force));
+        }
+        _shakeOffset = Vector3.zero;
     }
 
     public void Follow()
     {
-        // _followTarget µû¶ó°¡´Â ÄÚµå ±¸Çö, transform.positionÀ» ¼öÁ¤ÇÏÁö ¸»°í _targetPositionÀ» ¼öÁ¤ÇÒ °Í
+        _targetPosition = Vector3.SmoothDamp((Vector2)_targetPosition, _followTarget.position, 
+            ref _vel, 0.2f) + Vector3.forward * transform.position.z;
+    }
+
+    public void Teleport()
+    {
+        _targetPosition = _followTarget.position;
     }
 
     public void RestrictMove()
     {
-        // ÀÌµ¿ Á¦ÇÑ ÄÚµå
+        // ì´ë™ ì œí•œ ì½”ë“œ
     }
 }

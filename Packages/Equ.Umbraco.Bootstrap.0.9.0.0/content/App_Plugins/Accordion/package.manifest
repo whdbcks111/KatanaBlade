@@ -1,0 +1,8 @@
+{
+    css: [
+        '~/App_Plugins/Accordion/css/style.css'
+    ],
+	javascript: [
+		'~/App_Plugins/Accordion/js/accordion.editor.js'
+    ]
+}
