@@ -21,7 +21,7 @@ public class Player : Entity
         Instance = this;
 
 
-        Inventory.AddItem(new EssenceOfFlame());
+        Inventory.AddItem(new EssenceOfSwift());
         Inventory.AddItem(new EssenceOfDarkness());
         Inventory.AddItem(new EssenceOfCloud());
         Inventory.AddItem(new EssenceOfVoid());

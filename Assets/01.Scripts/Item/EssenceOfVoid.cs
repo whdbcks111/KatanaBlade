@@ -7,7 +7,7 @@ public class EssenceOfVoid : Item
     private static readonly float Cooldown = 10f;
 
     private static readonly float MaintainTime = 5;
-    private static readonly float Radius = 6;
+    private static readonly float ActiveRadius = 6;
     private static readonly float CastTime = 0.2f;
 
     public EssenceOfVoid()
@@ -24,7 +24,7 @@ public class EssenceOfVoid : Item
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
 
-        Player.Instance.StartCoroutine(SkillCor(MaintainTime, Radius, CastTime));
+        Player.Instance.StartCoroutine(SkillCor(MaintainTime, ActiveRadius, CastTime));
     }
 
     public override void PassiveUpdate()
@@ -57,11 +57,14 @@ public class EssenceOfVoid : Item
 
         while (dT < maintainTime)
         {
-            Collider2D[] projectiles = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
+            Collider2D[] projectiles = Physics2D.OverlapCircleAll(effect.transform.position, radius);
             foreach (var b in projectiles)
             {
-                if (b?.GetComponent<Projectile>() is Projectile)
-                    Object.Destroy(b.gameObject);
+                if (b.TryGetComponent(out Projectile projectile))
+                {
+                    Destroy(b.gameObject);
+                    EffectManager.EffectOneShot("BlackCristal", b.transform.position);
+                }
             }
             yield return null;
             dT += Time.deltaTime;
