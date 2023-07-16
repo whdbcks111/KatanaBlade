@@ -6,11 +6,11 @@ public class EssenceOfCloud : Item
 {
 
     private static readonly float PassiveTick = 2;
-    private static readonly float PassiveForce = 5f;
-    private static readonly float PassiveRadius = 5f;
+    private static readonly float PassiveForce = 12f;
+    private static readonly float PassiveRadius = 10f;
 
-    private static readonly float ActiveForce = 10f;
-    private static readonly float Cooldown = 5f;
+    private static readonly float ActiveForce = 24f;
+    private static readonly float Cooldown = 3f;
     private float _dT;
 
     public EssenceOfCloud()
@@ -25,7 +25,7 @@ public class EssenceOfCloud : Item
     public override void OnActiveUse()
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
-
+        Player.Instance.GetComponent<Rigidbody2D>().velocity = new Vector2(Player.Instance.GetComponent<Rigidbody2D>().velocity.x, 0);
         Player.Instance.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ActiveForce, ForceMode2D.Impulse);
     }
 

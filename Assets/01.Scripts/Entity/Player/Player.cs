@@ -23,7 +23,7 @@ public class Player : Entity
 
         Inventory.AddItem(new EssenceOfSwift());
         Inventory.AddItem(new EssenceOfDarkness());
-        Inventory.AddItem(new EssenceOfCloud());
+        Inventory.AddItem(new EssenceOfStorm());
         Inventory.AddItem(new EssenceOfVoid());
         Inventory.AddItem(new BootsOfTraveler());
 
