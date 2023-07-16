@@ -120,7 +120,7 @@ public class MapGenerator : MonoBehaviour
         _bossRoomPos = _targetTilemap.CellToWorld(new Vector3Int(MapCount + 3, 1) * MapSize) + Vector3.up * 4;
 
         var portalRenderer = _portalPrefab.GetComponent<SpriteRenderer>();
-        BatchObjects(BossCount, 500, _portalPrefab, (portal, stage) =>
+        PlaceObjects(BossCount, 500, _portalPrefab, (portal, stage) =>
         {
             stage.Type = StageType.Boss;
             portal.transform.position += Vector3.up * portalRenderer.bounds.size.y / 2;
@@ -129,7 +129,7 @@ public class MapGenerator : MonoBehaviour
         });
 
         var healRenderer = _healAreaPrefab.GetComponent<SpriteRenderer>();
-        BatchObjects(HealCount, 500, _healAreaPrefab, (healArea, stage) =>
+        PlaceObjects(HealCount, 500, _healAreaPrefab, (healArea, stage) =>
         {
             stage.Type = StageType.HealArea;
             healArea.transform.position += Vector3.up * healRenderer.bounds.size.y / 2;
@@ -137,7 +137,7 @@ public class MapGenerator : MonoBehaviour
         });
 
         var shopRenderer = _shopNPCPrefab.GetComponent<SpriteRenderer>();
-        BatchObjects(ShopCount, 500, _shopNPCPrefab, (npc, stage) =>
+        PlaceObjects(ShopCount, 500, _shopNPCPrefab, (npc, stage) =>
         {
             stage.Type = StageType.Shop;
             npc.transform.position += Vector3.up * shopRenderer.bounds.size.y / 2;
@@ -152,6 +152,7 @@ public class MapGenerator : MonoBehaviour
             var stage = entry.Value;
             var shape = stage.Shape;
             var offsets = shape.KeyPositionOffsets;
+            print(stage.Type);
             if (stage.Type == StageType.Monster)
             {
                 foreach(var offset in offsets)
@@ -178,7 +179,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public void BatchObjects<T>(int count, int tryLimit, T obj, Action<T, Stage> postAction) where T : UnityEngine.Object
+    public void PlaceObjects<T>(int count, int tryLimit, T obj, Action<T, Stage> postAction) where T : UnityEngine.Object
     {
         while (count > 0 && tryLimit-- > 0)
         {
@@ -249,7 +250,7 @@ public class MapGenerator : MonoBehaviour
     }
 }
 
-public struct Stage
+public class Stage
 {
     public StageShape Shape;
     public StageType Type;
