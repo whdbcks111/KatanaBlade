@@ -57,13 +57,13 @@ public class EssenceOfVoid : Item
 
         while (dT < maintainTime)
         {
-            Collider2D[] projectiles = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
+            Collider2D[] projectiles = Physics2D.OverlapCircleAll(effect.transform.position, radius);
             foreach (var b in projectiles)
             {
-                if (b?.GetComponent<Projectile>() is Projectile)
+                if (b.TryGetComponent(out Projectile projectile))
                 {
-                    EffectManager.EffectOneShot("BlackCristal", b.transform.position);
                     Destroy(b.gameObject);
+                    EffectManager.EffectOneShot("BlackCristal", b.transform.position);
                 }
             }
             yield return null;
