@@ -85,7 +85,6 @@ public class MeleeMonster : Monster
         }
         
         _jumpCoolTime += Time.deltaTime;
-        print(_jumpCoolTime);
         
         if (rayHitWall.collider != null)
         {
