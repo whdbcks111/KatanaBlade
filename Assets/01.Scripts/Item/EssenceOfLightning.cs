@@ -8,11 +8,11 @@ public class EssenceOfLightning : Item
     private List<Entity> _entities = new List<Entity>();
 
     private LineRenderer _line;
-    private static readonly float Cooldown = 1.5f;
+    private Material _material;
+    private static readonly float Cooldown = 5f;
     private static readonly float EssenceRadius = 10f;
     private static readonly int ActiveCount = 5;
     private static readonly int EssenceForce = 10;
-
 
     public EssenceOfLightning()
         : base(ItemType.Essence, "번개의 정수",
@@ -26,14 +26,13 @@ public class EssenceOfLightning : Item
     [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        Player.Instance.SetEssenceCooldown(Cooldown);
-
         _entities.Clear();
         //기준 몬스터 찾기
         Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, EssenceRadius, 1 << LayerMask.NameToLayer("Enemy"));
         int min = 0;
         if(enemies.Length > 0)
         {
+            Player.Instance.SetEssenceCooldown(Cooldown);
             for (int i = 0; i < enemies.Length; i++)
             {
                 //가장 가까운 적 찾기
@@ -49,11 +48,6 @@ public class EssenceOfLightning : Item
             }
         }
     }
-
-    private void Update()
-    {
-    }
-
     public override void PassiveUpdate()
     {
     }
@@ -65,11 +59,11 @@ public class EssenceOfLightning : Item
             if(_line == null)
             {
                 _line = Player.Instance.gameObject.AddComponent<LineRenderer>();
-                _line.material = Resources.Load<Material>("Item/LightningLine");
-                _line.startColor = _line.endColor = Color.white;
-                _line.startWidth = _line.endWidth = 1f;
-                _line.textureMode = LineTextureMode.Tile;
             }
+            _line.material = _material;
+            _line.textureMode = LineTextureMode.Tile;
+            _line.startColor = _line.endColor = Color.white;
+            _line.startWidth = _line.endWidth = 1f;
             _line.positionCount = _entities.Count + 1;
             _line.SetPosition(0, Player.Instance.transform.position);
             Debug.Log(_entities.Count);
@@ -142,6 +136,7 @@ public class EssenceOfLightning : Item
 
     public override void OnMount()
     {
+        _material = Resources.Load<Material>("Item/LightningLine");
     }
 
     public override void OnUnmount()
