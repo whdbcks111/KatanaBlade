@@ -83,22 +83,6 @@ public class EssenceOfFlame : Item
 
         target.GetComponent<Entity>().Damage(ActiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce));
         target.GetComponent<Entity>().AddEffect(new EffectFire((int)Player.Instance.Stat.Get(StatType.EssenceForce), ActiveTotalTime, Player.Instance));
-        //dT = 0;
-
-        //while(dT < ActiveTotalTime)
-        //{
-        //    dT += Time.deltaTime;
-        //    yield return null;
-        //    if (target != null)
-        //    {
-        //        if (target.GetComponent<Entity>().HP > 0)
-        //            target.GetComponent<Entity>().Damage(PassiveDamage / ActiveTotalTime * Time.deltaTime);
-        //    }
-        //    else
-        //    {
-        //        break;
-        //    }
-        //}
         DestroyImmediate(obj.gameObject);
     }
 
