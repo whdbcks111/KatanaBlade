@@ -40,8 +40,8 @@ public class EssenceOfCloud : Item
                 if (enemy.GetComponent<Entity>() is Monster)
                 {
                     float dir = Player.Instance.transform.position.x > enemy.transform.position.x ? -1f : 1f;
-                    enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * PassiveForce, ForceMode2D.Impulse);
-                    enemy.GetComponent<Monster>().Knockback(dir * PassiveForce);
+                    enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * PassiveForce * Player.Instance.Stat.Get(StatType.EssenceForce), ForceMode2D.Impulse);
+                    enemy.GetComponent<Monster>().Knockback(dir * PassiveForce * Player.Instance.Stat.Get(StatType.EssenceForce));
                 }
             }
             _dT = 0;

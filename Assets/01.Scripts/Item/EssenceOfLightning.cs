@@ -76,8 +76,8 @@ public class EssenceOfLightning : Item
             for (int i = 0; i < _entities.Count; i++)
             {
                 _line.SetPosition(i + 1, _entities[i].transform.position);
-                _entities[i].Damage(damage);
-                _entities[i].AddEffect(new EffectStun(1, 2f, Player.Instance));
+                _entities[i].Damage(damage * Player.Instance.Stat.Get(StatType.EssenceForce));
+                _entities[i].AddEffect(new EffectStun(1, 2f * Player.Instance.Stat.Get(StatType.EssenceForce), Player.Instance));
                 Player.Instance.StartCoroutine(LightningAnim(.3f));
             }
         }

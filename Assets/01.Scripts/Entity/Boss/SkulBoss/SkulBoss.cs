@@ -6,16 +6,10 @@ public class SkulBoss : Boss
 {
     [SerializeField] private GameObject _knifeTrap;
 
-    [SerializeField] private bool _isActing;
-    private int _aiMode;
-    private float _distance;
 
-    private Player _player;
-    private SpriteRenderer _renderer;
     private Animator _animator;
 
     //private float _moveSpeed;
-    private int _stare;
 
 
     private static float _moveSpeed = 10f;
@@ -25,13 +19,13 @@ public class SkulBoss : Boss
 
     [SerializeField] BossAttackProjectile _knifePrefab;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         this.Stat.SetDefault(StatType.MaxHP, 700);
         HP = MaxHP;
         _animator = GetComponentInChildren<Animator>();
-        _renderer = GetComponentInChildren<SpriteRenderer>();
-        _player = FindObjectOfType<Player>();
+        FloorCheck();
         StartCoroutine(PatternTerm());
     }
 
@@ -39,27 +33,18 @@ public class SkulBoss : Boss
     protected override void Update()
     {
         base.Update();
-        if (_isActing)
-            AIAct();
     }
-    private void Staring()
+
+    private void FloorCheck()
     {
-        if (_player.transform.position.x < transform.position.x)
+        Debug.DrawRay(transform.position, Vector2.down, Color.blue);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, LayerMask.GetMask("Platform"));
+        if (hit.collider != null)
         {
-            _stare = -1;
-            //_renderer.flipX = false;
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-
-        }
-        else
-        {
-            _stare = 1;
-            //_renderer.flipX = true;
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 5.0f);
         }
     }
-
-    public void AIAct()
+    public override void AIAct()
     {
         switch (_aiMode)
         {
@@ -76,6 +61,7 @@ public class SkulBoss : Boss
                     MovingVelocity = _stare * -_moveSpeed;
                 else
                     MovingVelocity = 0;
+                WallCheck();
                 break;
             //패턴 1
             case 1:
@@ -84,6 +70,7 @@ public class SkulBoss : Boss
             //패턴1 추적
             case 5:
                 MovingVelocity = _stare * _moveSpeed * 1.2f;
+                WallCheck();
                 break;
             case 2:
                 StartCoroutine(KnifeStepping());
@@ -128,7 +115,7 @@ public class SkulBoss : Boss
     IEnumerator KnifeStepping()
     {
         MovingVelocity = 0;
-        _isActing = false;
+        IsActable = false;
         _knifeTrap.GetComponent<KnifeStepper>().Shuffle();
         _knifeTrap.GetComponent<Animator>().SetTrigger("Shoot");
         yield return new WaitForSeconds(3.0f);
@@ -141,7 +128,7 @@ public class SkulBoss : Boss
     IEnumerator KnifeThrowing()
     {
         MovingVelocity = 0;
-        _isActing = false;
+        IsActable = false;
         float x = Random.Range(2, 5);
         for (int i = 0; i < x; i++)
         {
@@ -156,14 +143,13 @@ public class SkulBoss : Boss
     IEnumerator PatternTerm()
     {
         _aiMode = 0;
-        _isActing = true;
+        IsActable = true;
         yield return new WaitForSeconds(3.0f);
         ChooseNextAct();
     }
     IEnumerator hit()
     {
-        StopAllCoroutines();
-        _isActing = false;
+        IsActable = false;
         MovingVelocity = 0;
         _animator.SetBool("Spinning", false);
         yield return new WaitForSeconds(1.0f);
@@ -181,7 +167,10 @@ public class SkulBoss : Boss
             //발악 패턴 시작
         }
         else if (IsAttcking)
-            StartCoroutine(hit());
+        {
+            StopAllCoroutines();
+            StartCoroutine(hit()); 
+        }
     }
 }
 /*

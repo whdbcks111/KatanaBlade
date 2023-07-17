@@ -49,7 +49,7 @@ public class EssenceOfDarkness : Item
         float dT = 0;
         while (dT < castTime)
         {
-            effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
+            effect.transform.localScale = Vector2.one * radius * Player.Instance.Stat.Get(StatType.EssenceForce) * dT * (1f / castTime);
             yield return null;
             dT += Time.deltaTime;
         }
@@ -64,7 +64,7 @@ public class EssenceOfDarkness : Item
 
         while (dT < maintainTime)
         {
-            Collider2D[] bullets = Physics2D.OverlapCircleAll(effect.transform.position, radius);
+            Collider2D[] bullets = Physics2D.OverlapCircleAll(effect.transform.position, radius * Player.Instance.Stat.Get(StatType.EssenceForce));
             foreach (var b in bullets)
             {
                 if (b?.GetComponent<Projectile>() is Projectile)
@@ -73,7 +73,7 @@ public class EssenceOfDarkness : Item
                     {
                         _skillList.Add(b.gameObject);
                         _speedList.Add(b.GetComponent<Projectile>().Speed);
-                        b.GetComponent<Projectile>().Speed *= SlowMag;
+                        b.GetComponent<Projectile>().Speed *= SlowMag / Player.Instance.Stat.Get(StatType.EssenceForce);
                     }
                 }
             }
@@ -87,7 +87,7 @@ public class EssenceOfDarkness : Item
 
         while (dT > 0)
         {
-            effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
+            effect.transform.localScale = Vector2.one * radius * Player.Instance.Stat.Get(StatType.EssenceForce) * dT * (1f / castTime);
             yield return null;
             dT -= Time.deltaTime;
         }

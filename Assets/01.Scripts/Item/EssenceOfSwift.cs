@@ -36,7 +36,8 @@ public class EssenceOfSwift : Item
         }
         else
         {
-            movePos = new Vector2(Player.Instance.transform.position.x + Player.Instance.Stat.Get(StatType.DashLength) * stare, Player.Instance.transform.position.y);
+            movePos = new Vector2(Player.Instance.transform.position.x + Player.Instance.Stat.Get(StatType.DashLength) * stare * Player.Instance.Stat.Get(StatType.EssenceForce),
+                Player.Instance.transform.position.y);
         }
         Player.Instance.StartCoroutine(SkillCor(movePos));
     }

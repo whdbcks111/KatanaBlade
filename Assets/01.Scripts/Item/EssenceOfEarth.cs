@@ -33,7 +33,7 @@ public class EssenceOfEarth : Item
                 enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, 2f, Player.Instance));
                 //대상과의 거리에 따라 에어본이 달라짐
                 enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (ActiveMag + (ActiveRadius - Vector2.Distance(enemy.transform.position, Player.Instance.transform.position))), ForceMode2D.Impulse);
-                enemy.GetComponent<Entity>().Knockback(ActiveMag * Random.Range(-1, 2) * 2);
+                enemy.GetComponent<Entity>().Knockback(ActiveMag * Random.Range(-1, 2) * 2 * Player.Instance.Stat.Get(StatType.EssenceForce));
 
                 RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, Vector2.down, float.PositiveInfinity, 1 << LayerMask.NameToLayer("Platform"));
                 if (hit)
