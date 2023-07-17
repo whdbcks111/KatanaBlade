@@ -157,7 +157,7 @@ public class SkulBoss : Boss
     }
     public override void Damage(float damage)
     {
-        base.Damage(damage * _player.Stat.Get(StatType.BossAttackForce));
+        base.Damage(damage);
         //패턴 멈추기는 각 부분에서 알아서 처리
         _animator.SetTrigger("Hitted");
 
