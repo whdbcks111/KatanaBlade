@@ -18,7 +18,7 @@ public class EssenceOfDarkness : Item
         : base(ItemType.Essence, "암흑의 정수",
             string.Format(
                 "사용 시 : 주변을 느려지게 하는 영역을 전개합니다. <color=#aaa>(재사용 대시기간 : {0:0.0}초)</color>\n" +
-                "기본 지속 효과 : -", Cooldown),
+                "기본 지속 효과 : - ", Cooldown),
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_6"))
     {
     }
@@ -64,17 +64,21 @@ public class EssenceOfDarkness : Item
 
         while (dT < maintainTime)
         {
-            Collider2D[] bullets = Physics2D.OverlapCircleAll(effect.transform.position, radius * Player.Instance.Stat.Get(StatType.EssenceForce));
-            foreach (var b in bullets)
+            Collider2D[] objects = Physics2D.OverlapCircleAll(effect.transform.position, radius * Player.Instance.Stat.Get(StatType.EssenceForce));
+            foreach (var o in objects)
             {
-                if (b?.GetComponent<Projectile>() is Projectile)
+                if (o?.GetComponent<Projectile>() is Projectile)
                 {
-                    if(!_skillList.Contains(b.gameObject))
+                    if(!_skillList.Contains(o.gameObject))
                     {
-                        _skillList.Add(b.gameObject);
-                        _speedList.Add(b.GetComponent<Projectile>().Speed);
-                        b.GetComponent<Projectile>().Speed *= SlowMag;
+                        _skillList.Add(o.gameObject);
+                        _speedList.Add(o.GetComponent<Projectile>().Speed);
+                        o.GetComponent<Projectile>().Speed *= SlowMag;
                     }
+                }
+                else if(o?.GetComponent<Entity>() is Monster)
+                {
+                    o.GetComponent<Monster>().Stat.Multiply(StatType.MoveSpeed, SlowMag);
                 }
             }
             yield return null;
@@ -97,7 +101,8 @@ public class EssenceOfDarkness : Item
         {
             if (_skillList[i] != null)
             {
-                _skillList[i].GetComponent<Projectile>().Speed = _speedList[i];
+                if (_skillList[i].GetComponent<Projectile>() is Projectile)
+                    _skillList[i].GetComponent<Projectile>().Speed = _speedList[i];
             }
         }
 

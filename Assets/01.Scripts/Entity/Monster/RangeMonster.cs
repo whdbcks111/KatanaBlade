@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class RangeMonster : Monster
 {
-    public float Speed;
-
     [Range(10f, 40f)]
     public float DetectDist;
     [Range(10f, 30f)]
@@ -23,7 +21,7 @@ public class RangeMonster : Monster
     public GameObject ChargeImage;
     public GameObject BulletPrefab;
     public Animator ArcherAnimator;
-    private Vector3 dir = Vector3.one;
+    private int dir = 1;
     private Coroutine _attackCor;
     private Rigidbody2D _rb2d;
     private RaycastHit2D _ray;
@@ -79,16 +77,18 @@ public class RangeMonster : Monster
     {
         if (moveTo.transform.position.x > transform.position.x)
         {
-            dir = Vector3.one;
+            dir = 1;
         }
         else
         {
-            dir = new Vector3(-1, 1, 1);
+            dir = -1;
         }
-        transform.localScale = dir;
+        transform.localScale = new Vector3(dir, 1, 1);
 
         if (_ray)
-            transform.Translate(dir * Speed * Time.deltaTime);
+            MovingVelocity = dir * Stat.Get(StatType.MoveSpeed);
+        else
+            MovingVelocity = 0;
 
         Collider2D obs = Physics2D.OverlapCircle(JumpSenseTr.position, 0.1f, 1 << LayerMask.NameToLayer("Platform"));
         if(obs != null && _rb2d.velocity.y == 0)
@@ -102,13 +102,14 @@ public class RangeMonster : Monster
     {
         if (other.transform.position.x > transform.position.x)
         {
-            dir = Vector3.one;
+            dir = 1;
         }
         else
         {
-            dir = new Vector3(-1, 1, 1);
+            dir = -1;
         }
-        transform.localScale = dir;
+        transform.localScale = new Vector3(dir, 1, 1);
+        MovingVelocity = 0;
         if (Vector2.Distance(transform.position, other.transform.position) > AttDist)
         {
             if (_attackCor != null)
