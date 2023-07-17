@@ -12,13 +12,13 @@ public class EssenceOfLightning : Item
     private static readonly float Cooldown = 5f;
     private static readonly float EssenceRadius = 10f;
     private static readonly int ActiveCount = 5;
-    private static readonly int EssenceForce = 10;
+    private static readonly int ActiveForce = 10;
 
     public EssenceOfLightning()
         : base(ItemType.Essence, "번개의 정수",
             string.Format(
                 "사용 시 : 주변 적 {0}명에게 <color=yellow>번개</color>를 내려 {1}의 대미지를 입히고 기절시킵니다. <color=gray>(재사용 대시기간 : {2:0.0}초)</color>\n" +
-                "기본 지속 효과 : - ", ActiveCount, EssenceForce, Cooldown),
+                "기본 지속 효과 : - ", ActiveCount, ActiveForce, Cooldown),
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_1"))
     {
     }
@@ -44,7 +44,7 @@ public class EssenceOfLightning : Item
             if (enemies[min] != null)
             {
                 _entities.Add(enemies[min].GetComponent<Entity>());
-                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount - 1, EssenceForce);
+                Lightning(enemies[min].GetComponent<Entity>(), ActiveCount - 1, ActiveForce);
             }
         }
     }
