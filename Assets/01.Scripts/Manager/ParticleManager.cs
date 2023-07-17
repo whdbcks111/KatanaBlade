@@ -35,6 +35,5 @@ public class ParticleManager : MonoBehaviour
             position, Quaternion.identity);
         system.AddComponent<ParticleDestroy>();
     }
-
     
 }
