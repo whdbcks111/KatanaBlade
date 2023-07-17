@@ -66,11 +66,11 @@ public class MeleeMonster : Monster
 
         Vector2 frontVec = (Vector2)transform.position + Vector2.right * _nextMove;
 
-        // ¾ÕÀÌ ³¶¶°·¯ÁöÀÎÁö È®ÀÎ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         Debug.DrawRay(frontVec, Vector2.down, new Color(0, 4, 0));
         RaycastHit2D raHitGround = Physics2D.Raycast(frontVec, Vector3.down, 4, LayerMask.GetMask("Platform"));
 
-        // ¾Õ¿¡ º®ÀÌ ÀÖÀ»½Ã Á¡ÇÁÇÒ ¼ö ÀÖµµ·Ï ÇÔ
+        // ï¿½Õ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½
         var col = GetComponent<Collider2D>();
         Debug.DrawRay(transform.position, new Vector2(_nextMove, 0), new Color(0, 4, 0));
         
@@ -93,7 +93,6 @@ public class MeleeMonster : Monster
                 Vector3.down, 0.2f, LayerMask.GetMask("Platform")).collider != null)
             {   
                 GetComponent<Rigidbody2D>().velocity = Vector2.up * _jumpPower;
-
                 _jumpCoolTime = 0;
             }
         }

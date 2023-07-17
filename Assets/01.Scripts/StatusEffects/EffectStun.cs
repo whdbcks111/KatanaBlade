@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EffectStun : StatusEffect
 {
-    public EffectStun(int level, float duration, Entity caster = null) : base(level, duration, caster)
+    public EffectStun(int level, float duration, Entity caster = null) 
+        : base(level, duration, Resources.Load<Sprite>("Item/Icon/Spell/spell_10"), caster)
     {
     }
 

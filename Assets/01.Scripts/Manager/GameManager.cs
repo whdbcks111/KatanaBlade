@@ -18,7 +18,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TimerText;
     public GameObject InventoryUI;
     public Canvas Canvas;
+    public Canvas WorldCanvas;
     public GameObject PauseUI;
+    public GameObject EffectPrefab;
+    public Transform EffectIconContainer;
 
     [Header("ItemPopup")]
     public GameObject ItemPopup;
@@ -29,6 +32,8 @@ public class GameManager : MonoBehaviour
     public GameObject ShopPopup;
     public Image ShopPopupIcon;
     public TextMeshProUGUI ShopPopupName, ShopPopupDesc;
+    public GameObject ShopPanel;
+    public GameObject[] ItemListUI = new GameObject[4];
 
     private MonoBehaviour _currentShowingUI;
     private GameObject _openedPopup;
@@ -168,6 +173,30 @@ public class GameManager : MonoBehaviour
             InventoryUI.SetActive(!InventoryUI.activeSelf);
         }
 
+        var effectUICount = EffectIconContainer.childCount;
+        var effects = Player.Instance.Effects;
+
+        if(effectUICount > effects.Length)
+        {
+            DestroyImmediate(EffectIconContainer.GetChild(effectUICount - 1).gameObject);
+        }
+        else if(effectUICount < effects.Length)
+        {
+            Instantiate(EffectPrefab, EffectIconContainer);
+        }
+
+        int index = 0;
+        foreach(Transform child in EffectIconContainer)
+        {
+            if(child.GetChild(0).TryGetComponent(out Image image))
+            {
+                print(index + "dadsd");
+                image.sprite = effects[index].Icon;
+                image.fillAmount = effects[index].Duration / effects[index].MaxDuration;
+            }
+            ++index;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Time.timeScale > 0f)
@@ -182,6 +211,8 @@ public class GameManager : MonoBehaviour
                 PauseUI.SetActive(false);
             }
         }
+
+
 
         if (_curBoss is not null)
         {
@@ -200,12 +231,14 @@ public class GameManager : MonoBehaviour
     // 플레이어 캐릭터가 사망시 게임 오버를 실행하는 메서드
     public void OnPlayerDead()
     {
+
         IsGameover = true;
         GameoverUI.SetActive(true);
     }
-
-    
-
+    public void GameExit()
+    {
+        Application.Quit();
+    }
 
 
     /*점수를 증가시키는 메서드
