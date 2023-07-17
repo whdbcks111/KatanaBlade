@@ -183,8 +183,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uAC8C\uC784 \uC2DC\uC791 "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ab5068837c518d4b8f13c57dcc86a0b, type: 2}
-  m_sharedMaterial: {fileID: -3865493041086706776, guid: 1ab5068837c518d4b8f13c57dcc86a0b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8aba1a7764dd91040a40267f712d0c5a, type: 2}
+  m_sharedMaterial: {fileID: -941839619638996518, guid: 8aba1a7764dd91040a40267f712d0c5a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -268,6 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 431056707}
   - component: {fileID: 431056708}
+  - component: {fileID: 431056709}
   m_Layer: 0
   m_Name: Click
   m_TagString: Untagged
@@ -302,6 +303,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844cf099c16879140a82267a4ce0f141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &431056709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431056705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 020fcd5076022df4b9483e7cc1ed3ede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: MapGenerateTest
 --- !u!1 &458745003
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,8 +376,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uAC8C\uC784 \uC885\uB8CC"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ab5068837c518d4b8f13c57dcc86a0b, type: 2}
-  m_sharedMaterial: {fileID: -3865493041086706776, guid: 1ab5068837c518d4b8f13c57dcc86a0b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8aba1a7764dd91040a40267f712d0c5a, type: 2}
+  m_sharedMaterial: {fileID: -941839619638996518, guid: 8aba1a7764dd91040a40267f712d0c5a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -638,7 +652,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 979184010}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 431056709}
+        m_TargetAssemblyTypeName: StartGame, Assembly-CSharp
+        m_MethodName: StartGameLoading
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &979184010
 MonoBehaviour:
   m_ObjectHideFlags: 0

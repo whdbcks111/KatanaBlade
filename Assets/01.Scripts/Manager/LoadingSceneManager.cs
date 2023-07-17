@@ -8,51 +8,49 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneManager : MonoBehaviour
 {
-    public static string nextScene;
-    public TextMeshProUGUI LoadedText;
 
-    [SerializeField] Image ProgressBar; 
+    private static LoadingSceneManager _instance = null;
 
-    private void Start()
+
+    private LoadingUI _uiPrefab;
+    public static LoadingSceneManager Instance
     {
-        StartCoroutine(LoadScene());
+        get
+        {
+            if(_instance is null || _instance.Equals(null))
+            {
+                _instance = new GameObject(nameof(LoadingSceneManager)).AddComponent<LoadingSceneManager>();
+            }
+            return _instance;
+        }
     }
 
-    public static void LoadScene(string sceneName)
+    private void Awake()
     {
-        nextScene = sceneName;
-        SceneManager.LoadScene("LoadingScene");
+        _uiPrefab = Resources.Load<LoadingUI>("UI/LoadingUI");
     }
 
-    IEnumerator LoadScene()
+    public void LoadScene(string sceneName)
     {
-        yield return null;
-        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
-        op.allowSceneActivation = false;
-        float timer = 0.0f;
+        print("Start..");
+        StartCoroutine(LoadSceneRoutine(sceneName));
+    }
+
+    public IEnumerator LoadSceneRoutine(string sceneName)
+    {
+        LoadingUI ui = Instantiate(_uiPrefab);
+        ui.Title.SetText("¾À ·ÎµùÁß...");
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = true;
+        float showProgress = op.progress;
+        float vel = 1;
         while (!op.isDone)
         {
+            showProgress = Mathf.SmoothDamp(showProgress, op.progress, ref vel, 0.3f);
+            print("Load : " + op.progress);
+            ui.ProgressText.SetText(string.Format("{0:0.0}%", showProgress * 100));
+            ui.LoadingImage.fillAmount = showProgress;
             yield return null;
-            timer += Time.deltaTime;
-            if (op.progress < 0.9f)
-            {
-                ProgressBar.fillAmount = Mathf.Lerp(ProgressBar.fillAmount, op.progress, timer);
-                if (ProgressBar.fillAmount >= op.progress)
-                {
-                    timer = 0f;
-                }
-            }
-            else
-            {
-                ProgressBar.fillAmount = Mathf.Lerp(ProgressBar.fillAmount, 1f, timer);
-          
-                if (ProgressBar.fillAmount == 1.0f)
-                {
-                    op.allowSceneActivation = true;
-                    yield break;
-                }
-            }
-            LoadedText.text = string.Format("{0:0}", ProgressBar.fillAmount * 100f) + "%";
         }
     }
 }
