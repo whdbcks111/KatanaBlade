@@ -45,12 +45,16 @@ public class Boss : Monster
             return;
 
         Debug.DrawRay(transform.position, new Vector2(MovingVelocity, 0), Color.blue);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(MovingVelocity, 0), _col2d.bounds.size.x / 2 + MovingVelocity, LayerMask.GetMask("Platform"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(MovingVelocity, 0), /*_col2d.bounds.size.x /2 +*/MovingVelocity, LayerMask.GetMask("Platform"));
         if (hit.collider != null)
             MovingVelocity = 0;
     }
     public virtual void AIAct()
     {
 
+    }
+    public override void Damage(float damage)
+    {
+        base.Damage(damage + _player.Stat.Get(StatType.BossAttackForce));
     }
 }

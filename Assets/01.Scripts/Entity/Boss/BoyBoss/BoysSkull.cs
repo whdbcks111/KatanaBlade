@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoysSkull : Boss
 {
+    public BoyBoss Boy;
     private Animator _animator;
 
     private static float _limitDistance = 5f;
@@ -15,6 +16,7 @@ public class BoysSkull : Boss
         base.Start();
         _animator = GetComponent<Animator>();
         StartCoroutine(PatternTerm());
+        print("hp : " + HP);
     }
     protected override void FixedUpdate()
     {
@@ -51,8 +53,8 @@ public class BoysSkull : Boss
     IEnumerator Slash()
     {
         IsActable = false;
-        _animator.SetBool("Slash", true);
         MovingVelocity = 0;
+        _animator.SetBool("Slash", true);
         yield return new WaitForSeconds(.4f);
 
         IsAttcking = true;
@@ -79,10 +81,16 @@ public class BoysSkull : Boss
     }
     private void NextPattern()
     {
-        if (_distance < _player.Stat.Get(StatType.DashLength) * .5f)
-            _aiMode = 1;
+        if (!Boy.IsActing)
+        {
+            if (_distance < _player.Stat.Get(StatType.DashLength) * .5f)
+                _aiMode = 1;
+            else
+                _aiMode = Mathf.FloorToInt(Random.Range(1, 3));
+        }
         else
-            _aiMode = Mathf.FloorToInt(Random.Range(1, 3));
+            StartCoroutine(PatternTerm());
+        print("Pattern num " + _aiMode);
     }
     IEnumerator hit()
     {
@@ -95,18 +103,27 @@ public class BoysSkull : Boss
     }
     public override void Damage(float damage)
     {
-        HP -= damage * _player.Stat.Get(StatType.BossAttackForce);
-        _animator.SetTrigger("Hit");
-        if (HP < 0)
-        {
-            IsActable = false;
-            _animator.SetBool("Dead", true);
-            Destroy(this.gameObject, 2.0f);
-        }
-        else if (IsAttcking)
+        HP -= damage + _player.Stat.Get(StatType.BossAttackForce);
+        print("hp : " + HP);
+        if (IsAttcking)
         {
             StopAllCoroutines();
             StartCoroutine(hit());
         }
+        _animator.SetTrigger("Hit");
+        if (HP <= 0)
+        {
+            IsActable = false;
+            MovingVelocity = 0;
+            StartCoroutine(Death());
+        }
+
+    }
+    IEnumerator Death()
+    {
+        _animator.SetBool("Dead", true);
+        Boy.Damage(5f);
+        yield return new WaitForSeconds(1.0f);
+        base.OnMonsterDie();
     }
 }

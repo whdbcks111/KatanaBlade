@@ -5,12 +5,12 @@ using UnityEngine;
 public class BossAttackProjectile : Entity
 {
     private Player _player;
-    [SerializeField] private int _mode;
+    [SerializeField] protected int _mode;
     public Boss MotherBoss;
-    [SerializeField] private int _damage;
-    private Vector2 _targetSpot;
-    private float _hittedDamage;
-    [SerializeField] private float _speed;
+    [SerializeField] protected int _damage;
+    protected Vector2 _targetSpot;
+    protected float _hittedDamage;
+    [SerializeField] protected float _speed;
     private void Start()
     {
         _player = FindObjectOfType<Player>();
