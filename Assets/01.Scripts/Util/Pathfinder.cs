@@ -51,7 +51,7 @@ public static class Pathfinder
         position = Vector2.MoveTowards(position, nextPos, Time.deltaTime * speed);
         transform.position = position;
     }
-
+    
     public static Stack<Path> FindPath(Tilemap tilemap, Vector2Int start, Vector2Int target)
     {
         Stack<Path> paths = new();
