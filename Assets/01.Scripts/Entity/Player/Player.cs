@@ -65,16 +65,17 @@ public class Player : Entity
 
     public override void Damage(float damageAmount)
     {
-        if (!_controller.IsParrying)
-        {
-            base.Damage(damageAmount);
-        }
-        else if (HP <= 0)
+        if (HP <= 0)
         {
             StopAllCoroutines();
             _controller.IsConscious = false;
+            MovingVelocity = 0;
             _animator.SetBool("Dead", true);
             GameManager.instance.OnPlayerDead();
+        }
+        else if (!_controller.IsParrying)
+        {
+            base.Damage(damageAmount);
         }
         else
         {

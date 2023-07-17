@@ -48,14 +48,19 @@ public class BoyCastBall : BossAttackProjectile
                     p.AddEffect(new EffectRegeneration(5, 5.5f, MotherBoss));
                     break;
             }
-            if(ran!=6)
+            if (ran != 6)
                 p.Damage(_damage);
+            else
+                p.Damage(_damage / 2);
             Destroy(this.gameObject);
         }
         if (collision.gameObject == MotherBoss.gameObject && _mode == 2)
         {
-            MotherBoss.Damage(_hittedDamage);
-            Destroy(this.gameObject);
+            if (ran != 6)
+                MotherBoss.Damage(_hittedDamage);
+            else
+                MotherBoss.HP += _damage;
+                Destroy(this.gameObject);
         }
         if (_mode != 0 && !collision.gameObject == MotherBoss.gameObject && !collision.TryGetComponent(out Player pa))
             Destroy(this.gameObject);

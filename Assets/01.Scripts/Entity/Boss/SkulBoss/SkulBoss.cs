@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkulBoss : Boss
 {
-    [SerializeField] private GameObject _knifeTrap;
+    [SerializeField] private KnifeStepper _knifeTrap;
     [SerializeField] private GameObject _trapPivot;
 
 
@@ -38,13 +38,23 @@ public class SkulBoss : Boss
 
     private void FloorCheck()
     {
+        Debug.DrawRay(transform.position, Vector2.left, Color.blue);
+        RaycastHit2D wallHitL = Physics2D.Raycast(transform.position, Vector2.left, 300f, LayerMask.GetMask("Platform"));
+        if (wallHitL.collider != null)
+            _knifeTrap.MinLimit=wallHitL.collider.transform.position.x;
+        Debug.DrawRay(transform.position, Vector2.right, Color.blue);
+        RaycastHit2D wallHitR = Physics2D.Raycast(transform.position, Vector2.right, 300f, LayerMask.GetMask("Platform"));
+        if (wallHitR.collider != null)
+            _knifeTrap.MaxLimit = wallHitR.collider.transform.position.x;
+
         Debug.DrawRay(transform.position, Vector2.down, Color.blue);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, LayerMask.GetMask("Platform"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f, LayerMask.GetMask("Platform"));
         if (hit.collider != null)
         {
-            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 15.0f);
+            print(hit.collider);
+            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 5.0f);
+            _trapPivot.transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y);
         }
-        _trapPivot.transform.position = hit.collider.transform.position;
     }
     public override void AIAct()
     {
@@ -151,10 +161,11 @@ public class SkulBoss : Boss
     }
     IEnumerator hit()
     {
+        IsAttcking = false;
         IsActable = false;
         MovingVelocity = 0;
         _animator.SetBool("Spinning", false);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
         StartCoroutine(PatternTerm());
     }
     public override void Damage(float damage)
