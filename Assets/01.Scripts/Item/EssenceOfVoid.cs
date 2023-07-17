@@ -45,19 +45,19 @@ public class EssenceOfVoid : Item
         float dT = 0;
         while(dT < castTime)
         {
-            effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
+            effect.transform.localScale = Vector2.one * (radius * Player.Instance.Stat.Get(StatType.EssenceForce)) * dT * (1f / castTime);
             yield return null;
             dT += Time.deltaTime;
         }
         //
 
         //영역 내 투사체 삭제
-        effect.transform.localScale = Vector2.one * radius;
+        effect.transform.localScale = Vector2.one * radius * Player.Instance.Stat.Get(StatType.EssenceForce);
         dT = 0;
 
         while (dT < maintainTime)
         {
-            Collider2D[] projectiles = Physics2D.OverlapCircleAll(effect.transform.position, radius);
+            Collider2D[] projectiles = Physics2D.OverlapCircleAll(effect.transform.position, radius * Player.Instance.Stat.Get(StatType.EssenceForce));
             foreach (var b in projectiles)
             {
                 if (b.TryGetComponent(out Projectile projectile))
@@ -76,7 +76,7 @@ public class EssenceOfVoid : Item
 
         while (dT > 0)
         {
-            effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
+            effect.transform.localScale = Vector2.one * (radius * Player.Instance.Stat.Get(StatType.EssenceForce)) * dT * (1f / castTime);
             yield return null;
             dT -= Time.deltaTime;
         }

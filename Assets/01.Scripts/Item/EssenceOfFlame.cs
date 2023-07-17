@@ -61,7 +61,7 @@ public class EssenceOfFlame : Item
             {
                 if (enemy.GetComponent<Entity>() is Monster)
                 {
-                    enemy.GetComponent<Entity>().Damage(PassiveDamage);
+                    enemy.GetComponent<Entity>().Damage(PassiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce));
                 }
             }
             _dT = 0;
@@ -82,8 +82,8 @@ public class EssenceOfFlame : Item
             yield return null;
         }
 
-        target.GetComponent<Entity>().Damage(ActiveDamage);
-        target.GetComponent<Entity>().AddEffect(new EffectFire((int)PassiveDamage, ActiveTotalTime, Player.Instance));
+        target.GetComponent<Entity>().Damage(ActiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce));
+        target.GetComponent<Entity>().AddEffect(new EffectFire((int)(PassiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce)), ActiveTotalTime, Player.Instance));
         //dT = 0;
 
         //while(dT < ActiveTotalTime)

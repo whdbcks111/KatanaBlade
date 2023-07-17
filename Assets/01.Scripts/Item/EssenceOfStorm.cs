@@ -13,7 +13,7 @@ public class EssenceOfStorm : Item
     public EssenceOfStorm()
 : base(ItemType.Essence, "폭풍의 정수",
     string.Format(
-        "사용 시 : 주변에 폭풍을 일으켜 적들을 {0}초간 <color=skyblue>띄우고</color> 기절시킵니다. <color=gray>(재사용 대시기간 : {1:0.0}초)</color>\n" +
+        "사용 시 : 주변에 폭풍을 일으켜 적들을 {0}초간 <color=skyblue>띄우고</color> 기절시키고 최대 체력의 10% 만큼 피해를 입힙니다. <color=gray>(재사용 대시기간 : {1:0.0}초)</color>\n" +
         "기본 지속 효과 : - ", MaintainTime,Cooldown),
     Resources.Load<Sprite>("Item/Icon/Essence/Essence_9"))
     {
@@ -41,7 +41,7 @@ public class EssenceOfStorm : Item
     private IEnumerator SkillCor(float maintainTime)
     {
         float totalTime = 0;
-        while(totalTime < maintainTime)
+        while(totalTime < maintainTime * Player.Instance.Stat.Get(StatType.EssenceForce))
         {
             Collider2D[] area = Physics2D.OverlapCircleAll(Player.Instance.transform.position, SkillWidth * 2, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in area)
@@ -51,6 +51,7 @@ public class EssenceOfStorm : Item
                     //대상과의 거리에 따라 에어본이 달라짐
                     enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ActivePower, ForceMode2D.Impulse);
                     enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, 0.1f, Player.Instance));
+                    enemy.GetComponent<Entity>().Damage(enemy.GetComponent<Entity>().MaxHP * 0.1f * (0.1f / maintainTime));
                 }
             }
             totalTime += .1f;

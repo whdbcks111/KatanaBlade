@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
                     else if (t is Boss boss && boss.IsAttcking)
                     {
                         //패링 성공 이후 공격
-                        t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                        t.Damage(_player.Stat.Get(StatType.BossAttackForce));
                         //패링 후 효과
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
                         t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
