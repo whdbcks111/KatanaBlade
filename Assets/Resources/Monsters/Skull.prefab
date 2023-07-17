@@ -222,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovingVelocity: 0
   KnockbackVelocity: 0
-  _jumpCoolTime: 1
+  _jumpCoolTime: 1.5
   _isAttacking: 0
   _jumpPower: 10
 --- !u!61 &55849200
