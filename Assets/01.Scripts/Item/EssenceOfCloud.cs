@@ -10,23 +10,21 @@ public class EssenceOfCloud : Item
     private static readonly float PassiveRadius = 5f;
 
     private static readonly float ActiveForce = 3f;
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     private float _dT;
 
     public EssenceOfCloud()
         : base(ItemType.Essence, "구름의 정수",
             string.Format(
-                "사용 시 : <color=skyblue>도약</color>합니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+                "사용 시 : <color=skyblue>도약</color>합니다. <color=#aaa>(재사용 대시기간 : {0:0.0}초)</color>\n" +
                 "기본 지속 효과 : {1}초마다 주변 적을 밀어냅니다.", Cooldown, PassiveTick),
-            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_8"))
     {
     }
 
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
         Player.Instance.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ActiveForce, ForceMode2D.Impulse);
     }
@@ -42,8 +40,8 @@ public class EssenceOfCloud : Item
                 if (enemy.GetComponent<Entity>() is Monster)
                 {
                     float dir = Player.Instance.transform.position.x > enemy.transform.position.x ? -1f : 1f;
-                    enemy.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                    enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir, 1) * PassiveForce, ForceMode2D.Impulse);
+                    enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * PassiveForce, ForceMode2D.Impulse);
+                    enemy.GetComponent<Monster>().Knockback(dir * PassiveForce);
                 }
             }
             _dT = 0;
@@ -52,11 +50,9 @@ public class EssenceOfCloud : Item
 
     public override void OnMount()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnUnmount()
     {
-        throw new System.NotImplementedException();
     }
 }

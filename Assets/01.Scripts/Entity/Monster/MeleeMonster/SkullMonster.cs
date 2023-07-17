@@ -15,17 +15,20 @@ public class SkullMonster : MeleeMonster
         _anim = GetComponentInChildren<Animator>();
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        _anim.SetBool("IsAttacking", _isAttacking);
+
+    }
+
     protected override void MonsterMove()
     {
         base.MonsterMove();
 
-        _anim.SetFloat("WalkSpeed", Mathf.Abs(_nextMove));
-    }
-
-    public override void StartAttack(Player other)
-    {
-        base.StartAttack(other);
-        _anim.SetTrigger("Attack");
+        print(Mathf.Abs(MovingVelocity));
+        _anim.SetFloat("WalkSpeed", Mathf.Abs(MovingVelocity));
     }
 
     public override void Attack(Entity other)
@@ -33,4 +36,25 @@ public class SkullMonster : MeleeMonster
         other.Damage(10);
     }
 
+    public override void Damage(float damage)
+    {
+        HP -= damage;
+        _anim.SetTrigger("Hit");
+        base.Damage(damage);
+
+        if (HP <= 0)
+        {
+
+            _anim.SetBool("Dead", true);
+            StopAllCoroutines();
+
+            Destroy(gameObject);
+
+        }
+    }
+
+    public override void Heal(float amount)
+    {
+        base.Heal(amount);
+    }
 }

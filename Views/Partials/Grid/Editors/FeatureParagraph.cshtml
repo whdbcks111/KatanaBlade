@@ -1,7 +1,0 @@
-﻿@model dynamic
-@using Umbraco.Web.Templates
-
-<div class="featured-text">
-    <h3>@Model.value.header</h3>
-    <p>@Html.Raw(TemplateUtilities.ParseInternalLinks(Model.value.content.ToString()))</p>
-</div>

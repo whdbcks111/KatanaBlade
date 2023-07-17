@@ -18,17 +18,36 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TimerText;
     public GameObject InventoryUI;
     public Canvas Canvas;
+    public Canvas WorldCanvas;
+    public GameObject PauseUI;
+    public GameObject EffectPrefab;
+    public Transform EffectIconContainer;
 
     [Header("ItemPopup")]
     public GameObject ItemPopup;
     public Image ItemPopupIcon;
     public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
 
+    [Header("ShopPopup")]
+    public GameObject ShopPopup;
+    public Image ShopPopupIcon;
+    public TextMeshProUGUI ShopPopupName, ShopPopupDesc;
+    public GameObject ShopPanel;
+    public GameObject[] ItemListUI = new GameObject[4];
+
     private MonoBehaviour _currentShowingUI;
     private GameObject _openedPopup;
 
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
+
+    [HideInInspector] public int Gold = 0;
+
+    [Header("Related to Boss")]
+    public Slider BossHPBar;
+    public TextMeshProUGUI BossName;
+    private Boss _curBoss;
+    
 
     // 게임 시작과 동시에 싱글톤을 구성
     void Awake()
@@ -54,19 +73,20 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoadedEvent(Scene scene, LoadSceneMode mode)
     {
-        //if(scene.name == "메인 씬 Timer")
-        //{
-        //    ///
-        //}
+        if (scene.name == "BossScene")
+        {
+            _curBoss = FindObjectOfType<Boss>();
+        }
     }
+
+
 
 
 
     //시간 증가시키는 메서드 
     void Start()
     {
-        //TimerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-        //StartCoroutine(StartTimer());
+        StartCoroutine(StartTimer());
 
         ItemPopup.SetActive(false);
     }
@@ -83,6 +103,21 @@ public class GameManager : MonoBehaviour
     {
         if (_currentShowingUI == itemIconUI)
             ItemPopup.SetActive(false);
+    }
+
+    public void ShopItemPopup(GameObject ui, Sprite icon, string name, string desc)
+    {
+        ShopPopup.SetActive(true);
+        ShopPopupIcon.sprite = icon;
+        ShopPopupDesc.SetText(desc);
+        ShopPopupName.SetText(name);
+        //_currentShowingUI = ui;
+    }
+
+    public void HideShopPopup(GameObject shopIconUI)
+    {
+        //if (_currentShowingUI == shopIconUI)
+            ShopPopup.SetActive(false);
     }
 
     public EquipPopup CreateEquipPopup()
@@ -137,16 +172,73 @@ public class GameManager : MonoBehaviour
             print("토글");
             InventoryUI.SetActive(!InventoryUI.activeSelf);
         }
-        
+
+        var effectUICount = EffectIconContainer.childCount;
+        var effects = Player.Instance.Effects;
+
+        if(effectUICount > effects.Length)
+        {
+            DestroyImmediate(EffectIconContainer.GetChild(effectUICount - 1).gameObject);
+        }
+        else if(effectUICount < effects.Length)
+        {
+            Instantiate(EffectPrefab, EffectIconContainer);
+        }
+
+        int index = 0;
+        foreach(Transform child in EffectIconContainer)
+        {
+            if(child.GetChild(0).TryGetComponent(out Image image))
+            {
+                print(index + "dadsd");
+                image.sprite = effects[index].Icon;
+                image.fillAmount = effects[index].Duration / effects[index].MaxDuration;
+            }
+            ++index;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.timeScale > 0f)
+            {
+                Time.timeScale = 0f;
+                PauseUI.SetActive(true);
+            }
+
+            else
+            {
+                Time.timeScale = 1f;
+                PauseUI.SetActive(false);
+            }
+        }
+
+
+
+        if (_curBoss is not null)
+        {
+            BossHPBar.gameObject.SetActive(true);
+            BossName.gameObject.SetActive(true);
+            BossHPBar.value = _curBoss.HP / _curBoss.MaxHP;
+            BossName.text = _curBoss.gameObject.name;
+            
+        }
+        else
+        {
+            BossHPBar.gameObject.SetActive(false);
+            BossName.gameObject.SetActive(false);
+        }
     }
     // 플레이어 캐릭터가 사망시 게임 오버를 실행하는 메서드
     public void OnPlayerDead()
     {
+
         IsGameover = true;
         GameoverUI.SetActive(true);
     }
-
-
+    public void GameExit()
+    {
+        Application.Quit();
+    }
 
 
     /*점수를 증가시키는 메서드

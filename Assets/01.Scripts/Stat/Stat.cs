@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Stat
 {
-    private readonly Dictionary<StatType, float> 
+    private readonly Dictionary<StatType, float>
         _defaultValues = new()
         {
             [StatType.MaxHP] = 100f,
@@ -20,10 +20,14 @@ public class Stat
             [StatType.MoveSpeed] = 12f,
             [StatType.DashLength] = 10f,
             [StatType.DashCost] = 30f,
-            [StatType.ParryingCost] = 30f,
-            [StatType.LowParryingFeedback] = 1f,
+            [StatType.ParryingCost] = 4f,
+            [StatType.LowParryingFeedback] = 20f,
             [StatType.MiddleParryingFeedback] = 2f,
-            [StatType.HighParryingFeedback] = 3f
+            [StatType.HighParryingFeedback] = 3f,
+            [StatType.GoldObtainMultiplier] = 1f,
+            [StatType.EssenceCooldown] = 1f,
+            [StatType.EssenceForce] = 1f,
+            [StatType.BossAttackForce] = 10f,
         }, 
         _addValues = new(), 
         _multiplyValues = new(), 
@@ -60,6 +64,11 @@ public class Stat
         InitStats();
     }
 
+    public void SetDefault(StatType type, float defaultVal)
+    {
+        _defaultValues[type] = defaultVal;
+    }
+
     public void Add(StatType type, float addition)
     {
         _addValues[type] += addition;
@@ -78,6 +87,7 @@ public class Stat
 
 public enum StatType
 {
+    GoldObtainMultiplier, // 코인 획득 배율
     MaxHP, // 최대 HP
     MaxDashStamina, // 대시 게이지 최대치
     MaxParryingStamina, // 패링 게이지 최대치
@@ -94,4 +104,7 @@ public enum StatType
     LowParryingFeedback, // 패링 피드백 (약)
     MiddleParryingFeedback, // 패링 피드백 (중)
     HighParryingFeedback, // 패링 피드백 (강)
+    EssenceCooldown, //에센스 쿨타임 배율
+    EssenceForce, //에센스 효과 배율
+    BossAttackForce, //보스 대미지 배율
 }

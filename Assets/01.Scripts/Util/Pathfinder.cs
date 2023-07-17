@@ -60,7 +60,8 @@ public static class Pathfinder
             new() { Parent = null, Pos = start, G = 0, H = GetH(start, target) }
         }, closedList = new();
 
-        while (openedList.Count > 0)
+        int count = 0;
+        while (openedList.Count > 0 && ++count < 500)
         {
             Path minCostPath = GetMinCostPath(openedList);
 
