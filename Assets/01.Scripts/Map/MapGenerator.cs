@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
@@ -11,7 +13,7 @@ public class MapGenerator : MonoBehaviour
 {
     public static MapGenerator Instance;
 
-    public int MapSize = 30, MapCount = 50, BossCount = 3, HealCount = 2, ShopCount = 2;
+    public int MapSize = 30, MapCount = 50, HealCount = 2, ShopCount = 2;
     [SerializeField] Tilemap _targetTilemap, _ladderTilemap;
     [SerializeField] StageShape _spawnShape;
     [SerializeField] StageShape[] _shapes;
@@ -19,7 +21,7 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] BossPortal _portalPrefab;
     [SerializeField] HealArea _healAreaPrefab;
-    [SerializeField] GameObject[] _bossPrefabs;
+    [SerializeField] List<GameObject> _bossPrefabs;
     [SerializeField] ShopNPC _shopNPCPrefab;
 
     private readonly List<StageShape> _bottomOpened = new(), _topOpened = new(), _leftOpened = new(), _rightOpened = new();
@@ -27,6 +29,8 @@ public class MapGenerator : MonoBehaviour
     private readonly HashSet<Vector2Int> _usedPositions = new();
 
     private Vector3 _bossRoomPos;
+    private LoadingUI _mapLoadingUIPrefab;
+    private float _mapLoadingProgress;
 
     private void Awake()
     {
@@ -37,7 +41,9 @@ public class MapGenerator : MonoBehaviour
             Destroy(gameObject);
         }
 
-        foreach(var shape in _shapes)
+        _mapLoadingUIPrefab = Resources.Load<LoadingUI>("UI/LoadingUI");
+
+        foreach (var shape in _shapes)
         {
             if (shape.IsTopOpened) _topOpened.Add(shape);
             if (shape.IsBottomOpened) _bottomOpened.Add(shape);
@@ -50,23 +56,36 @@ public class MapGenerator : MonoBehaviour
                 shape.KeyPositionOffsets[i] = shape.ShapeMap.transform.GetChild(i).localPosition;
             }
         }
-        Generate();
+        StartCoroutine(Generate());
     }
 
-    public void Generate()
+    public IEnumerator Generate()
     {
         _usedPositions.Clear();
         _targetTilemap.ClearAllTiles();
         _map.Clear();
 
+        _mapLoadingProgress = 0f;
+
+        var ui = Instantiate(_mapLoadingUIPrefab);
+        ui.Title.SetText("¸Ê »ý¼ºÁß...");
+
         Queue<Vector2Int> queue = new();
         CreateMapTiles(Vector2Int.zero, _spawnShape, StageType.Spawn);
         queue.Enqueue(Vector2Int.zero);
-        while(queue.TryDequeue(out Vector2Int curPos))
+        while (queue.TryDequeue(out Vector2Int curPos))
         {
+            if(UnityEngine.Random.value < 0.3f) yield return null;
+            float progress = (float)_map.Count / MapCount;
+            ui.LoadingImage.fillAmount = progress;
+            ui.ProgressText.SetText(string.Format("{0:0.0}%", progress * 100));
+            print(ui.ProgressText.text);
+
             if (!_map.ContainsKey(curPos)) continue;
             var stage = _map[curPos];
             var curShape = stage.Shape;
+
+
             if (_map.Count >= MapCount) break;
 
             List<Vector2Int> allowDirections = new();
@@ -120,12 +139,14 @@ public class MapGenerator : MonoBehaviour
         _bossRoomPos = _targetTilemap.CellToWorld(new Vector3Int(MapCount + 3, 1) * MapSize) + Vector3.up * 4;
 
         var portalRenderer = _portalPrefab.GetComponent<SpriteRenderer>();
-        PlaceObjects(BossCount, 500, _portalPrefab, (portal, stage) =>
+        PlaceObjects(_bossPrefabs.Count, 500, _portalPrefab, (portal, stage) =>
         {
             stage.Type = StageType.Boss;
             portal.transform.position += Vector3.up * portalRenderer.bounds.size.y / 2;
             portal.BossMapPos = _bossRoomPos;
-            portal.BossPrefab = _bossPrefabs[UnityEngine.Random.Range(0, _bossPrefabs.Length)];
+            var ran = UnityEngine.Random.Range(0, _bossPrefabs.Count);
+            portal.BossPrefab = _bossPrefabs[ran];
+            _bossPrefabs.RemoveAt(ran);
         });
 
         var healRenderer = _healAreaPrefab.GetComponent<SpriteRenderer>();
@@ -176,6 +197,8 @@ public class MapGenerator : MonoBehaviour
                     Quaternion.identity);
             }
         }
+
+        Destroy(ui.gameObject);
     }
 
     public void PlaceObjects<T>(int count, int tryLimit, T obj, Action<T, Stage> postAction) where T : UnityEngine.Object

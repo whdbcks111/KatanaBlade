@@ -20,18 +20,12 @@ public class Player : Entity
         base.Awake();
         Instance = this;
 
-
-        Inventory.AddItem(new EssenceOfSwift());
-        Inventory.AddItem(new EssenceOfDarkness());
-        Inventory.AddItem(new EssenceOfStorm());
-        Inventory.AddItem(new EssenceOfVoid());
+        Inventory.AddItem(new EssenceOfRegeneration());
+        Inventory.AddItem(new EssenceOfLightning());
         Inventory.AddItem(new EssenceOfFlame());
-        Inventory.AddItem(new EssenceOfEarth());
+        Inventory.AddItem(new EssenceOfVoid());
+        Inventory.AddItem(new FairyCloak());
         Inventory.AddItem(new MagicScroll());
-
-        AddEffect(new EffectFire(1, 5, this));
-        AddEffect(new EffectStun(1, 10, this));
-        AddEffect(new EffectRegeneration(3, 15, this));
 
         _controller = GetComponent<PlayerController>();
         _animator = GetComponentInChildren<Animator>();

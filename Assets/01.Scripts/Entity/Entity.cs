@@ -119,18 +119,17 @@ public class Entity : MonoBehaviour
     {
         var damage = 1; // 예시 값, 실제로는 계산
         other.Damage(damage);
-
-
-        var text = Instantiate(_damageText, GameManager.instance.WorldCanvas.transform);
-        text.SetText(string.Format("{0:0.00}", damage));
-        text.transform.position = other.transform.position + Vector3.up * other.GetComponent<Collider2D>().bounds.size.y / 2f;
-        GameManager.instance.StartCoroutine(DamageTextRoutine(text));
     }
 
     public virtual void Damage(float damage)
     {
         // HP 닳는 코드 구현
         HP -= damage;
+
+        var text = Instantiate(_damageText, GameManager.instance.WorldCanvas.transform);
+        text.SetText(string.Format("{0:0.00}", damage));
+        text.transform.position = transform.position + Vector3.up * GetComponent<Collider2D>().bounds.size.y / 2f;
+        GameManager.instance.StartCoroutine(DamageTextRoutine(text));
     }
 
     private IEnumerator DamageTextRoutine(TextMeshProUGUI text)

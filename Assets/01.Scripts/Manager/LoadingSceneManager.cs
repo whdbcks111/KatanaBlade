@@ -41,16 +41,18 @@ public class LoadingSceneManager : MonoBehaviour
         LoadingUI ui = Instantiate(_uiPrefab);
         ui.Title.SetText("¾À ·ÎµùÁß...");
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
-        op.allowSceneActivation = true;
+        op.allowSceneActivation = false;
         float showProgress = op.progress;
         float vel = 1;
-        while (!op.isDone)
+        while (!op.isDone && showProgress < 0.99f)
         {
-            showProgress = Mathf.SmoothDamp(showProgress, op.progress, ref vel, 0.3f);
+            showProgress = Mathf.SmoothDamp(showProgress, op.progress / 0.9f, ref vel, 0.3f);
             print("Load : " + op.progress);
             ui.ProgressText.SetText(string.Format("{0:0.0}%", showProgress * 100));
             ui.LoadingImage.fillAmount = showProgress;
             yield return null;
         }
+
+        op.allowSceneActivation = true;
     }
 }

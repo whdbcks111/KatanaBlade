@@ -74,7 +74,7 @@ public class MeleeMonster : Monster
         var col = GetComponent<Collider2D>();
         Debug.DrawRay(transform.position, new Vector2(_nextMove, 0), new Color(0, 4, 0));
         
-                RaycastHit2D rayHitWall = Physics2D.BoxCast(transform.position, col.bounds.size * 0.9f, 0, Vector3.right * _nextMove, 
+                RaycastHit2D rayHitWall = Physics2D.BoxCast(transform.position, col.bounds.size * 0.8f, 0, Vector3.right * _nextMove, 
                                                     col.bounds.size.x / 2 + 0.5f, LayerMask.GetMask("Platform"));
 
         if (raHitGround.collider == null && _changeTimer <= 0f)
@@ -85,7 +85,6 @@ public class MeleeMonster : Monster
         }
         
         _jumpCoolTime += Time.deltaTime;
-        print(_jumpCoolTime);
         
         if (rayHitWall.collider != null)
         {
