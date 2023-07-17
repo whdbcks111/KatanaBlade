@@ -23,7 +23,8 @@ public class SkulBoss : Boss
     protected override void Start()
     {
         base.Start();
-        this.Stat.SetDefault(StatType.MaxHP, 700);
+        this.Stat.SetDefault(StatType.MaxHP, 300);
+        this.LateAct(() => this.HP = this.MaxHP);
         HP = MaxHP;
         _animator = GetComponentInChildren<Animator>();
         FloorCheck();
@@ -41,19 +42,19 @@ public class SkulBoss : Boss
         Debug.DrawRay(transform.position, Vector2.left, Color.blue);
         RaycastHit2D wallHitL = Physics2D.Raycast(transform.position, Vector2.left, 300f, LayerMask.GetMask("Platform"));
         if (wallHitL.collider != null)
-            _knifeTrap.MinLimit=wallHitL.collider.transform.position.x;
+            _knifeTrap.MinLimit = wallHitL.point.x;
         Debug.DrawRay(transform.position, Vector2.right, Color.blue);
         RaycastHit2D wallHitR = Physics2D.Raycast(transform.position, Vector2.right, 300f, LayerMask.GetMask("Platform"));
         if (wallHitR.collider != null)
-            _knifeTrap.MaxLimit = wallHitR.collider.transform.position.x;
+            _knifeTrap.MaxLimit = wallHitR.point.x;
 
         Debug.DrawRay(transform.position, Vector2.down, Color.blue);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f, LayerMask.GetMask("Platform"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 100f, LayerMask.GetMask("Platform"));
         if (hit.collider != null)
         {
             print(hit.collider);
-            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 5.0f);
-            _trapPivot.transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y);
+            transform.position = new Vector2(transform.position.x, hit.point.y + 3.0f);
+            _trapPivot.transform.position = new Vector2((_knifeTrap.MinLimit + _knifeTrap.MaxLimit) / 2, hit.point.y);
         }
     }
     public override void AIAct()

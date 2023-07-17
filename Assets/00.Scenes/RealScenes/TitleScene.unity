@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020fcd5076022df4b9483e7cc1ed3ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: MapGenerateTest
+  sceneName: GameScene
 --- !u!1 &458745003
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,7 +715,7 @@ GameObject:
   - component: {fileID: 1223282196}
   - component: {fileID: 1223282195}
   m_Layer: 0
-  m_Name: DORYENNIM
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

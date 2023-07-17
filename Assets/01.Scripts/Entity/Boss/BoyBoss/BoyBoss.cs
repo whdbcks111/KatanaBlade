@@ -31,7 +31,7 @@ public class BoyBoss : Boss
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, LayerMask.GetMask("Platform"));
         if (hit.collider != null)
         {
-            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + .1f);
+            transform.position = new Vector2(transform.position.x, hit.point.y + 2.1f);
         }
     }
 

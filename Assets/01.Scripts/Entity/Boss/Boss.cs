@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Boss : Monster
 {
+    public string BossName = "º¸½º";
     public bool IsActable;
     protected float _distance;
     protected int _aiMode;
@@ -15,7 +16,17 @@ public class Boss : Monster
     {
         _player = Player.Instance;
         _col2d = GetComponent<Collider2D>();
+
+        GameManager.instance.BossHPBar.gameObject.SetActive(true);
+        GameManager.instance.BossName.SetText(BossName);
     }
+
+    protected override void Update()
+    {
+        base.Update();
+        GameManager.instance.BossHPBar.normalizedValue = HP / MaxHP;
+    }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -45,7 +56,7 @@ public class Boss : Monster
             return;
 
         Debug.DrawRay(transform.position, new Vector2(MovingVelocity, 0), Color.blue);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(MovingVelocity, 0), Time.deltaTime * 2.2f * MovingVelocity, LayerMask.GetMask("Platform"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(MovingVelocity, 0), 4, LayerMask.GetMask("Platform"));
         if (hit.collider != null)
             MovingVelocity = 0;
     }
@@ -56,5 +67,11 @@ public class Boss : Monster
     public override void Damage(float damage)
     {
         base.Damage(damage);
+    }
+
+    private void OnDestroy()
+    {
+
+        GameManager.instance.BossHPBar.gameObject.SetActive(false);
     }
 }
