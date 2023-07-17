@@ -26,7 +26,7 @@ public class EssenceOfCloud : Item
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
         Player.Instance.GetComponent<Rigidbody2D>().velocity = new Vector2(Player.Instance.GetComponent<Rigidbody2D>().velocity.x, 0);
-        Player.Instance.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ActiveForce, ForceMode2D.Impulse);
+        Player.Instance.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ActiveForce * Player.Instance.Stat.Get(StatType.EssenceForce), ForceMode2D.Impulse);
     }
 
     public override void PassiveUpdate()
@@ -41,7 +41,7 @@ public class EssenceOfCloud : Item
                 {
                     float dir = Player.Instance.transform.position.x > enemy.transform.position.x ? -1f : 1f;
                     enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * PassiveForce, ForceMode2D.Impulse);
-                    enemy.GetComponent<Monster>().Knockback(dir * PassiveForce);
+                    enemy.GetComponent<Monster>().Knockback(dir * PassiveForce * Player.Instance.Stat.Get(StatType.EssenceForce));
                 }
             }
             _dT = 0;

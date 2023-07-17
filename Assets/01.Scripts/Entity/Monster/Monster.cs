@@ -19,7 +19,7 @@ public abstract class Monster : Entity
 
     public override void Damage(float damage)
     {
-        base.Damage(damage + Player.Instance.Stat.Get(StatType.ParryingAttackForce));
+        base.Damage(damage);
         if(HP <= 0)
             OnMonsterDie();
     }
