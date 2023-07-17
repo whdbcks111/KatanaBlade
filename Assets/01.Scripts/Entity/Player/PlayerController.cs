@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private int _stare;
 
     private bool _canJump = false;
+    private float _lastWalkSound = 0f;
 
     private Collider2D _collider2D;
 
@@ -64,13 +65,17 @@ public class PlayerController : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
 
-
         _player.MovingVelocity = h * _player.Stat.Get(StatType.MoveSpeed);
 
         if (Mathf.Abs(h) > Mathf.Epsilon)
         {
             _stare = h > 0 ? 1 : -1;
             _animator.SetBool("Running", true);
+            if(Time.time - _lastWalkSound > 0.25f && IsOnGround)
+            {
+                _lastWalkSound = Time.time;
+                SoundManager.Instance.PlaySFX("Walk", 2f, Random.Range(0.8f, 1.2f));
+            }
         }
         else
             _animator.SetBool("Running", false);
@@ -82,6 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButton("Jump") && _canJump)
         {
+            SoundManager.Instance.PlaySFX("Jump", 2f);
             _animator.SetBool("Jump", true);
             _canJump = false;
             _rigid.velocity = new Vector2(_rigid.velocity.x, _player.Stat.Get(StatType.JumpForce));
@@ -93,7 +99,7 @@ public class PlayerController : MonoBehaviour
         IsOnGround = false;
         for (int i = 0; i < collision.contactCount; i++)
         {
-            if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y)
+            if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y && _rigid.velocity.y <= 0.01f)
             {
                 IsOnGround = true;
                 break;
@@ -258,6 +264,7 @@ public class PlayerController : MonoBehaviour
             transform.position = new(targetX, transform.position.y);
 
             _player.DashStamina -= _player.Stat.Get(StatType.DashCost);
+            SoundManager.Instance.PlaySFX("Dash");
             StartCoroutine(DashCool());
         }
     }

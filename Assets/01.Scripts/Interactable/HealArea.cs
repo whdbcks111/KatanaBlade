@@ -18,6 +18,7 @@ public class HealArea : MonoBehaviour
             if (player.TryGetComponent(out Player p) && _isHealed == false)
             {
                 p.Heal(HealAmount);
+                SoundManager.Instance.PlaySFX("Heal", 0.3f, 0.8f);
                 ParticleManager.Instance.SpawnParticle(p.transform.position, "Healing");
                 print("Healed! " + HealAmount);
                 _isHealed = true;

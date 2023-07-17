@@ -155,6 +155,9 @@ public class RangeMonster : Monster
         Projectile bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
         bullet.Speed = 10f;
         bullet.SetOwner(this, ExtraMath.DirectionToAngle(Player.Instance.transform.position - transform.position));
+        SoundManager.Instance.PlaySFX("BowShot",
+            Mathf.Clamp01(1f - (transform.position - Player.Instance.transform.position).magnitude / 30f) * 0.5f
+            , 0.5f);
         yield return new WaitForSeconds(0.1f);
         _attackCor = null;
     }

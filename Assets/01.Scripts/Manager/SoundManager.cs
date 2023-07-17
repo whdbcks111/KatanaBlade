@@ -45,15 +45,16 @@ public class SoundManager : MonoBehaviour
         if (_bgmSource.clip == null)
         {
             _bgmSource.clip = _bgmQueue.Peek();
-            _bgmSource.Play();
-        } 
+        }
 
         if(_bgmSource.time >= _bgmQueue.Peek().length)
         {
             _bgmQueue.Enqueue(_bgmQueue.Dequeue());
             _bgmSource.clip = _bgmQueue.Peek();
-            _bgmSource.Play();
         }
+
+        if(!_bgmSource.isPlaying)
+            _bgmSource.Play();
 
         _bgmSource.volume = BGMVolumeMultiplier;
     }

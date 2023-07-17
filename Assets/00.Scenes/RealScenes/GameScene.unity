@@ -130,6 +130,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _bgmClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c7172830991766b41a813050265c2137, type: 3}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 178ac49fd69565d4dbeba2da4b02dfaa, type: 3}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[4].name
+      value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[5].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4f0e3328f58b8674caa705fc5f05aab0, type: 3}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[5].name
+      value: Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[6].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 61e54004c75005849a0a53216ff3eecb, type: 3}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[6].name
+      value: Heal
+      objectReference: {fileID: 0}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[7].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2942a84d1d6018545bc767f68776dfdc, type: 3}
+    - target: {fileID: 442633403, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: _sfxClips.Array.data[7].name
+      value: BowShot
+      objectReference: {fileID: 0}
     - target: {fileID: 1151140679570386586, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -208,6 +248,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8056713372234952157, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340928501195387369, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340928501195387369, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
