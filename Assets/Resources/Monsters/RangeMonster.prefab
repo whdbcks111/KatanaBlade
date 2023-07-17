@@ -199,7 +199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovingVelocity: 0
   KnockbackVelocity: 0
-  Speed: 3
   DetectDist: 30
   AttDist: 20
   MoveDist: 15

@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
         }
         if (collision.CompareTag("Floor"))
         {
-            Debug.Log("!");
+            Destroy(gameObject);
         }
     }
 }

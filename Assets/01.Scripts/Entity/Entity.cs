@@ -81,6 +81,7 @@ public class Entity : MonoBehaviour
     public void AddEffect(StatusEffect eff)
     {
         _effects.Add(eff);
+        eff.OnStart(this);
     }
 
     public bool HasEffect<T>() where T : StatusEffect

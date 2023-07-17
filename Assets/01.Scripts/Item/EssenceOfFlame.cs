@@ -7,11 +7,11 @@ public class EssenceOfFlame : Item
 {
 
     public float ActiveRadius = 15;
-    private static readonly float ActiveDamage = 5f;
+    private static readonly float ActiveDamage = 15f;
     private static readonly float ActiveTotalTime = 2f;
 
-    public float PassiveTick;
-    public float PassiveRadius;
+    private static readonly float PassiveTick = 3;
+    private static readonly float PassiveRadius = 10;
     private static readonly float PassiveDamage = 5f;
     private static readonly float Cooldown = 5f;
     private float _dT;
@@ -26,7 +26,6 @@ public class EssenceOfFlame : Item
     {
     }
 
-    [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
         //적 레이어 추가해야함
@@ -83,23 +82,7 @@ public class EssenceOfFlame : Item
         }
 
         target.GetComponent<Entity>().Damage(ActiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce));
-        target.GetComponent<Entity>().AddEffect(new EffectFire((int)(PassiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce)), ActiveTotalTime, Player.Instance));
-        //dT = 0;
-
-        //while(dT < ActiveTotalTime)
-        //{
-        //    dT += Time.deltaTime;
-        //    yield return null;
-        //    if (target != null)
-        //    {
-        //        if (target.GetComponent<Entity>().HP > 0)
-        //            target.GetComponent<Entity>().Damage(PassiveDamage / ActiveTotalTime * Time.deltaTime);
-        //    }
-        //    else
-        //    {
-        //        break;
-        //    }
-        //}
+        target.GetComponent<Entity>().AddEffect(new EffectFire((int)Player.Instance.Stat.Get(StatType.EssenceForce), ActiveTotalTime, Player.Instance));
         DestroyImmediate(obj.gameObject);
     }
 

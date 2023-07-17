@@ -13,7 +13,7 @@ public class EssenceOfEarth : Item
     public EssenceOfEarth()
     : base(ItemType.Essence, "대지의 정수",
         string.Format(
-            "사용 시 : 주변 적들을 <color=brown>밀어내고</color> 기절시킵니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+            "사용 시 : 주변 적들을 <color=brown>밀어내고</color> 기절시키고 최대 체력의 10%만큼 피해를 입힙니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
             "기본 지속 효과 : {1}초마다 여진을 일으켜 주변 적을 <color=brown>기절</color>시킵니다.", Cooldown, PassiveTick),
         Resources.Load<Sprite>("Item/Icon/Essence/Essence_0"))
     {
@@ -38,7 +38,7 @@ public class EssenceOfEarth : Item
                 RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, Vector2.down, float.PositiveInfinity, 1 << LayerMask.NameToLayer("Platform"));
                 if (hit)
                 {
-                    EffectManager.EffectOneShot("Ground Paticle", hit.point);
+                    EffectManager.EffectOneShot("Ground", hit.point);
                 }
             }
         }
