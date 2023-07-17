@@ -11,7 +11,8 @@ public class ShopNPC : Interactable
     
     private List<Dictionary<string, object>> itemTable;
     private Sprite[] itemSprites = new Sprite[10];
-
+    private List<int> itemIDs;
+    private bool[] bought = new bool[4] { false, false, false, false };
 
     private void Start()
     {
@@ -23,15 +24,21 @@ public class ShopNPC : Interactable
             itemSprites[i] = loadImage;
         }
 
-        List<int> itemIDs = GetItemID();
-        // 상점 주인 상호작용 구현
+        itemIDs = GetItemID();
+    }
+
+    public override void OnInteract(Player player)
+    {
+
+        GameManager.instance.ShopPanel.SetActive(!GameManager.instance.ShopPanel.activeSelf);
+        if (!GameManager.instance.ShopPanel.activeSelf) return;
         for (int i = 0; i < 4; i++)
         {
             int gold = int.Parse(itemTable[itemIDs[i]]["Gold"].ToString().Replace("G", ""));
             string className = itemTable[itemIDs[i]]["Class"].ToString();
             ShopDisplay display = GameManager.instance.ItemListUI[i].GetComponent<ShopDisplay>();
 
-            display.SetCanBuy(true);
+            display.SetCanBuy(bought[i]);
             display.itemName = itemTable[itemIDs[i]]["ItemName"].ToString();
             display.itemDescription = itemTable[itemIDs[i]]["Item"].ToString() + "\n"
                 + itemTable[itemIDs[i]]["Abillty"].ToString();
@@ -40,7 +47,7 @@ public class ShopNPC : Interactable
             itemIcon.sprite = itemSprites[itemIDs[i]];
             var goldText = GameManager.instance.ItemListUI[i].GetComponentInChildren<TextMeshProUGUI>();
             goldText.text = itemTable[itemIDs[i]]["Gold"].ToString();
-            
+
             GameManager.instance.ItemListUI[i].GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
                 if (GameManager.instance.Gold - gold >= 0 && display.canBuy == true)
@@ -55,12 +62,6 @@ public class ShopNPC : Interactable
                 }
             });
         }
-    }
-
-    public override void OnInteract(Player player)
-    {
-        GameManager.instance.ShopPanel.SetActive(!GameManager.instance.ShopPanel.activeSelf);
-
     }
     
     private List<int> GetItemID()
