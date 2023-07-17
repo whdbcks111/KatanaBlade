@@ -16,8 +16,20 @@ public class BoysSkull : Boss
         base.Start();
         _animator = GetComponent<Animator>();
         StartCoroutine(PatternTerm());
+        FloorCheck();
         print("hp : " + HP);
     }
+
+    private void FloorCheck()
+    {
+        Debug.DrawRay(transform.position, Vector2.down, Color.blue);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, LayerMask.GetMask("Platform"));
+        if (hit.collider != null)
+        {
+            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 5.0f);
+        }
+    }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -83,10 +95,10 @@ public class BoysSkull : Boss
     {
         if (!Boy.IsActing)
         {
-            if (_distance < _player.Stat.Get(StatType.DashLength) * .5f)
+            if (_distance < _player.Stat.Get(StatType.DashLength) * 1.5f)
                 _aiMode = 1;
             else
-                _aiMode = Mathf.FloorToInt(Random.Range(1, 3));
+                _aiMode = 2;
         }
         else
             StartCoroutine(PatternTerm());
@@ -122,7 +134,8 @@ public class BoysSkull : Boss
     IEnumerator Death()
     {
         _animator.SetBool("Dead", true);
-        Boy.Damage(5f);
+        if (Boy.HP > 0)
+            Boy.Damage(15f);
         yield return new WaitForSeconds(1.0f);
         base.OnMonsterDie();
     }

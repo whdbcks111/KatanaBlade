@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkulBoss : Boss
 {
     [SerializeField] private GameObject _knifeTrap;
+    [SerializeField] private GameObject _trapPivot;
 
 
     private Animator _animator;
@@ -41,8 +42,9 @@ public class SkulBoss : Boss
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, LayerMask.GetMask("Platform"));
         if (hit.collider != null)
         {
-            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 5.0f);
+            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 15.0f);
         }
+        _trapPivot.transform.position = hit.collider.transform.position;
     }
     public override void AIAct()
     {
@@ -169,7 +171,7 @@ public class SkulBoss : Boss
         else if (IsAttcking)
         {
             StopAllCoroutines();
-            StartCoroutine(hit()); 
+            StartCoroutine(hit());
         }
     }
 }

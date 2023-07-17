@@ -11,7 +11,7 @@ public class BossAttackProjectile : Entity
     protected Vector2 _targetSpot;
     protected float _hittedDamage;
     [SerializeField] protected float _speed;
-    private void Start()
+    protected virtual void Start()
     {
         _player = FindObjectOfType<Player>();
         setTarget(_player.transform.position);
@@ -26,7 +26,7 @@ public class BossAttackProjectile : Entity
     public void Fire()
     {
         _mode = 1;
-        Destroy(this.gameObject, 2.0f);
+        Destroy(this.gameObject, 12.0f);
     }
 
     public void setTarget(Vector2 pos)
@@ -59,6 +59,7 @@ public class BossAttackProjectile : Entity
     {
         _hittedDamage = _damage + damage;
         _mode = 2;
+        _speed *= 2;
         setTarget(MotherBoss.transform.position);
     }
 }

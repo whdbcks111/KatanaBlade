@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Collider2D _collider2D;
 
     public bool IsOnGround { get; private set; }
-
+    public bool IsParrying { get; private set; }
 
     [SerializeField] private float _parryRadius;
     [SerializeField] private GameObject _alter;
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator ParryContinue(float parryAngle)
     {
-
+        IsParrying = true;
         StartCoroutine(Stun(.6f));
         _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
         StartCoroutine(ParryCool());
@@ -158,7 +158,9 @@ public class PlayerController : MonoBehaviour
             {
                 if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
                 {
-                    print(inst.collider.gameObject + " PARRYED");
+                    //print(inst.collider.gameObject + " PARRYED");
+                    SoundManager.Instance.PlaySFX("Parry");
+
                     //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
                     //패링 성공
                     //몬스터가 공격중인지 판단해서 패링 성공인지 
@@ -191,7 +193,7 @@ public class PlayerController : MonoBehaviour
                     else if (inst.collider.TryGetComponent(out BossAttackProjectile bp))
                     {
                         bp.Damage(1);
-                        _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.MiddleParryingFeedback));
+                        _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.LowParryingFeedback));
                     }
                 }
                 else if (inst.collider.TryGetComponent(out Projectile p))
@@ -208,6 +210,8 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+        yield return new WaitForEndOfFrame();
+        IsParrying = false;
     }
 
     IEnumerator ParryCool()
