@@ -152,7 +152,6 @@ public class MapGenerator : MonoBehaviour
             var stage = entry.Value;
             var shape = stage.Shape;
             var offsets = shape.KeyPositionOffsets;
-            print(stage.Type);
             if (stage.Type == StageType.Monster)
             {
                 foreach(var offset in offsets)
