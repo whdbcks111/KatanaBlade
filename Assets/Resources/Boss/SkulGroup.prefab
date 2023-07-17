@@ -1701,8 +1701,8 @@ MonoBehaviour:
   KnockbackVelocity: 0
   IsActable: 0
   IsAttcking: 0
-  _knifeTrap: {fileID: 1919373527361618147}
-  _trapPivot: {fileID: 0}
+  _knifeTrap: {fileID: 1919373527361618150}
+  _trapPivot: {fileID: 2925136793144051161}
   _knifePrefab: {fileID: 1323509784227676966, guid: 300d0cfd0593ef842b88e23fc23ba0ef, type: 3}
 --- !u!95 &1919373527411020488
 Animator:
