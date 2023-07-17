@@ -25,7 +25,7 @@ public class Player : Entity
         Inventory.AddItem(new EssenceOfDarkness());
         Inventory.AddItem(new EssenceOfStorm());
         Inventory.AddItem(new EssenceOfVoid());
-        Inventory.AddItem(new BootsOfTraveler());
+        Inventory.AddItem(new MagicScroll());
 
         AddEffect(new EffectFire(1, 5, this));
         AddEffect(new EffectStun(1, 10, this));

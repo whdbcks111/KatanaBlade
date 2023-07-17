@@ -41,7 +41,7 @@ public class EssenceOfStorm : Item
     private IEnumerator SkillCor(float maintainTime)
     {
         float totalTime = 0;
-        while(totalTime < maintainTime)
+        while(totalTime < maintainTime * Player.Instance.Stat.Get(StatType.EssenceForce))
         {
             Collider2D[] area = Physics2D.OverlapCircleAll(Player.Instance.transform.position, SkillWidth * 2, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in area)

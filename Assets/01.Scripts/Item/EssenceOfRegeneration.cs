@@ -23,14 +23,14 @@ public class EssenceOfRegeneration : Item
     public override void OnActiveUse()
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
-        Player.Instance.Heal(10);
+        Player.Instance.Heal(10 * Player.Instance.Stat.Get(StatType.EssenceForce));
         GameObject particle = EffectManager.EffectOneShot("Healing Particle", Player.Instance.transform.position + Vector3.up);
         particle.transform.localScale = Vector3.one * 2f;
     }
 
     public override void PassiveUpdate()
     {
-        Player.Instance.Heal(Time.deltaTime * 2);
+        Player.Instance.Heal(Time.deltaTime * 2 * Player.Instance.Stat.Get(StatType.EssenceForce));
 
         _dT += Time.deltaTime;
         if(_dT > 2f)
