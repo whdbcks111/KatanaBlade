@@ -531,8 +531,8 @@ MonoBehaviour:
   m_text: "Test Text\n<color=red>\uD14C\uC2A4\uD2B8</color> <size=100>\uD14D\uC2A4\uD2B8</size>
     <i>\uC774\uBE48\uB2E4</i>"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 38599ad3860acc647aefa9b1cf0de87e, type: 2}
-  m_sharedMaterial: {fileID: -6800338468859881169, guid: 38599ad3860acc647aefa9b1cf0de87e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8aba1a7764dd91040a40267f712d0c5a, type: 2}
+  m_sharedMaterial: {fileID: -941839619638996518, guid: 8aba1a7764dd91040a40267f712d0c5a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -635,6 +635,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4f797a4f5a6454fbb6ae1bb7eb9a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MovingVelocity: 0
+  KnockbackVelocity: 0
 --- !u!4 &1812785329
 Transform:
   m_ObjectHideFlags: 0

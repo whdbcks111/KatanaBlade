@@ -145,6 +145,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Parry" &&
             _animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 3 / 9);
 
+        bool isParryed = false;
         //원 콜라이더 생성
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
         //플레이어와 마우스 사이 각도구하기
@@ -154,12 +155,11 @@ public class PlayerController : MonoBehaviour
         {
             //print(inst.collider.gameObject.name);
             float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
-            if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
+            if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 45, monsterAngle + 45))
             {
                 if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
                 {
                     //print(inst.collider.gameObject + " PARRYED");
-                    SoundManager.Instance.PlaySFX("Parry");
 
                     //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
                     //패링 성공
@@ -168,6 +168,7 @@ public class PlayerController : MonoBehaviour
                     if (t is MeleeMonster m && m.CanParrying)
                     {
                         //패링 성공 이후 공격
+                        isParryed = true;
                         t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
                         //print("Melee Parry");
                         //패링 후 효과
@@ -177,6 +178,7 @@ public class PlayerController : MonoBehaviour
                     else if (t is BossAttack)
                     {
                         //패링 성공 이후 공격
+                        isParryed = true;
                         t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
                         //패링 후 효과
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
@@ -185,6 +187,7 @@ public class PlayerController : MonoBehaviour
                     else if (t is Boss boss && boss.IsAttcking)
                     {
                         //패링 성공 이후 공격
+                        isParryed = true;
                         t.Damage(_player.Stat.Get(StatType.BossAttackForce));
                         //패링 후 효과
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
@@ -193,15 +196,15 @@ public class PlayerController : MonoBehaviour
                     else if (inst.collider.TryGetComponent(out BossAttackProjectile bp))
                     {
                         bp.Damage(1);
+                        isParryed = true;
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.LowParryingFeedback));
                     }
                 }
                 else if (inst.collider.TryGetComponent(out Projectile p))
                 {
+                    isParryed = true;
                     if (p is FlyingProjectile)
                         Destroy(p.gameObject);
-                    //패링으로 쳐내기
-                    //p.transform.Rotate(Vector3.forward * 180);
                     else
                     {
                         p.SetOwner(_player, parryAngle);
@@ -210,6 +213,12 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+
+        if(isParryed)
+            SoundManager.Instance.PlaySFX("Parry");
+        else
+            SoundManager.Instance.PlaySFX("ParryFail");
+
         yield return new WaitForEndOfFrame();
         IsParrying = false;
     }

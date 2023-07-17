@@ -29,10 +29,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
 
     [Header("ShopPopup")]
+    public GameObject ShopPanel;
     public GameObject ShopPopup;
     public Image ShopPopupIcon;
     public TextMeshProUGUI ShopPopupName, ShopPopupDesc;
-    public GameObject ShopPanel;
     public GameObject[] ItemListUI = new GameObject[4];
 
     private MonoBehaviour _currentShowingUI;
