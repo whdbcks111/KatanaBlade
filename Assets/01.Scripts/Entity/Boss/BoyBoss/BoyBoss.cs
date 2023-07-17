@@ -9,7 +9,7 @@ public class BoyBoss : Boss
     [SerializeField] private BoyCastBall castBall;
 
     private static float _NoNoRange = 5f;
-    private static float _maxlimitRange = 30f;
+    private static float _maxlimitRange = 15f;
 
     private static float _moveSpeed = 3f;
 
@@ -112,7 +112,7 @@ public class BoyBoss : Boss
     }
     public override void OnMonsterDie()
     {
-        _summonned.Damage(200);
+        _summonned.Damage(100);
         base.OnMonsterDie();
     }
 }

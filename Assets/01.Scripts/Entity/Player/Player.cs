@@ -49,7 +49,7 @@ public class Player : Entity
         if (Inventory.MountedEssence is not null)
         {
             Inventory.MountedEssence.PassiveUpdate();
-            if(Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && _essenceRemainCooldown <= 0)
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && _essenceRemainCooldown <= 0)
             {
                 Inventory.MountedEssence.OnActiveUse();
             }
@@ -65,17 +65,20 @@ public class Player : Entity
 
     public override void Damage(float damageAmount)
     {
-        base.Damage(damageAmount);
-
-        if (_controller.IsConscious)
-            _animator.SetTrigger("Hit");
-        
-        if (HP <= 0)
+        if (!_controller.IsParrying)
+        {
+            base.Damage(damageAmount);
+        }
+        else if (HP <= 0)
         {
             StopAllCoroutines();
             _controller.IsConscious = false;
             _animator.SetBool("Dead", true);
             GameManager.instance.OnPlayerDead();
+        }
+        else
+        {
+            _animator.SetTrigger("Hit");
         }
     }
 }

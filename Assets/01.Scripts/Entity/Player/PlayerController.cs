@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Collider2D _collider2D;
 
     public bool IsOnGround { get; private set; }
-
+    public bool IsParrying { get; private set; }
 
     [SerializeField] private float _parryRadius;
     [SerializeField] private GameObject _alter;
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator ParryContinue(float parryAngle)
     {
-
+        IsParrying = true;
         StartCoroutine(Stun(.6f));
         _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
         StartCoroutine(ParryCool());
@@ -210,6 +210,8 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+        yield return new WaitForEndOfFrame();
+        IsParrying = false;
     }
 
     IEnumerator ParryCool()
