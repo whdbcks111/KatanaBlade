@@ -11,6 +11,8 @@ public class MeleeMonster : Monster
 
     [SerializeField] private float _jumpCoolTime;
 
+    
+
 
 
     public static MeleeMonster Instance { get; private set; }
@@ -30,6 +32,7 @@ public class MeleeMonster : Monster
         Think();
 
         Invoke("Think", 5);
+
     }
 
     protected override void Update()
@@ -63,13 +66,15 @@ public class MeleeMonster : Monster
 
         Vector2 frontVec = (Vector2)transform.position + Vector2.right * _nextMove;
 
+        // 앞이 낭떠러지인지 확인
         Debug.DrawRay(frontVec, Vector2.down, new Color(0, 4, 0));
         RaycastHit2D raHitGround = Physics2D.Raycast(frontVec, Vector3.down, 4, LayerMask.GetMask("Platform"));
 
+        // 앞에 벽이 있을시 점프할 수 있도록 함
         var col = GetComponent<Collider2D>();
         Debug.DrawRay(transform.position, new Vector2(_nextMove, 0), new Color(0, 4, 0));
-
-                RaycastHit2D rayHitWall = Physics2D.BoxCast(transform.position, col.bounds.size, 0, Vector3.right * _nextMove, 
+        
+                RaycastHit2D rayHitWall = Physics2D.BoxCast(transform.position, col.bounds.size * 0.9f, 0, Vector3.right * _nextMove, 
                                                     col.bounds.size.x / 2 + 0.5f, LayerMask.GetMask("Platform"));
 
         if (raHitGround.collider == null && _changeTimer <= 0f)
@@ -78,19 +83,20 @@ public class MeleeMonster : Monster
             _changeTimer = 0.5f;
             _jumpCoolTime = 0;
         }
-
+        
         _jumpCoolTime += Time.deltaTime;
+        print(_jumpCoolTime);
+        
         if (rayHitWall.collider != null)
         {
-            if (_jumpCoolTime >= 1.5f && Physics2D.BoxCast(transform.position, col.bounds.size, 0, 
-                Vector3.down, 0.3f, LayerMask.GetMask("Platform")).collider != null)
-            {
+            if (_jumpCoolTime >= 1.5f && Physics2D.BoxCast(transform.position, col.bounds.size, 0,
+                Vector3.down, 0.2f, LayerMask.GetMask("Platform")).collider != null)
+            {   
                 GetComponent<Rigidbody2D>().velocity = Vector2.up * _jumpPower;
-                print("ㅈㅍ~");
+
                 _jumpCoolTime = 0;
             }
         }
-
 
         if (_changeTimer > 0f) _changeTimer -= Time.deltaTime;
         MovingVelocity = _isAttacking || HasEffect<EffectStun>() ? 0 : _nextMove * Stat.Get(StatType.MoveSpeed);
@@ -151,7 +157,7 @@ public class MeleeMonster : Monster
     {
 
         //        yield return new WaitForSeconds(0.4f);
-        yield return new WaitForSeconds(0.6f / _attackSpeed);
+        yield return new WaitForSeconds(0.5f / _attackSpeed);
 
         _isAttacking = true;
 
@@ -159,7 +165,7 @@ public class MeleeMonster : Monster
         print(other.HP);
 
         //       yield return new WaitForSeconds(0.6f);
-        yield return new WaitForSeconds(0.4f / _attackSpeed);
+        yield return new WaitForSeconds(0.5f / _attackSpeed);
 
         _isAttacking = false;
 
