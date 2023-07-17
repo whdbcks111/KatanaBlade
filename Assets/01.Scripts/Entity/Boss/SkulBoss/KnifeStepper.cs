@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class KnifeStepper : MonoBehaviour
 {
-    [SerializeField]private List<GameObject> _trapList;
+    [SerializeField] private List<GameObject> _trapList;
     //public GameObject TrapKnife;
-    [SerializeField] private float _minLimit;
-    [SerializeField] private float _maxLimit;
+    public float MinLimit;
+    public float MaxLimit;
     public void Shuffle()
     {
         foreach (GameObject obj in _trapList)
-            obj.transform.position = new Vector2(Random.Range(_minLimit, _maxLimit), obj.transform.position.y);
+            obj.transform.position = new Vector2(Random.Range(MinLimit, MaxLimit), obj.transform.position.y);
     }
 
 }
