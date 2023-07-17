@@ -50,9 +50,13 @@ public class CameraControll : MonoBehaviour
 
     public void Follow()
     {
-        // _followTarget 따라가는 코드 구현, transform.position을 수정하지 말고 _targetPosition을 수정할 것
         _targetPosition = Vector3.SmoothDamp((Vector2)_targetPosition, _followTarget.position, 
             ref _vel, 0.2f) + Vector3.forward * transform.position.z;
+    }
+
+    public void Teleport()
+    {
+        _targetPosition = _followTarget.position;
     }
 
     public void RestrictMove()

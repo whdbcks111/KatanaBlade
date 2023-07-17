@@ -1,49 +1,54 @@
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class EssenceOfFlame : Item
 {
-    public float ActiveRadius = 10;
+
+    public float ActiveRadius = 15;
     private static readonly float ActiveDamage = 5f;
+    private static readonly float ActiveTotalTime = 2f;
 
     public float PassiveTick;
     public float PassiveRadius;
     private static readonly float PassiveDamage = 5f;
-    private float _lastUsed = -1;
     private static readonly float Cooldown = 5f;
     private float _dT;
 
     public EssenceOfFlame()
-        : base(ItemType.Essence, "È­¿°ÀÇ Á¤¼ö",
+        : base(ItemType.Essence, "í™”ì—¼ì˜ ì •ìˆ˜",
             string.Format(
-                "»ç¿ë ½Ã : ÁÖº¯ Àû¿¡°Ô Åõ»çÃ¼¸¦ ³¯·Á <color=red>{0}</color>¸¸Å­ ÇÇÇØ¸¦ ÀÔÈ÷°í <color=red>{1}</color>¸¸Å­ Áö¼ÓÇÇÇØ¸¦ ÀÔÈü´Ï´Ù.\n" +
-                " <color=gray>(Àç»ç¿ë ´ë½Ã±â°£ : {2:0.0}ÃÊ)</color>\n" +
-                "±âº» Áö¼Ó È¿°ú : ÁÖº¯ Àû¿¡°Ô <color=red>{3}</color> ¸¸Å­ Áö¼ÓÇÇÇØ¸¦ ÀÔÈü´Ï´Ù.", ActiveDamage, PassiveDamage, PassiveDamage, Cooldown),
-            Resources.Load<Sprite>("Item/Icon/EssenceOfRegeneration"))
+                "ì‚¬ìš© ì‹œ : ì£¼ë³€ ì ì—ê²Œ ë¶ˆê½ƒì„ ë‚ ë ¤ <color=red>{0}</color>ë§Œí¼ í”¼í•´ë¥¼ ì…íˆê³  <color=red>{1}</color>ë§Œí¼ ì§€ì†í”¼í•´ë¥¼ ì…í™ë‹ˆë‹¤.\n" +
+                " <color=gray>(ì¬ì‚¬ìš© ëŒ€ì‹œê¸°ê°„ : {2:0.0}ì´ˆ)</color>\n" +
+                "ê¸°ë³¸ ì§€ì† íš¨ê³¼ : ì£¼ë³€ ì ì—ê²Œ ì´ˆë‹¹ <color=red>{3}</color>ë§Œí¼ í”¼í•´ë¥¼ ì…í™ë‹ˆë‹¤.", ActiveDamage, PassiveDamage, Cooldown, PassiveDamage),
+            Resources.Load<Sprite>("Item/Icon/Essence/Essence_2"))
     {
     }
 
+    [ContextMenu("ì•¡í‹°ë¸Œ ì‚¬ìš©")]
     public override void OnActiveUse()
     {
-        if (_lastUsed > 0 && (Time.realtimeSinceStartup - _lastUsed) < Cooldown) return;
-        _lastUsed = Time.realtimeSinceStartup;
+        Player.Instance.SetEssenceCooldown(Cooldown);
 
-        //Àû ·¹ÀÌ¾î Ãß°¡ÇØ¾ßÇÔ
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, PassiveRadius);
+        //ì  ë ˆì´ì–´ ì¶”ê°€í•´ì•¼í•¨
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
         
         if(enemies.Length > 0)
         {
             int minDist = 0;
             for (int i = 0; i < enemies.Length; i++) 
             {
-                if (enemies[i].GetComponent<Entity>() is Monster && Vector2.Distance(Player.Instance.transform.position, enemies[i].transform.position) < minDist)
+                if (enemies[i].GetComponent<Entity>() is Monster && Vector2.Distance(Player.Instance.transform.position, enemies[i].transform.position) < Vector2.Distance(Player.Instance.transform.position, enemies[minDist].transform.position))
                 {
                     minDist = i;
                 }
             }
+            FlyingProjectile projectile = Instantiate(Resources.Load("Item/FlameProjectile"), Player.Instance.transform.position, Quaternion.identity).GetComponent<FlyingProjectile>();
 
-            //Àû¿¡°Ô Åõ»çÃ¼ ¹ß»ç ÄÚµå, ¸ÂÀº Àû¿¡°Ô ´ë¹ÌÁö ÀÔÈ÷´Â ÄÚµå
+            Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+            Player.Instance.StartCoroutine(ChaseTarget(map, projectile, enemies[minDist].transform));
+            //ì ì—ê²Œ íˆ¬ì‚¬ì²´ ë°œì‚¬ ì½”ë“œ, ë§ì€ ì ì—ê²Œ ëŒ€ë¯¸ì§€ ì…íˆëŠ” ì½”ë“œ
         }
     }
 
@@ -52,7 +57,7 @@ public class EssenceOfFlame : Item
         _dT += Time.deltaTime;
         if(_dT > PassiveTick)
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, PassiveRadius);
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, PassiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in enemies)
             {
                 if (enemy.GetComponent<Entity>() is Monster)
@@ -64,13 +69,35 @@ public class EssenceOfFlame : Item
         }
     }
 
+    private IEnumerator ChaseTarget(Tilemap tilemap, FlyingProjectile obj, Transform target)
+    {
+        obj.tilemap = tilemap;
+        obj.owner = Player.Instance;
+        obj.target = target;
+        yield return new WaitUntil(() => Vector2.Distance((Vector2)obj.transform.position, target.transform.position) < .1f);
+
+        target.GetComponent<Entity>().Damage(ActiveDamage);
+        float dT = 0;
+        while(dT < ActiveTotalTime)
+        {
+            dT += Time.deltaTime;
+            if (target.GetComponent<Entity>().HP > 0)
+            {
+                target.GetComponent<Entity>().Damage(PassiveDamage / ActiveTotalTime * Time.deltaTime);
+            }
+            else
+            {
+                break;
+            }
+        }
+        Destroy(obj.gameObject);
+    }
+
     public override void OnMount()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnUnmount()
     {
-        throw new System.NotImplementedException();
     }
 }

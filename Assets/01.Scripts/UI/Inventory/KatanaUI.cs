@@ -5,45 +5,55 @@ using UnityEngine.UI;
 
 public class KatanaUI : MonoBehaviour
 {
-    public float time;
-    public Image image;
-    public Color essenceColor;
-    private Coroutine nowCor;
+    public float LightTime;
+
+    public Image Image;
+    public Image Light;
+
+    private float _beforeRatio = 0f;
+    private Coroutine _cor;
 
     void Start()
     {
-        FadeIn(time);
+        //FadeIn(time);
     }
 
     void Update()
     {
+        var essence = Player.Instance.Inventory.MountedEssence;
+        Color essenceColor = essence is null ? Color.white : ExtraMath.GetMainColor(essence.Icon);
+
+
+        var ratio = Mathf.Clamp01(Player.Instance.EssenceCooldownRatio);
+        Image.color = Color.Lerp(Color.white, essenceColor, ratio);
         
-    }
-
-    private void FadeIn(float time)
-    {
-        if (nowCor == null)
-            nowCor = StartCoroutine(FadeInCor(time));
-    }
-
-    private IEnumerator FadeInCor(float time)
-    {
-        Color origin = new Color(essenceColor.r, essenceColor.g, essenceColor.b, 0);
-        float dT = 0;
-        while (true)
+        if(_beforeRatio < 1f && ratio >= 1f)
         {
-            if (dT > time)
-                break;
-
-            dT += Time.deltaTime;
-            yield return null;
-
-            float a = dT / time;
-            Color temp = new Color(origin.r, origin.g, origin.b, a);
-            image.color = temp;
+            //빛나게 함
+            if (_cor is not null)
+            {
+                StopCoroutine(_cor);
+            }
+            _cor = StartCoroutine(LightRoutine());
         }
 
-        image.color = essenceColor;
-        nowCor = null;
+        //이전값에 현재값 대입
+        _beforeRatio = ratio;
+    }
+
+    IEnumerator LightRoutine()
+    {
+        var essence = Player.Instance.Inventory.MountedEssence;
+        Color col = essence is null ? Color.white : ExtraMath.GetMainColor(essence.Icon) * 1.3f;
+
+        for (float i = 0f; i <= 1f; i += Time.deltaTime / LightTime)
+        {
+            col.a = 1 - i;
+            Light.color = col;
+            yield return null;
+        }
+
+        Light.color = new Color(1, 1, 1, 0);
+        _cor = null;
     }
 }

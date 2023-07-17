@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EffectRegeneration : StatusEffect
 {
-    public EffectRegeneration(int level, float duration, Entity caster = null) : base(level, duration, caster)
+    public EffectRegeneration(int level, float duration, Entity caster = null) 
+        : base(level, duration, Resources.Load<Sprite>("Item/Icon/Spell/spell_40"), caster)
     {
     }
 
