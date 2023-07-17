@@ -47,7 +47,10 @@ public class GameManager : MonoBehaviour
     public Slider BossHPBar;
     public TextMeshProUGUI BossName;
     private Boss _curBoss;
-    
+
+    [Header("EquipmentScene")]
+    public GameObject Equipment;
+
 
     // 게임 시작과 동시에 싱글톤을 구성
     void Awake()
@@ -171,6 +174,12 @@ public class GameManager : MonoBehaviour
         {
             print("토글");
             InventoryUI.SetActive(!InventoryUI.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Time.timeScale = !Equipment.activeSelf ? 0f : 1f;
+            Equipment.SetActive(!Equipment.activeSelf);
         }
 
         var effectUICount = EffectIconContainer.childCount;
