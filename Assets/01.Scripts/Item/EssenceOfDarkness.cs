@@ -64,7 +64,7 @@ public class EssenceOfDarkness : Item
 
         while (dT < maintainTime)
         {
-            Collider2D[] bullets = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
+            Collider2D[] bullets = Physics2D.OverlapCircleAll(effect.transform.position, radius);
             foreach (var b in bullets)
             {
                 if (b?.GetComponent<Projectile>() is Projectile)
