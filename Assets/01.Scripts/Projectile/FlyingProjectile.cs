@@ -11,7 +11,8 @@ public class FlyingProjectile : Projectile
 
     public void Update()
     {
-        Pathfinder.Follow(tilemap, transform, target.position, Speed);
+        if (target != null && tilemap != null)
+            Pathfinder.Follow(tilemap, transform, target.position, Speed);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -19,6 +19,7 @@ public class BossAttack : Entity
         if (_parryAble)
         {
             MotherBoss.Damage(damage);
+            MotherBoss.Knockback((MotherBoss.transform.position.x > Player.Instance.transform.position.x ? 1 : -1) * Player.Instance.Stat.Get(StatType.LowParryingFeedback));
         }
     }
 
