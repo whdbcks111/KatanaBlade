@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,10 +57,10 @@ public class MapGenerator : MonoBehaviour
                 shape.KeyPositionOffsets[i] = shape.ShapeMap.transform.GetChild(i).localPosition;
             }
         }
-        StartCoroutine(Generate());
+        Generate().Forget();
     }
 
-    public IEnumerator Generate()
+    public async UniTask Generate()
     {
         _usedPositions.Clear();
         _targetTilemap.ClearAllTiles();
@@ -73,9 +74,17 @@ public class MapGenerator : MonoBehaviour
         Queue<Vector2Int> queue = new();
         CreateMapTiles(Vector2Int.zero, _spawnShape, StageType.Spawn);
         queue.Enqueue(Vector2Int.zero);
+
+        int batchSize = 2;
+        int batchCounter = 0;
+
         while (queue.TryDequeue(out Vector2Int curPos))
         {
-            if(UnityEngine.Random.value < 0.3f) yield return null;
+            if (++batchCounter == batchSize)
+            {
+                batchCounter = 0;
+                await UniTask.Yield();
+            }
             float progress = (float)_map.Count / MapCount;
             ui.LoadingImage.fillAmount = progress;
             ui.ProgressText.SetText(string.Format("{0:0.0}%", progress * 100));
