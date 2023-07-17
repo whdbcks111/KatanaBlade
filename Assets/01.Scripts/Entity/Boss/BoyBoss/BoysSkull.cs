@@ -18,6 +18,17 @@ public class BoysSkull : Boss
         StartCoroutine(PatternTerm());
         print("hp : " + HP);
     }
+
+    private void FloorCheck()
+    {
+        Debug.DrawRay(transform.position, Vector2.down, Color.blue);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, LayerMask.GetMask("Platform"));
+        if (hit.collider != null)
+        {
+            transform.position = new Vector2(transform.position.x, hit.collider.transform.position.y + 5.0f);
+        }
+    }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();

@@ -55,6 +55,6 @@ public class Boss : Monster
     }
     public override void Damage(float damage)
     {
-        base.Damage(damage + _player.Stat.Get(StatType.BossAttackForce));
+        base.Damage(damage);
     }
 }
