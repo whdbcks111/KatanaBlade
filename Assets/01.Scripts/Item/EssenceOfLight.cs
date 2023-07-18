@@ -49,10 +49,13 @@ public class EssenceOfLight : Item
     private IEnumerator SkillCor(float maintainTime)
     {
         float dT = 0;
-        if(_line == null)
+        if(Player.Instance.TryGetComponent(out LineRenderer line) == false)
         {
             _line = Player.Instance.gameObject.AddComponent<LineRenderer>();
-
+        }
+        else
+        {
+            _line = Player.Instance.gameObject.GetComponent<LineRenderer>();
         }
         _line.material = _material;
         _line.textureMode = LineTextureMode.Stretch;
