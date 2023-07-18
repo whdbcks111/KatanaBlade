@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     private int _score = 0; // 게임 점수
     private float _timer = 0; // 시간 변수
 
-    [HideInInspector] public int Gold = 0;
+    public int Gold = 0;
 
     [Header("Related to Boss")]
     public Slider BossHPBar;

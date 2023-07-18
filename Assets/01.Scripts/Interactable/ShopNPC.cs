@@ -47,6 +47,7 @@ public class ShopNPC : Interactable
             itemIcon.sprite = itemSprites[itemIDs[i]];
             var goldText = GameManager.instance.ItemListUI[i].GetComponentInChildren<TextMeshProUGUI>();
             goldText.text = itemTable[itemIDs[i]]["Gold"].ToString();
+            int idx = i;
 
             if (bought[i])
             {
@@ -63,7 +64,7 @@ public class ShopNPC : Interactable
                     Player.Instance.Inventory.AddItem(item);
                     GameManager.instance.Gold -= gold;
                     display.SetCanBuy(false);
-                    bought[i] = true;
+                    bought[idx] = true;
                     itemIcon.sprite = Resources.Load<Sprite>("UI/FoxSprite");
                     goldText.text = "SOLD";
                 }
