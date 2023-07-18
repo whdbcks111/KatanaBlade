@@ -7,11 +7,11 @@ public class EssenceOfFlame : Item
 {
 
     public float ActiveRadius = 15;
-    private static readonly float ActiveDamage = 5f;
+    private static readonly float ActiveDamage = 15f;
     private static readonly float ActiveTotalTime = 2f;
 
-    public float PassiveTick;
-    public float PassiveRadius;
+    private static readonly float PassiveTick = 3;
+    private static readonly float PassiveRadius = 10;
     private static readonly float PassiveDamage = 5f;
     private static readonly float Cooldown = 5f;
     private float _dT;
@@ -26,16 +26,14 @@ public class EssenceOfFlame : Item
     {
     }
 
-    [ContextMenu("액티브 사용")]
     public override void OnActiveUse()
     {
-        Player.Instance.SetEssenceCooldown(Cooldown);
-
         //적 레이어 추가해야함
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius);
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
         
         if(enemies.Length > 0)
         {
+            Player.Instance.SetEssenceCooldown(Cooldown);
             int minDist = 0;
             for (int i = 0; i < enemies.Length; i++) 
             {
@@ -46,7 +44,7 @@ public class EssenceOfFlame : Item
             }
             FlyingProjectile projectile = Instantiate(Resources.Load("Item/FlameProjectile"), Player.Instance.transform.position, Quaternion.identity).GetComponent<FlyingProjectile>();
 
-            Tilemap map = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+            Tilemap map = GameObject.Find("MainTilemap").GetComponent<Tilemap>();
             Player.Instance.StartCoroutine(ChaseTarget(map, projectile, enemies[minDist].transform));
             //적에게 투사체 발사 코드, 맞은 적에게 대미지 입히는 코드
         }
@@ -62,7 +60,7 @@ public class EssenceOfFlame : Item
             {
                 if (enemy.GetComponent<Entity>() is Monster)
                 {
-                    enemy.GetComponent<Entity>().Damage(PassiveDamage);
+                    enemy.GetComponent<Entity>().Damage(PassiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce));
                 }
             }
             _dT = 0;
@@ -71,26 +69,21 @@ public class EssenceOfFlame : Item
 
     private IEnumerator ChaseTarget(Tilemap tilemap, FlyingProjectile obj, Transform target)
     {
+        float dT = 0;
         obj.tilemap = tilemap;
         obj.owner = Player.Instance;
         obj.target = target;
-        yield return new WaitUntil(() => Vector2.Distance((Vector2)obj.transform.position, target.transform.position) < .1f);
-
-        target.GetComponent<Entity>().Damage(ActiveDamage);
-        float dT = 0;
-        while(dT < ActiveTotalTime)
+        while(Vector2.Distance((Vector2)obj.transform.position, target.transform.position) >= .1f)
         {
+            obj.transform.eulerAngles = new Vector3(0, 0, ExtraMath.DirectionToAngle((obj.transform.position - target.transform.position).normalized));
+            obj.Speed = Mathf.Clamp(obj.Speed + dT, 3f, 12f);
             dT += Time.deltaTime;
-            if (target.GetComponent<Entity>().HP > 0)
-            {
-                target.GetComponent<Entity>().Damage(PassiveDamage / ActiveTotalTime * Time.deltaTime);
-            }
-            else
-            {
-                break;
-            }
+            yield return null;
         }
-        Destroy(obj.gameObject);
+
+        target.GetComponent<Entity>().Damage(ActiveDamage * Player.Instance.Stat.Get(StatType.EssenceForce));
+        target.GetComponent<Entity>().AddEffect(new EffectFire((int)Player.Instance.Stat.Get(StatType.EssenceForce), ActiveTotalTime, Player.Instance));
+        DestroyImmediate(obj.gameObject);
     }
 
     public override void OnMount()

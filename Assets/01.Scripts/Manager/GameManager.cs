@@ -29,10 +29,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ItemPopupName, ItemPopupDesc;
 
     [Header("ShopPopup")]
+    public GameObject ShopPanel;
     public GameObject ShopPopup;
     public Image ShopPopupIcon;
     public TextMeshProUGUI ShopPopupName, ShopPopupDesc;
-    public GameObject ShopPanel;
     public GameObject[] ItemListUI = new GameObject[4];
 
     private MonoBehaviour _currentShowingUI;
@@ -46,8 +46,10 @@ public class GameManager : MonoBehaviour
     [Header("Related to Boss")]
     public Slider BossHPBar;
     public TextMeshProUGUI BossName;
-    private Boss _curBoss;
-    
+
+    [Header("EquipmentScene")]
+    public GameObject Equipment;
+
 
     // 게임 시작과 동시에 싱글톤을 구성
     void Awake()
@@ -70,17 +72,6 @@ public class GameManager : MonoBehaviour
         Screen.SetResolution(1920, 1080, true);
         //SceneManager.sceneLoaded += OnSceneLoadedEvent;
     }
-
-    private void OnSceneLoadedEvent(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "BossScene")
-        {
-            _curBoss = FindObjectOfType<Boss>();
-        }
-    }
-
-
-
 
 
     //시간 증가시키는 메서드 
@@ -173,6 +164,12 @@ public class GameManager : MonoBehaviour
             InventoryUI.SetActive(!InventoryUI.activeSelf);
         }
 
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Time.timeScale = !Equipment.activeSelf ? 0f : 1f;
+            Equipment.SetActive(!Equipment.activeSelf);
+        }
+
         var effectUICount = EffectIconContainer.childCount;
         var effects = Player.Instance.Effects;
 
@@ -210,22 +207,6 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1f;
                 PauseUI.SetActive(false);
             }
-        }
-
-
-
-        if (_curBoss is not null)
-        {
-            BossHPBar.gameObject.SetActive(true);
-            BossName.gameObject.SetActive(true);
-            BossHPBar.value = _curBoss.HP / _curBoss.MaxHP;
-            BossName.text = _curBoss.gameObject.name;
-            
-        }
-        else
-        {
-            BossHPBar.gameObject.SetActive(false);
-            BossName.gameObject.SetActive(false);
         }
     }
     // 플레이어 캐릭터가 사망시 게임 오버를 실행하는 메서드

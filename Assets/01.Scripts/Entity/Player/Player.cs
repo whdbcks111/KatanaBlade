@@ -20,16 +20,14 @@ public class Player : Entity
         base.Awake();
         Instance = this;
 
-
-        Inventory.AddItem(new EssenceOfFlame());
-        Inventory.AddItem(new EssenceOfDarkness());
-        Inventory.AddItem(new EssenceOfCloud());
+        Inventory.AddItem(new EssenceOfSwift());
+        Inventory.AddItem(new EssenceOfLight());
+        Inventory.AddItem(new EssenceOfStorm());
         Inventory.AddItem(new EssenceOfVoid());
-        Inventory.AddItem(new BootsOfTraveler());
-
-        AddEffect(new EffectFire(1, 5, this));
-        AddEffect(new EffectStun(1, 10, this));
-        AddEffect(new EffectRegeneration(3, 15, this));
+        Inventory.AddItem(new EssenceOfFlame());
+        Inventory.AddItem(new EssenceOfVoid());
+        Inventory.AddItem(new FairyCloak());
+        Inventory.AddItem(new MagicScroll());
 
         _controller = GetComponent<PlayerController>();
         _animator = GetComponentInChildren<Animator>();
@@ -48,7 +46,7 @@ public class Player : Entity
         if (Inventory.MountedEssence is not null)
         {
             Inventory.MountedEssence.PassiveUpdate();
-            if(Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && _essenceRemainCooldown <= 0)
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && _essenceRemainCooldown <= 0)
             {
                 Inventory.MountedEssence.OnActiveUse();
             }
@@ -64,17 +62,21 @@ public class Player : Entity
 
     public override void Damage(float damageAmount)
     {
-        base.Damage(damageAmount);
-
-        if (_controller.IsConscious)
-            _animator.SetTrigger("Hit");
-        
         if (HP <= 0)
         {
             StopAllCoroutines();
             _controller.IsConscious = false;
+            MovingVelocity = 0;
             _animator.SetBool("Dead", true);
             GameManager.instance.OnPlayerDead();
+        }
+        else if (!_controller.IsParrying)
+        {
+            base.Damage(damageAmount);
+        }
+        else
+        {
+            _animator.SetTrigger("Hit");
         }
     }
 }

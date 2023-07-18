@@ -13,7 +13,7 @@ public class EssenceOfEarth : Item
     public EssenceOfEarth()
     : base(ItemType.Essence, "대지의 정수",
         string.Format(
-            "사용 시 : 주변 적들을 <color=brown>밀어내고</color> 기절시킵니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
+            "사용 시 : 주변 적들을 <color=brown>밀어내고</color> 기절시키고 최대 체력의 10%만큼 피해를 입힙니다. <color=gray>(재사용 대시기간 : {0:0.0}초)</color>\n" +
             "기본 지속 효과 : {1}초마다 여진을 일으켜 주변 적을 <color=brown>기절</color>시킵니다.", Cooldown, PassiveTick),
         Resources.Load<Sprite>("Item/Icon/Essence/Essence_0"))
     {
@@ -25,7 +25,7 @@ public class EssenceOfEarth : Item
         Player.Instance.SetEssenceCooldown(Cooldown);
 
         Player.Instance.StartCoroutine(ActiveCameraShake(2f, 1f, 0.5f));
-        Collider2D[] area = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius, 1 << LayerMask.NameToLayer("Enemy"));
+        Collider2D[] area = Physics2D.OverlapCircleAll(Player.Instance.transform.position, ActiveRadius * Player.Instance.Stat.Get(StatType.EssenceForce), 1 << LayerMask.NameToLayer("Enemy"));
         foreach (var enemy in area)
         {
             if(enemy.GetComponent<Entity>() is Monster)
@@ -33,13 +33,12 @@ public class EssenceOfEarth : Item
                 enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, 2f, Player.Instance));
                 //대상과의 거리에 따라 에어본이 달라짐
                 enemy.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (ActiveMag + (ActiveRadius - Vector2.Distance(enemy.transform.position, Player.Instance.transform.position))), ForceMode2D.Impulse);
-                enemy.GetComponent<Entity>().Knockback(ActiveMag * Random.Range(-1, 2) * 2);
-
+                enemy.GetComponent<Entity>().Knockback(ActiveMag * Random.Range(-1, 2) * 2 * Player.Instance.Stat.Get(StatType.EssenceForce));
+                enemy.GetComponent<Entity>().Damage(enemy.GetComponent<Entity>().MaxHP * 0.1f * Player.Instance.Stat.Get(StatType.EssenceForce));
                 RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, Vector2.down, float.PositiveInfinity, 1 << LayerMask.NameToLayer("Platform"));
                 if (hit)
                 {
-                    Debug.Log(hit.transform.name);
-                    EffectManager.EffectOneShot("Ground Paticle", hit.point);
+                    EffectManager.EffectOneShot("Ground", hit.point);
                 }
             }
         }
@@ -50,7 +49,7 @@ public class EssenceOfEarth : Item
         _dT += Time.deltaTime;
         if(_dT > PassiveTick)
         {
-            Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(ActiveRadius * 2, 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
+            Collider2D[] area = Physics2D.OverlapBoxAll(Player.Instance.transform.position, new Vector2(ActiveRadius * 2 * Player.Instance.Stat.Get(StatType.EssenceForce), 2f), 0f, 1 << LayerMask.NameToLayer("Enemy"));
             foreach (var enemy in area)
             {
                 enemy.GetComponent<Entity>().AddEffect(new EffectStun(1, .5f, Player.Instance));

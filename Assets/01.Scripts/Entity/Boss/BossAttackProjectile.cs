@@ -5,13 +5,13 @@ using UnityEngine;
 public class BossAttackProjectile : Entity
 {
     private Player _player;
-    [SerializeField] private int _mode;
+    [SerializeField] protected int _mode;
     public Boss MotherBoss;
-    [SerializeField] private int _damage;
-    private Vector2 _targetSpot;
-    private float _hittedDamage;
-    [SerializeField] private float _speed;
-    private void Start()
+    [SerializeField] protected int _damage;
+    protected Vector2 _targetSpot;
+    protected float _hittedDamage;
+    [SerializeField] protected float _speed;
+    protected virtual void Start()
     {
         _player = FindObjectOfType<Player>();
         setTarget(_player.transform.position);
@@ -26,7 +26,7 @@ public class BossAttackProjectile : Entity
     public void Fire()
     {
         _mode = 1;
-        Destroy(this.gameObject, 2.0f);
+        Destroy(this.gameObject, 12.0f);
     }
 
     public void setTarget(Vector2 pos)
@@ -59,6 +59,7 @@ public class BossAttackProjectile : Entity
     {
         _hittedDamage = _damage + damage;
         _mode = 2;
+        _speed *= 2;
         setTarget(MotherBoss.transform.position);
     }
 }

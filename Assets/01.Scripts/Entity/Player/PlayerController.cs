@@ -16,11 +16,12 @@ public class PlayerController : MonoBehaviour
     private int _stare;
 
     private bool _canJump = false;
+    private float _lastWalkSound = 0f;
 
     private Collider2D _collider2D;
 
     public bool IsOnGround { get; private set; }
-
+    public bool IsParrying { get; private set; }
 
     [SerializeField] private float _parryRadius;
     [SerializeField] private GameObject _alter;
@@ -64,13 +65,17 @@ public class PlayerController : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
 
-
         _player.MovingVelocity = h * _player.Stat.Get(StatType.MoveSpeed);
 
         if (Mathf.Abs(h) > Mathf.Epsilon)
         {
             _stare = h > 0 ? 1 : -1;
             _animator.SetBool("Running", true);
+            if(Time.time - _lastWalkSound > 0.25f && IsOnGround)
+            {
+                _lastWalkSound = Time.time;
+                SoundManager.Instance.PlaySFX("Walk", 2f, Random.Range(0.8f, 1.2f));
+            }
         }
         else
             _animator.SetBool("Running", false);
@@ -82,6 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButton("Jump") && _canJump)
         {
+            SoundManager.Instance.PlaySFX("Jump", 2f);
             _animator.SetBool("Jump", true);
             _canJump = false;
             _rigid.velocity = new Vector2(_rigid.velocity.x, _player.Stat.Get(StatType.JumpForce));
@@ -93,7 +99,7 @@ public class PlayerController : MonoBehaviour
         IsOnGround = false;
         for (int i = 0; i < collision.contactCount; i++)
         {
-            if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y)
+            if (_collider2D.bounds.min.y + 0.1f >= collision.GetContact(i).point.y && _rigid.velocity.y <= 0.01f)
             {
                 IsOnGround = true;
                 break;
@@ -138,13 +144,14 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator ParryContinue(float parryAngle)
     {
-
+        IsParrying = true;
         StartCoroutine(Stun(.6f));
         _player.ParryingStamina -= _player.Stat.Get(StatType.ParryingCost);
         StartCoroutine(ParryCool());
         yield return new WaitUntil(() => _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Parry" &&
             _animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 3 / 9);
 
+        bool isParryed = false;
         //원 콜라이더 생성
         RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, _parryRadius, Vector2.zero);
         //플레이어와 마우스 사이 각도구하기
@@ -154,11 +161,12 @@ public class PlayerController : MonoBehaviour
         {
             //print(inst.collider.gameObject.name);
             float monsterAngle = ExtraMath.DirectionToAngle(inst.transform.position - transform.position);
-            if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 25, monsterAngle + 25))
+            if (ExtraMath.IsAngleBetween(parryAngle, monsterAngle - 45, monsterAngle + 45))
             {
                 if (inst.collider.TryGetComponent(out Entity t) && t is not Player)
                 {
-                    print(inst.collider.gameObject + " PARRYED");
+                    //print(inst.collider.gameObject + " PARRYED");
+
                     //해당 각도에 오차범위 추가: 약 50도의 오차 범위 존재
                     //패링 성공
                     //몬스터가 공격중인지 판단해서 패링 성공인지 
@@ -166,6 +174,7 @@ public class PlayerController : MonoBehaviour
                     if (t is MeleeMonster m && m.CanParrying)
                     {
                         //패링 성공 이후 공격
+                        isParryed = true;
                         t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
                         //print("Melee Parry");
                         //패링 후 효과
@@ -175,6 +184,7 @@ public class PlayerController : MonoBehaviour
                     else if (t is BossAttack)
                     {
                         //패링 성공 이후 공격
+                        isParryed = true;
                         t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
                         //패링 후 효과
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
@@ -183,7 +193,8 @@ public class PlayerController : MonoBehaviour
                     else if (t is Boss boss && boss.IsAttcking)
                     {
                         //패링 성공 이후 공격
-                        t.Damage(_player.Stat.Get(StatType.ParryingAttackForce));
+                        isParryed = true;
+                        t.Damage(_player.Stat.Get(StatType.BossAttackForce));
                         //패링 후 효과
                         _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.HighParryingFeedback));
                         t.Knockback((t.transform.position.x > transform.position.x ? 1 : -1) * _player.Stat.Get(StatType.LowParryingFeedback));
@@ -191,15 +202,15 @@ public class PlayerController : MonoBehaviour
                     else if (inst.collider.TryGetComponent(out BossAttackProjectile bp))
                     {
                         bp.Damage(1);
-                        _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.MiddleParryingFeedback));
+                        isParryed = true;
+                        _player.Knockback((t.transform.position.x > transform.position.x ? -1 : 1) * t.Stat.Get(StatType.LowParryingFeedback));
                     }
                 }
                 else if (inst.collider.TryGetComponent(out Projectile p))
                 {
+                    isParryed = true;
                     if (p is FlyingProjectile)
                         Destroy(p.gameObject);
-                    //패링으로 쳐내기
-                    //p.transform.Rotate(Vector3.forward * 180);
                     else
                     {
                         p.SetOwner(_player, parryAngle);
@@ -208,6 +219,14 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+
+        if(isParryed)
+            SoundManager.Instance.PlaySFX("Parry");
+        else
+            SoundManager.Instance.PlaySFX("ParryFail");
+
+        yield return new WaitForEndOfFrame();
+        IsParrying = false;
     }
 
     IEnumerator ParryCool()
@@ -245,6 +264,7 @@ public class PlayerController : MonoBehaviour
             transform.position = new(targetX, transform.position.y);
 
             _player.DashStamina -= _player.Stat.Get(StatType.DashCost);
+            SoundManager.Instance.PlaySFX("Dash");
             StartCoroutine(DashCool());
         }
     }

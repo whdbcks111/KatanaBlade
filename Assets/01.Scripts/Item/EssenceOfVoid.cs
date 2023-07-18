@@ -7,7 +7,7 @@ public class EssenceOfVoid : Item
     private static readonly float Cooldown = 10f;
 
     private static readonly float MaintainTime = 5;
-    private static readonly float Radius = 6;
+    private static readonly float ActiveRadius = 6;
     private static readonly float CastTime = 0.2f;
 
     public EssenceOfVoid()
@@ -24,7 +24,7 @@ public class EssenceOfVoid : Item
     {
         Player.Instance.SetEssenceCooldown(Cooldown);
 
-        Player.Instance.StartCoroutine(SkillCor(MaintainTime, Radius, CastTime));
+        Player.Instance.StartCoroutine(SkillCor(MaintainTime, ActiveRadius, CastTime));
     }
 
     public override void PassiveUpdate()
@@ -45,23 +45,26 @@ public class EssenceOfVoid : Item
         float dT = 0;
         while(dT < castTime)
         {
-            effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
+            effect.transform.localScale = Vector2.one * (radius * Player.Instance.Stat.Get(StatType.EssenceForce)) * dT * (1f / castTime);
             yield return null;
             dT += Time.deltaTime;
         }
         //
 
         //영역 내 투사체 삭제
-        effect.transform.localScale = Vector2.one * radius;
+        effect.transform.localScale = Vector2.one * radius * Player.Instance.Stat.Get(StatType.EssenceForce);
         dT = 0;
 
         while (dT < maintainTime)
         {
-            Collider2D[] projectiles = Physics2D.OverlapCircleAll(Player.Instance.transform.position, radius);
+            Collider2D[] projectiles = Physics2D.OverlapCircleAll(effect.transform.position, radius * Player.Instance.Stat.Get(StatType.EssenceForce));
             foreach (var b in projectiles)
             {
-                if (b?.GetComponent<Projectile>() is Projectile)
-                    Object.Destroy(b.gameObject);
+                if (b.TryGetComponent(out Projectile projectile))
+                {
+                    Destroy(b.gameObject);
+                    EffectManager.EffectOneShot("BlackCristal", b.transform.position);
+                }
             }
             yield return null;
             dT += Time.deltaTime;
@@ -73,7 +76,7 @@ public class EssenceOfVoid : Item
 
         while (dT > 0)
         {
-            effect.transform.localScale = Vector2.one * radius * dT * (1f / castTime);
+            effect.transform.localScale = Vector2.one * (radius * Player.Instance.Stat.Get(StatType.EssenceForce)) * dT * (1f / castTime);
             yield return null;
             dT -= Time.deltaTime;
         }

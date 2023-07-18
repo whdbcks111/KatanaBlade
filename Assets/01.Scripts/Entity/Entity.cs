@@ -24,6 +24,7 @@ public class Entity : MonoBehaviour
 
     private Rigidbody2D _rigid;
     private TextMeshProUGUI _damageText;
+    private float _lastDamageSound = 0f;
 
     public float MovingVelocity = 0, KnockbackVelocity = 0;
 
@@ -81,6 +82,7 @@ public class Entity : MonoBehaviour
     public void AddEffect(StatusEffect eff)
     {
         _effects.Add(eff);
+        eff.OnStart(this);
     }
 
     public bool HasEffect<T>() where T : StatusEffect
@@ -129,7 +131,12 @@ public class Entity : MonoBehaviour
         text.SetText(string.Format("{0:0.00}", damage));
         text.transform.position = transform.position + Vector3.up * GetComponent<Collider2D>().bounds.size.y / 2f;
         GameManager.instance.StartCoroutine(DamageTextRoutine(text));
-        print("Damage Text");
+
+        if(Time.time - _lastDamageSound > 0.4f)
+        {
+            _lastDamageSound = Time.time;
+            SoundManager.Instance.PlaySFX("Hit", Mathf.Clamp01(1f - (transform.position - Player.Instance.transform.position).magnitude / 30f));
+        }
     }
 
     private IEnumerator DamageTextRoutine(TextMeshProUGUI text)

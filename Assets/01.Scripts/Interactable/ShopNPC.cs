@@ -38,7 +38,7 @@ public class ShopNPC : Interactable
             string className = itemTable[itemIDs[i]]["Class"].ToString();
             ShopDisplay display = GameManager.instance.ItemListUI[i].GetComponent<ShopDisplay>();
 
-            display.SetCanBuy(bought[i]);
+            display.SetCanBuy(!bought[i]);
             display.itemName = itemTable[itemIDs[i]]["ItemName"].ToString();
             display.itemDescription = itemTable[itemIDs[i]]["Item"].ToString() + "\n"
                 + itemTable[itemIDs[i]]["Abillty"].ToString();
@@ -47,6 +47,12 @@ public class ShopNPC : Interactable
             itemIcon.sprite = itemSprites[itemIDs[i]];
             var goldText = GameManager.instance.ItemListUI[i].GetComponentInChildren<TextMeshProUGUI>();
             goldText.text = itemTable[itemIDs[i]]["Gold"].ToString();
+
+            if (bought[i])
+            {
+                itemIcon.sprite = Resources.Load<Sprite>("UI/FoxSprite");
+                goldText.text = "SOLD";
+            }
 
             GameManager.instance.ItemListUI[i].GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
@@ -57,6 +63,7 @@ public class ShopNPC : Interactable
                     Player.Instance.Inventory.AddItem(item);
                     GameManager.instance.Gold -= gold;
                     display.SetCanBuy(false);
+                    bought[i] = true;
                     itemIcon.sprite = Resources.Load<Sprite>("UI/FoxSprite");
                     goldText.text = "SOLD";
                 }

@@ -7,7 +7,7 @@ public class MagicScroll : Item
 {
 
     public MagicScroll() 
-        : base(ItemType.Accessory, "여행자의 부츠", 
+        : base(ItemType.Accessory, "마법 스크롤", 
             string.Format(
                 "정수의 힘을 더욱 증폭시켜주는 신기한 스크롤이다." +
                 "\n<color=#0ff>정수 효과 + 50%</ color>"), 
