@@ -28,14 +28,14 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Floor"))
+        {
+            Destroy(gameObject);
+        }
         if (collision.gameObject.TryGetComponent(out Entity entity) && owner != collision.gameObject.GetComponent<Entity>())
         {
             entity.Damage(10f);
             Destroy(gameObject, 0f);
-        }
-        if (collision.CompareTag("Floor"))
-        {
-            Destroy(gameObject);
         }
     }
 }
