@@ -13,4 +13,13 @@ public class EffectManager : MonoBehaviour
         main.stopAction = ParticleSystemStopAction.Destroy;
         return effect.gameObject;
     }
+
+    public static GameObject EffectLoop(string effectName, Vector3 pos)
+    {
+        ParticleSystem load = Resources.Load<ParticleSystem>("Particle/" + effectName);
+        ParticleSystem effect = Instantiate(load.gameObject, pos, Quaternion.identity).GetComponent<ParticleSystem>();
+        var main = effect.main;
+        main.loop = true;
+        return effect.gameObject;
+    }
 }
