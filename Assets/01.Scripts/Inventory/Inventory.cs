@@ -1,6 +1,4 @@
 
-using static UnityEditor.Progress;
-
 public class Inventory
 {
     public static readonly int InventorySpace = 20;
