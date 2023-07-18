@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.U2D.Path;
+
 using UnityEngine;
-using UnityEngine.U2D;
 
 public static class ExtraMath
 {
