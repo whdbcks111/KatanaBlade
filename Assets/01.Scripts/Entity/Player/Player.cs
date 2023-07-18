@@ -20,12 +20,12 @@ public class Player : Entity
         base.Awake();
         Instance = this;
 
-        Inventory.AddItem(new EssenceOfSwift());
-        Inventory.AddItem(new EssenceOfLight());
-        Inventory.AddItem(new EssenceOfStorm());
-        Inventory.AddItem(new EssenceOfVoid());
         Inventory.AddItem(new EssenceOfFlame());
+        Inventory.AddItem(new EssenceOfLight());
+        Inventory.AddItem(new EssenceOfLightning());
         Inventory.AddItem(new EssenceOfVoid());
+        Inventory.AddItem(new EssenceOfCloud());
+        Inventory.AddItem(new EssenceOfEarth());
         Inventory.AddItem(new FairyCloak());
         Inventory.AddItem(new MagicScroll());
 

@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class EssenceOfLight : Item
 {
-    private static readonly float Cooldown = 3f;
+    private static readonly float Cooldown = 10f;
     private static readonly float MaintainTime = 3f;
     private static readonly float ActiveLength = 25f;
-    private static readonly float ActiveDamage = 10f;
+    private static readonly float ActiveDamage = 20f;
     private float _dT = 0f;
     private LineRenderer _line;
     private Material _material;
+    private GameObject _particle;
 
     public EssenceOfLight()
         : base(ItemType.Essence, "빛의 정수",
             string.Format(
                 "사용 시 : 커서 방향으로 {0}초간 <color=yellow>광선을 발사</color>하여 초당 {1}의 대미지를 입히고 둔화시킵니다. <color=#aaa>(재사용 대시기간 : {2:0.0}초)</color>\n" +
-                "기본 지속 효과 : 1초당 HP를 <color=green>2</color> 회복합니다.", MaintainTime, ActiveDamage, Cooldown),
+                "기본 지속 효과 : - ", MaintainTime, ActiveDamage, Cooldown),
             Resources.Load<Sprite>("Item/Icon/Essence/Essence_4"))
 
     {
@@ -37,6 +38,8 @@ public class EssenceOfLight : Item
     public override void OnMount()
     {
         _material = Resources.Load<Material>("Item/LightLine");
+        _particle = EffectManager.EffectLoop("Sparkle", Vector2.zero);
+        _particle.SetActive(false);
     }
 
     public override void OnUnmount()
@@ -72,6 +75,8 @@ public class EssenceOfLight : Item
             if (hit)
             {
                 _line.SetPosition(1, hit.point);
+                _particle.SetActive(true);
+                _particle.transform.position = hit.point;
                 if (hit.collider.GetComponent<Entity>() is Monster)
                 {
                     hit.collider.GetComponent<Monster>().Damage(ActiveDamage * Time.deltaTime * Player.Instance.Stat.Get(StatType.EssenceForce));
@@ -80,12 +85,14 @@ public class EssenceOfLight : Item
             }
             else
             {
+                _particle.SetActive(false);
                 _line.SetPosition(1, new Vector2((-Mathf.Cos(angle * Mathf.Deg2Rad) * ActiveLength) + Player.Instance.transform.position.x,
                 (-Mathf.Sin(angle * Mathf.Deg2Rad) * ActiveLength) + Player.Instance.transform.position.y));
             }
             yield return null;
             dT += Time.deltaTime;
         }
+        _particle.SetActive(false);
         _line.SetPosition(0, Vector3.zero);
         _line.SetPosition(1, Vector3.zero);
         _line.numCapVertices = 0;
