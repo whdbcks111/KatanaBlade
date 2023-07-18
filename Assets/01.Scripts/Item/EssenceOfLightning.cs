@@ -56,9 +56,13 @@ public class EssenceOfLightning : Item
     {
         if(cnt <= 0)            //재귀호출 종료시(주변 적 없다면)
         {
-            if(_line == null)
+            if (Player.Instance.TryGetComponent(out LineRenderer line) == false)
             {
                 _line = Player.Instance.gameObject.AddComponent<LineRenderer>();
+            }
+            else
+            {
+                _line = Player.Instance.gameObject.GetComponent<LineRenderer>();
             }
             _line.material = _material;
             _line.textureMode = LineTextureMode.Tile;
