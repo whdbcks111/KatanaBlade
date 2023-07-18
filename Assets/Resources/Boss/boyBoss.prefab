@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8152135661215919523}
   - component: {fileID: 8152135661215919521}
   - component: {fileID: 8152135661215919522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: boyBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovingVelocity: 0
   KnockbackVelocity: 0
+  BossName: "\uBCF4\uC2A4"
   IsActable: 0
   IsAttcking: 0
   IsActing: 0

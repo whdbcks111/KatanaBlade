@@ -16,7 +16,7 @@ public class BoysSkull : Boss
         base.Start();
         _animator = GetComponent<Animator>();
         StartCoroutine(PatternTerm());
-        print("hp : " + HP);
+        //print("hp : " + HP);
     }
 
 
@@ -94,7 +94,7 @@ public class BoysSkull : Boss
         }
         else
             StartCoroutine(PatternTerm());
-        print("Pattern num " + _aiMode);
+        //print("Pattern num " + _aiMode);
     }
     IEnumerator hit()
     {
@@ -108,7 +108,7 @@ public class BoysSkull : Boss
     public override void Damage(float damage)
     {
         HP -= damage + _player.Stat.Get(StatType.BossAttackForce);
-        print("hp : " + HP);
+        //print("hp : " + HP);
         if (IsAttcking)
         {
             StopAllCoroutines();

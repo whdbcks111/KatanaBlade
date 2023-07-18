@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 6376750905951228291}
   - component: {fileID: 6376750905951228288}
   - component: {fileID: 6376750905951228289}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BoysSkul
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,8 +316,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovingVelocity: 0
   KnockbackVelocity: 0
+  BossName: "\uBCF4\uC2A4"
   IsActable: 0
   IsAttcking: 0
+  Boy: {fileID: 0}
 --- !u!50 &6376750905951228288
 Rigidbody2D:
   serializedVersion: 4
