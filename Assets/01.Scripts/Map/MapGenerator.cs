@@ -26,6 +26,7 @@ public class MapGenerator : MonoBehaviour
 
     private Vector3 _bossRoomPos;
     private LoadingUI _mapLoadingUIPrefab;
+    private float _mapLoadingProgress;
 
     private void Awake()
     {
