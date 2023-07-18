@@ -19,8 +19,9 @@ public class BoysSkull : Boss
         print("hp : " + HP);
     }
 
-    
 
+
+    
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -129,5 +130,17 @@ public class BoysSkull : Boss
             Boy.Damage(15f);
         yield return new WaitForSeconds(1.0f);
         base.OnMonsterDie();
+    }
+
+    protected override void InitBossBar()
+    {
+    }
+
+    protected override void UpdateBossBar()
+    {
+    }
+
+    protected override void DeleteBossBar()
+    {
     }
 }

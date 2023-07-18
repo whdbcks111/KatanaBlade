@@ -17,14 +17,29 @@ public class Boss : Monster
         _player = Player.Instance;
         _col2d = GetComponent<Collider2D>();
 
+        InitBossBar();
+    }
+
+    protected virtual void InitBossBar()
+    {
         GameManager.instance.BossHPBar.gameObject.SetActive(true);
         GameManager.instance.BossName.SetText(BossName);
+    }
+
+    protected virtual void UpdateBossBar()
+    {
+        GameManager.instance.BossHPBar.normalizedValue = HP / MaxHP;
+    }
+
+    protected virtual void DeleteBossBar()
+    {
+        GameManager.instance.BossHPBar.gameObject.SetActive(false);
     }
 
     protected override void Update()
     {
         base.Update();
-        GameManager.instance.BossHPBar.normalizedValue = HP / MaxHP;
+        UpdateBossBar();
     }
 
     protected override void FixedUpdate()
@@ -33,6 +48,7 @@ public class Boss : Monster
         if (IsActable)
             AIAct();
     }
+
     protected void Staring()
     {
         if (_player.transform.position.x < transform.position.x)
@@ -71,7 +87,6 @@ public class Boss : Monster
 
     private void OnDestroy()
     {
-
-        GameManager.instance.BossHPBar.gameObject.SetActive(false);
+        DeleteBossBar();
     }
 }
