@@ -186,6 +186,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3307824540404996124, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e8c576bf3de770443b9713710ef46321, type: 2}
+    - target: {fileID: 3307824540404996124, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8727592988221898158, guid: e8c576bf3de770443b9713710ef46321, type: 2}
     - target: {fileID: 4032756777450321436, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -193,6 +201,10 @@ PrefabInstance:
     - target: {fileID: 4032756777450321436, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6994119662619705063, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_Sprite
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8056713372234952157, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
       propertyPath: m_AnchorMax.x
@@ -202,5 +214,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8340928501195387369, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340928501195387369, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340928502878743163, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e8c576bf3de770443b9713710ef46321, type: 2}
+    - target: {fileID: 8340928502878743163, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8727592988221898158, guid: e8c576bf3de770443b9713710ef46321, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b72fb2f5dd7fdee41864a39035df96db, type: 3}
