@@ -73,9 +73,6 @@ public class Player : Entity
         else if (!_controller.IsParrying)
         {
             base.Damage(damageAmount);
-        }
-        else
-        {
             _animator.SetTrigger("Hit");
         }
     }
